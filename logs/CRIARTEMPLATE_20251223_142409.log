@@ -1,0 +1,38 @@
+2025-12-23 14:24:09 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | ================================================================================
+2025-12-23 14:24:09 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_142409.log
+2025-12-23 14:24:09 | INFO     | CRIARTEMPLATE | _setup_root_logger:144 | Modo: DESENVOLVIMENTO
+2025-12-23 14:24:09 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-23 14:24:09 | INFO     | CRIARTEMPLATE | _setup_root_logger:148 | ================================================================================
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:259 | ================================================================================
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:260 | INICIANDO CRIARTEMPLATE
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:261 | Modo: DESENVOLVIMENTO
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:264 | ================================================================================
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:269 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | main:275 | Executando ranking diário...
+2025-12-23 14:24:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:68 | Baixando planilhas (Foco: Meta Vendedor)...
+2025-12-23 14:26:46 | INFO     | CRIARTEMPLATE | _run_ranking_diario:84 | Gerando ranking diário (Lojas) a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\meta_empresa_20251223.xlsx ...
+2025-12-23 14:26:51 | INFO     | CRIARTEMPLATE | _run_ranking_diario:88 | ✅ Ranking diário (Lojas) gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_diario_p1.png
+2025-12-23 14:26:51 | INFO     | CRIARTEMPLATE | _run_ranking_diario:110 | Gerando ranking de vendedores a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\MetaVendedor_2312.xlsx ...
+2025-12-23 14:27:01 | INFO     | CRIARTEMPLATE | _run_ranking_diario:114 | ✅ Ranking de vendedores gerado com sucesso: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_vendedor_p1.png
+2025-12-23 14:27:01 | INFO     | CRIARTEMPLATE | _run_ranking_diario:135 | Gerando ranking semanal...
+2025-12-23 14:27:06 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p1.png
+2025-12-23 14:27:06 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p2.png
+2025-12-23 14:27:06 | INFO     | CRIARTEMPLATE | _run_ranking_diario:143 | Gerando ranking mensal...
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:146 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p1.png
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:146 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p2.png
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:160 | === INICIANDO BLOCO DE ANÁLISES AVANÇADAS ===
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:163 | Importando módulos...
+2025-12-23 14:27:10 | ERROR    | CRIARTEMPLATE | _run_ranking_diario:195 | === ERRO AO GERAR ANÁLISES AVANÇADAS ===
+2025-12-23 14:27:10 | ERROR    | CRIARTEMPLATE | _run_ranking_diario:196 | Erro ao gerar análises avançadas: cannot import name 'get_analises_config' from 'src.config' (C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\config.py)
+Traceback (most recent call last):
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\main.py", line 165, in _run_ranking_diario
+    from src.analises_avancadas import gerar_todas_analises_avancadas
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\analises_avancadas.py", line 11, in <module>
+    from src.config import (
+    ...<5 lines>...
+    )
+ImportError: cannot import name 'get_analises_config' from 'src.config' (C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\config.py)
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | _run_ranking_diario:240 | ℹ️ Envio via WhatsApp desabilitado (config.ini -> enviar_whatsapp=false)
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | main:278 | ================================================================================
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | main:279 | FLUXO FINALIZADO COM SUCESSO
+2025-12-23 14:27:10 | INFO     | CRIARTEMPLATE | main:280 | ================================================================================

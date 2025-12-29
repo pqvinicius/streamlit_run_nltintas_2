@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .previsoes-container {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto;
+      }
+      .previsao-item {
+        display: grid;
+        grid-template-columns: 120px 1fr 100px;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 16px;
+      }
+      .previsao-data {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .previsao-data .dia-semana {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+      }
+      .previsao-data .data {
+        font-size: 18px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .previsao-barra {
+        position: relative;
+        height: 40px;
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .previsao-barra-fill {
+        height: 100%;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        color: #0f172a;
+        transition: width 0.3s ease;
+      }
+      .previsao-barra-fill.alta {
+        background: linear-gradient(90deg, #10b981, #059669);
+      }
+      .previsao-barra-fill.media {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+      }
+      .previsao-barra-fill.baixa {
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+      }
+      .previsao-label {
+        text-align: right;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 12px;
+        background: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+      }
+      .media-container {
+        margin-top: auto;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.1));
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        text-align: center;
+      }
+      .media-container h3 {
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        color: #cbd5f5;
+      }
+      .media-container p {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="previsoes-container">
+        {% for previsao in previsoes %}
+        <div class="previsao-item">
+          <div class="previsao-data">
+            <div class="dia-semana">{{ previsao.dia_semana }}</div>
+            <div class="data">{{ previsao.data }}</div>
+          </div>
+          <div class="previsao-barra">
+            <div class="previsao-barra-fill {{ previsao.label|lower }}" style="width: {{ previsao.probabilidade }}%">
+              {{ "%.0f"|format(previsao.probabilidade) }}%
+            </div>
+          </div>
+          <div class="previsao-label">{{ previsao.label }}</div>
+        </div>
+        {% endfor %}
+
+        <div class="media-container">
+          <h3>Probabilidade Média</h3>
+          <p>{{ "%.1f"|format(media_probabilidade) }}%</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

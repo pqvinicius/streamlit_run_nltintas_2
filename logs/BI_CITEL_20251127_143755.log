@@ -1,0 +1,35 @@
+2025-11-27 14:37:55 | INFO     | src.report_generator | setup_logger:86 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.report_generator | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_143755.log
+2025-11-27 14:37:55 | INFO     | src.report_generator | setup_logger:88 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.web_automation | setup_logger:86 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.web_automation | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_143755.log
+2025-11-27 14:37:55 | INFO     | src.web_automation | setup_logger:88 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.html_renderer | setup_logger:86 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.html_renderer | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_143755.log
+2025-11-27 14:37:55 | INFO     | src.html_renderer | setup_logger:88 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.daily_ranking | setup_logger:86 | ================================================================================
+2025-11-27 14:37:55 | INFO     | src.daily_ranking | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_143755.log
+2025-11-27 14:37:55 | INFO     | src.daily_ranking | setup_logger:88 | ================================================================================
+2025-11-27 14:37:55 | INFO     | BI_CITEL | setup_logger:86 | ================================================================================
+2025-11-27 14:37:55 | INFO     | BI_CITEL | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_143755.log
+2025-11-27 14:37:55 | INFO     | BI_CITEL | setup_logger:88 | ================================================================================
+2025-11-27 14:37:55 | INFO     | BI_CITEL | main:67 | ================================================================================
+2025-11-27 14:37:55 | INFO     | BI_CITEL | main:68 | INICIANDO BI_CITEL
+2025-11-27 14:37:55 | INFO     | BI_CITEL | main:69 | ================================================================================
+2025-11-27 14:37:55 | INFO     | BI_CITEL | _run_ranking_diario:46 | Baixando planilha 'Meta por empresa geral' para o ranking diário...
+2025-11-27 14:37:57 | INFO     | src.web_automation | executar_web_automation:134 | Iniciando automação web...
+2025-11-27 14:37:57 | INFO     | src.web_automation | executar_web_automation:140 | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2025-11-27 14:38:01 | INFO     | src.web_automation | executar_web_automation:174 | Login realizado com sucesso!
+2025-11-27 14:38:07 | INFO     | src.web_automation | executar_web_automation:198 | Localizando a seção 'Meta por empresa geral'...
+2025-11-27 14:38:28 | INFO     | src.web_automation | executar_web_automation:282 | Exportação do primeiro painel solicitada. Aguardando download...
+2025-11-27 14:38:58 | INFO     | src.web_automation | mover_arquivo_apos_download:94 | Arquivo movido: Meta por empresa geral - 27 Nov 2025.xlsx -> meta_empresa_20251127.xlsx
+2025-11-27 14:38:58 | INFO     | src.web_automation | executar_web_automation:291 | Arquivo BI Empresa baixado: meta_empresa_20251127.xlsx
+2025-11-27 14:38:58 | INFO     | src.web_automation | executar_web_automation:294 | Modo 'somente_meta_empresa' ativo. Finalizando após primeiro download.
+2025-11-27 14:38:58 | INFO     | src.web_automation | executar_web_automation:451 | Fechando o navegador.
+2025-11-27 14:39:00 | INFO     | src.web_automation | executar_web_automation:453 | Automação web concluída. Arquivos baixados: ['bi_empresa']
+2025-11-27 14:39:00 | INFO     | BI_CITEL | _run_ranking_diario:60 | Gerando ranking diário a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\meta_empresa_20251127.xlsx ...
+2025-11-27 14:39:02 | INFO     | src.html_renderer | html_to_png:85 | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_diario.png
+2025-11-27 14:39:02 | INFO     | BI_CITEL | _run_ranking_diario:62 | Ranking diário gerado com sucesso: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_diario.png
+2025-11-27 14:39:02 | INFO     | BI_CITEL | main:76 | ================================================================================
+2025-11-27 14:39:02 | INFO     | BI_CITEL | main:77 | FLUXO FINALIZADO
+2025-11-27 14:39:02 | INFO     | BI_CITEL | main:78 | ================================================================================

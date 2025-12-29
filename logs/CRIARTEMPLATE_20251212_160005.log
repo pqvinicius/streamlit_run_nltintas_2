@@ -1,0 +1,12 @@
+2025-12-12 16:00:05 | INFO     | CRIARTEMPLATE | _setup_root_logger:141 | ================================================================================
+2025-12-12 16:00:05 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251212_160005.log
+2025-12-12 16:00:05 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Modo: DESENVOLVIMENTO
+2025-12-12 16:00:05 | INFO     | CRIARTEMPLATE | _setup_root_logger:146 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-12 16:00:05 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | ================================================================================
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:172 | ================================================================================
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:173 | INICIANDO CRIARTEMPLATE
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:174 | Modo: DESENVOLVIMENTO
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:177 | ================================================================================
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:182 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | main:188 | Executando ranking diário...
+2025-12-12 16:00:06 | INFO     | CRIARTEMPLATE | _run_ranking_diario:62 | Baixando planilha 'Meta por empresa geral' para o ranking diário...

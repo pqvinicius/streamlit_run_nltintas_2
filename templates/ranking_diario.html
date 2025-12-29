@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .card {
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.25),
+          rgba(14, 165, 233, 0.1)
+        );
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 18px;
+        padding: 16px 18px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.4);
+      }
+      .card h3 {
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.3em;
+        color: #cbd5f5;
+      }
+      .card p {
+        margin: 6px 0 0;
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .ranking {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 18px 28px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .row {
+        display: grid;
+        /* Aumentado espaço para nome do vendedor para evitar quebra de linha excessiva */
+        grid-template-columns: 60px 240px 1fr 120px;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+      }
+      .row:last-child {
+        border-bottom: none;
+      }
+      .rank {
+        font-size: 24px;
+        font-weight: 700;
+        color: #64748b;
+      }
+      .loja {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.2;
+        /* Tratamento para nomes longos */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .bar {
+        height: 16px;
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 8px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-size: 11px;
+
+        /* Garantir visibilidade mínima */
+        min-width: 2%;
+
+        /* CSS Variables for dynamic styling */
+        width: var(--w, 0%);
+        background: linear-gradient(
+          90deg,
+          var(--bg-start, #3b82f6),
+          var(--bg-end, #60a5fa)
+        );
+        /* Fallback explícito caso as variáveis falhem */
+        background-color: var(--bg-start, #3b82f6);
+        color: var(--text, #0f172a);
+
+        /* Borda sutil para destacar contra o fundo escuro */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      .alcance-label {
+        font-size: 11px;
+        color: #94a3b8;
+        padding-left: 10px;
+        line-height: 1.4;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-top: 2px;
+        letter-spacing: 0.05em;
+
+        /* CSS Variables */
+        background: var(--badge-bg, #334155);
+        color: var(--badge-color, #e2e8f0);
+      }
+      .footer {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 11px;
+        color: #64748b;
+        text-align: center;
+        margin-top: auto;
+      }
+      .paginacao {
+        font-size: 12px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <p class="subtitle">{{ subtitle }}</p>
+        </div>
+        {% if logo_data_uri %}
+        <img class="logo" src="{{ logo_data_uri }}" alt="Logo" />
+        {% endif %}
+      </header>
+
+      <section class="cards">
+        {% for card in hero_cards %}
+        <article class="card">
+          <h3>{{ card.label }}</h3>
+          <p>{{ card.value }}</p>
+        </article>
+        {% endfor %}
+      </section>
+
+      <section class="ranking">
+        {% for item in ranking %}
+        <div class="row">
+          <div class="rank">{{ "%02d"|format(item.rank) }}</div>
+          <div>
+            <!-- Removido 'Loja' prefixo que estava hardcoded -->
+            <div class="loja">{{ item.loja }}</div>
+          </div>
+          <div class="bar">
+            <!-- Dynamic styles passed as CSS variables -->
+            <div
+              class="bar-fill"
+              style="--w: {{ item.bar_width }}%; --bg-start: {{ item.grad_start }}; --bg-end: {{ item.grad_end }}; --text: {{ item.text_on_bar }};"
+            >
+              {{ item.alcance }}
+            </div>
+          </div>
+          <div class="alcance-label">
+            <span>{{ item.alcance_label }}</span><br />
+            <span
+              class="badge"
+              style="--badge-bg: {{ item.badge_bg }}; --badge-color: {{ item.badge_text }};"
+            >
+              {{ item.badge_label }}
+            </span>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+
+      <footer class="footer">
+        <span style="font-weight: 700; color: #93c5fd; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Atualizado às {{ generated_at }}</span>
+        <span
+          >BI Automação • © {{ company_name }} • {{ producer_signature }}</span
+        >
+        {% if mostrar_paginacao %}
+        <div class="paginacao">
+          Página {{ pagina_atual }} de {{ total_paginas }}
+        </div>
+        {% endif %}
+      </footer>
+    </main>
+  </body>
+</html>

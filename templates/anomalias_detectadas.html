@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .anomalias-container {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow-y: auto;
+      }
+      .sem-anomalias {
+        text-align: center;
+        padding: 60px 20px;
+        color: #94a3b8;
+        font-size: 18px;
+      }
+      .anomalia-card {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 20px;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.05));
+        border-radius: 18px;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      .anomalia-loja {
+        font-size: 32px;
+        font-weight: 700;
+        color: #ef4444;
+        text-align: center;
+      }
+      .anomalia-problema {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .anomalia-problema .icone {
+        font-size: 24px;
+        margin-right: 8px;
+      }
+      .anomalia-problema .descricao {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fca5a5;
+      }
+      .anomalia-detalhes {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 14px;
+      }
+      .anomalia-detalhes div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .anomalia-detalhes .label {
+        color: #94a3b8;
+      }
+      .anomalia-detalhes .valor {
+        font-weight: 600;
+      }
+      .anomalia-detalhes .valor.ruim {
+        color: #ef4444;
+      }
+      .anomalia-detalhes .valor.normal {
+        color: #10b981;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="anomalias-container">
+        {% if total_anomalias == 0 %}
+        <div class="sem-anomalias">
+          ✅ Nenhuma anomalia detectada<br />
+          <span style="font-size: 14px; color: #64748b;">Todas as lojas estão dentro do esperado</span>
+        </div>
+        {% else %}
+        {% for anomalia in anomalias %}
+        <div class="anomalia-card">
+          <div class="anomalia-loja">Loja {{ anomalia.loja }}</div>
+          <div class="anomalia-problema">
+            <div>
+              <span class="icone">⚠️</span>
+              <span class="descricao">{{ anomalia.descricao }}</span>
+            </div>
+            <div class="anomalia-detalhes">
+              <div>
+                <span class="label">Alcance hoje:</span>
+                <span class="valor ruim">{{ "%.1f"|format(anomalia.alcance_hoje) }}%</span>
+              </div>
+              <div>
+                <span class="label">Média normal:</span>
+                <span class="valor normal">{{ "%.1f"|format(anomalia.media_normal) }}%</span>
+              </div>
+              <div>
+                <span class="label">Variação:</span>
+                <span class="valor ruim">{{ "%.1f"|format(anomalia.variacao) }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

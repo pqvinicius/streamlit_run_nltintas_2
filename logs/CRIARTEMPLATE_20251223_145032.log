@@ -1,0 +1,47 @@
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | ================================================================================
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_145032.log
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _setup_root_logger:144 | Modo: DESENVOLVIMENTO
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _setup_root_logger:148 | ================================================================================
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:259 | ================================================================================
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:260 | INICIANDO CRIARTEMPLATE
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:261 | Modo: DESENVOLVIMENTO
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:264 | ================================================================================
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:269 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | main:275 | Executando ranking diário...
+2025-12-23 14:50:32 | INFO     | CRIARTEMPLATE | _run_ranking_diario:68 | Baixando planilhas (Foco: Meta Vendedor)...
+2025-12-23 14:52:27 | WARNING  | CRIARTEMPLATE | _run_ranking_diario:79 | Meta por empresa geral não encontrada ou não baixada. O Ranking de LOJAS será pulado.
+2025-12-23 14:52:27 | INFO     | CRIARTEMPLATE | _run_ranking_diario:95 | ⏭️ Pule ranking de LOJAS (arquivo não disponível).
+2025-12-23 14:52:27 | INFO     | CRIARTEMPLATE | _run_ranking_diario:110 | Gerando ranking de vendedores a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\MetaVendedor_2312.xlsx ...
+2025-12-23 14:52:27 | ERROR    | CRIARTEMPLATE | _run_ranking_diario:116 | ❌ ERRO ao gerar ranking de vendedores: Coluna de Nome não encontrada. Candidatos: ('nome', 'vendedor', 'funcionario')
+Traceback (most recent call last):
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\main.py", line 112, in _run_ranking_diario
+    destino_vendedor = gerar_ranking_vendedores(meta_vendedor, data_dir)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\daily_seller_ranking.py", line 569, in gerar_ranking_vendedores
+    df_completo = _preparar_dataframe(meta_path, cfg)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\daily_seller_ranking.py", line 208, in _preparar_dataframe
+    raise ValueError(f"Coluna de Nome não encontrada. Candidatos: {cfg.nome_col}")
+ValueError: Coluna de Nome não encontrada. Candidatos: ('nome', 'vendedor', 'funcionario')
+2025-12-23 14:52:27 | INFO     | CRIARTEMPLATE | _run_ranking_diario:135 | Gerando ranking semanal...
+2025-12-23 14:52:38 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p1.png
+2025-12-23 14:52:38 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p2.png
+2025-12-23 14:52:38 | INFO     | CRIARTEMPLATE | _run_ranking_diario:143 | Gerando ranking mensal...
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:146 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p1.png
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:146 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p2.png
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:160 | === INICIANDO BLOCO DE ANÁLISES AVANÇADAS ===
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:163 | Importando módulos...
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:168 | Módulos importados com sucesso
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:171 | Carregando configurações de gamificação...
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:174 | Configurações carregadas: company_name=Nossa Loja
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:177 | Gerando análises avançadas...
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:178 | Banco de dados: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\historico_meta.db (existe: True)
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:179 | Diretório de dados: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:180 | Diretório de templates: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\templates
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:183 | Chamando gerar_todas_analises_avancadas...
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:192 | === ANÁLISES AVANÇADAS GERADAS COM SUCESSO ===
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:240 | ℹ️ Envio via WhatsApp desabilitado (config.ini -> enviar_whatsapp=false)
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | main:278 | ================================================================================
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | main:279 | FLUXO FINALIZADO COM SUCESSO
+2025-12-23 14:52:48 | INFO     | CRIARTEMPLATE | main:280 | ================================================================================

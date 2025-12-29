@@ -1,0 +1,35 @@
+2025-12-23 14:56:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | ================================================================================
+2025-12-23 14:56:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_145625.log
+2025-12-23 14:56:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:144 | Modo: DESENVOLVIMENTO
+2025-12-23 14:56:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-23 14:56:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:148 | ================================================================================
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:121 | ================================================================================
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:122 | INICIANDO CRIARTEMPLATE
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:123 | Modo: DESENVOLVIMENTO
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:126 | ================================================================================
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:131 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | main:137 | Executando ranking diário...
+2025-12-23 14:56:26 | INFO     | CRIARTEMPLATE | _run_ranking_diario:69 | Baixando planilhas (Foco: Meta Vendedor)...
+2025-12-23 14:58:22 | INFO     | CRIARTEMPLATE | _run_ranking_diario:93 | Gerando ranking de vendedores a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\MetaVendedor_2312.xlsx ...
+2025-12-23 14:58:22 | ERROR    | CRIARTEMPLATE | _run_ranking_diario:101 | ❌ ERRO CRÍTICO ao gerar ranking de vendedores: "['Vendedor'] not in index"
+Traceback (most recent call last):
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\main.py", line 97, in _run_ranking_diario
+    destino_vendedor = gerar_ranking_vendedores(meta_vendedor, data_dir)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\daily_seller_ranking.py", line 624, in gerar_ranking_vendedores
+    df_completo = _preparar_dataframe(meta_path, cfg)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\daily_seller_ranking.py", line 285, in _preparar_dataframe
+    df = df[required_cols].copy()
+         ~~^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4119, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6212, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "C:\Users\Usuario\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6264, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['Vendedor'] not in index"
+2025-12-23 14:58:22 | INFO     | CRIARTEMPLATE | main:140 | ================================================================================
+2025-12-23 14:58:22 | INFO     | CRIARTEMPLATE | main:141 | FLUXO FINALIZADO COM SUCESSO
+2025-12-23 14:58:22 | INFO     | CRIARTEMPLATE | main:142 | ================================================================================

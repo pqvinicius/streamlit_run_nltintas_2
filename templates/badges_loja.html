@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 12px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 4px;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 100px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .info-cards {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+      }
+      .info-card {
+        flex: 1;
+        min-width: 120px;
+        background: rgba(2, 6, 23, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .resumo-header {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+      .resumo-header-item {
+        flex: 1;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+        padding: 8px 10px;
+        text-align: center;
+      }
+      .resumo-header-item .label {
+        font-size: 8px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .resumo-header-item .valor {
+        font-size: 16px;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-top: 2px;
+      }
+      .info-card-label {
+        font-size: 9px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .info-card-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .info-card-sub {
+        font-size: 9px;
+        color: #64748b;
+      }
+      .badges-container {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 16px;
+        padding: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow: hidden;
+        min-height: 0;
+      }
+      .badges-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .badge-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 8px;
+        border-radius: 12px;
+        border: 2px solid;
+        transition: transform 0.2s;
+      }
+      .badge-card.conquistado {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+        border-color: #10b981;
+      }
+      .badge-card.bloqueado {
+        background: rgba(15, 23, 42, 0.5);
+        border-color: rgba(148, 163, 184, 0.3);
+        opacity: 0.6;
+      }
+      .badge-icon {
+        font-size: 28px;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      }
+      .badge-nome {
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        color: #e2e8f0;
+        line-height: 1.1;
+      }
+      .badge-desc {
+        font-size: 9px;
+        color: #94a3b8;
+        text-align: center;
+        line-height: 1.2;
+      }
+      .badge-data {
+        font-size: 8px;
+        color: #10b981;
+        text-align: center;
+        margin-top: 2px;
+      }
+      .badge-progresso {
+        width: 100%;
+        height: 3px;
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 4px;
+      }
+      .badge-progresso-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+      .badge-progresso-texto {
+        font-size: 8px;
+        color: #94a3b8;
+        text-align: center;
+        margin-top: 2px;
+      }
+      .resumo {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.1));
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        flex-shrink: 0;
+      }
+      .resumo-item {
+        text-align: center;
+      }
+      .resumo-item .label {
+        font-size: 9px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .resumo-item .valor {
+        font-size: 18px;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-top: 2px;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 10px;
+        color: #64748b;
+        padding-top: 8px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-card-label">Taxa Semanal</div>
+              <div class="info-card-value">{{ "%.1f"|format(dados_semanal.taxa_sucesso) }}%</div>
+              <div class="info-card-sub">{{ dados_semanal.dias_bateu }}/{{ dados_semanal.total_dias }} dias</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-label">Taxa Mensal</div>
+              <div class="info-card-value">{{ "%.1f"|format(dados_mensal.taxa_sucesso) }}%</div>
+              <div class="info-card-sub">{{ dados_mensal.dias_bateu }}/{{ dados_mensal.total_dias }} dias</div>
+            </div>
+            {% if posicao_semanal %}
+            <div class="info-card">
+              <div class="info-card-label">Ranking Semanal</div>
+              <div class="info-card-value">#{{ posicao_semanal }}</div>
+              <div class="info-card-sub">de {{ total_lojas_semanal }} lojas</div>
+            </div>
+            {% endif %}
+            {% if posicao_mensal %}
+            <div class="info-card">
+              <div class="info-card-label">Ranking Mensal</div>
+              <div class="info-card-value">#{{ posicao_mensal }}</div>
+              <div class="info-card-sub">de {{ total_lojas_mensal }} lojas</div>
+            </div>
+            {% endif %}
+          </div>
+          <div class="resumo-header">
+            <div class="resumo-header-item">
+              <div class="label">Total de Badges</div>
+              <div class="valor">{{ total_badges }}</div>
+            </div>
+            <div class="resumo-header-item">
+              <div class="label">Conquistados</div>
+              <div class="valor">{{ badges_conquistados }}</div>
+            </div>
+            <div class="resumo-header-item">
+              <div class="label">Progresso</div>
+              <div class="valor">{{ "%.0f"|format((badges_conquistados / total_badges * 100) if total_badges > 0 else 0) }}%</div>
+            </div>
+          </div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="badges-container">
+        <div class="badges-grid">
+          {% for badge in badges %}
+          <div class="badge-card {{ 'conquistado' if badge.conquistado else 'bloqueado' }}">
+            <div class="badge-icon">{{ badge.icone }}</div>
+            <div class="badge-nome">{{ badge.nome }}</div>
+            <div class="badge-desc">{{ badge.descricao }}</div>
+            {% if badge.conquistado %}
+            <div class="badge-data">Conquistado em {{ badge.data }}</div>
+            {% else %}
+            <div class="badge-progresso">
+              <div class="badge-progresso-fill" style="width: {{ badge.progresso }}%"></div>
+            </div>
+            <div class="badge-progresso-texto">{{ "%.0f"|format(badge.progresso) }}%</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

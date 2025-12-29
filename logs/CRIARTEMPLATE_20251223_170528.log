@@ -1,0 +1,51 @@
+2025-12-23 17:05:28 | INFO    | ===========================================================================
+2025-12-23 17:05:28 | INFO    | PIPELINE | Sistema de Logging Iniciado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_170528.log
+2025-12-23 17:05:28 | INFO    | PIPELINE | Modo: DEV
+2025-12-23 17:05:28 | INFO    | ===========================================================================
+2025-12-23 17:05:28 | INFO    | BACKUP | Backup diário realizado em: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\backups\2025-12-23 (2 arquivos)
+2025-12-23 17:05:28 | INFO    | PIPELINE | INICIANDO EXECUCAO: src.web_automation
+2025-12-23 17:05:28 | INFO    | INGESTAO | Iniciando download de planilhas...
+2025-12-23 17:05:28 | INFO    | INGESTAO | Tentativa 1/3
+2025-12-23 17:05:31 | INFO    | Iniciando automação web...
+2025-12-23 17:05:31 | INFO    | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2025-12-23 17:05:40 | INFO    | Fluxo de login finalizado.
+2025-12-23 17:05:40 | INFO    | Removendo sessões remotas pendentes...
+2025-12-23 17:05:58 | INFO    | Iniciando exportação do painel de Meta por Vendedor...
+2025-12-23 17:06:03 | INFO    | Solicitado download Meta Vendedor. Aguardando...
+2025-12-23 17:06:33 | INFO    | Arquivo movido: Meta por vendedor - S _ Departamento TELE VENDAS (Mês Alternado) - 23 Dec 2025.xlsx -> MetaVendedor_2312.xlsx
+2025-12-23 17:06:33 | INFO    | Arquivo Meta Vendedor baixado: MetaVendedor_2312.xlsx
+2025-12-23 17:06:33 | INFO    | Fluxo de Meta Vendedor concluído. Finalizando automação.
+2025-12-23 17:06:33 | INFO    | Fechando o navegador.
+2025-12-23 17:06:35 | INFO    | Automação web concluída. Arquivos baixados: ['meta_vendedor']
+2025-12-23 17:06:35 | INFO    | INGESTAO | Validando sanidade do arquivo...
+2025-12-23 17:06:35 | ERROR   | INGESTAO | Excel inválido detectado (Linha 3): 'Erro ao recuperar resultados'
+2025-12-23 17:06:35 | INFO    | INGESTAO | Ação: Removendo arquivo e reiniciando ciclo de download.
+2025-12-23 17:07:15 | INFO    | INGESTAO | Tentativa 2/3
+2025-12-23 17:07:18 | INFO    | Iniciando automação web...
+2025-12-23 17:07:18 | INFO    | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2025-12-23 17:07:27 | INFO    | Fluxo de login finalizado.
+2025-12-23 17:07:27 | INFO    | Removendo sessões remotas pendentes...
+2025-12-23 17:07:45 | INFO    | Iniciando exportação do painel de Meta por Vendedor...
+2025-12-23 17:07:52 | INFO    | Solicitado download Meta Vendedor. Aguardando...
+2025-12-23 17:08:22 | INFO    | Arquivo movido: Meta por vendedor - S _ Departamento TELE VENDAS (Mês Alternado) - 23 Dec 2025.xlsx -> MetaVendedor_2312.xlsx
+2025-12-23 17:08:22 | INFO    | Arquivo Meta Vendedor baixado: MetaVendedor_2312.xlsx
+2025-12-23 17:08:22 | INFO    | Fluxo de Meta Vendedor concluído. Finalizando automação.
+2025-12-23 17:08:22 | INFO    | Fechando o navegador.
+2025-12-23 17:08:24 | INFO    | Automação web concluída. Arquivos baixados: ['meta_vendedor']
+2025-12-23 17:08:24 | INFO    | INGESTAO | Validando sanidade do arquivo...
+2025-12-23 17:08:24 | ERROR   | INGESTAO | Excel inválido detectado (Linha 3): 'Erro ao recuperar resultados'
+2025-12-23 17:08:24 | INFO    | INGESTAO | Ação: Removendo arquivo e reiniciando ciclo de download.
+2025-12-23 17:09:04 | INFO    | INGESTAO | Tentativa 3/3
+2025-12-23 17:09:07 | INFO    | Iniciando automação web...
+2025-12-23 17:09:07 | INFO    | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2025-12-23 17:09:17 | INFO    | Fluxo de login finalizado.
+2025-12-23 17:09:17 | INFO    | Removendo sessões remotas pendentes...
+2025-12-23 17:09:35 | INFO    | Iniciando exportação do painel de Meta por Vendedor...
+2025-12-23 17:10:10 | WARNING | Opção XLSX não encontrada.
+2025-12-23 17:10:10 | INFO    | Fluxo de Meta Vendedor concluído. Finalizando automação.
+2025-12-23 17:10:10 | INFO    | Fechando o navegador.
+2025-12-23 17:10:12 | INFO    | Automação web concluída. Arquivos baixados: []
+2025-12-23 17:10:12 | WARNING | INGESTAO | Download não gerou arquivo. Aguardando 40s...
+2025-12-23 17:10:52 | ERROR   | INGESTAO | Falha após todas as tentativas de download.
+2025-12-23 17:10:52 | ERROR   | INGESTAO | Meta Vendedor não encontrado nem baixado (mesmo após retries).
+2025-12-23 17:10:52 | INFO    | PIPELINE | Execucao finalizada com sucesso

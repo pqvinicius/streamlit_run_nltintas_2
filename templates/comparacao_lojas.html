@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .comparacao-container {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        overflow-y: auto;
+      }
+      .sua-performance {
+        padding: 24px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(14, 165, 233, 0.1));
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .sua-performance h3 {
+        margin: 0 0 16px 0;
+        font-size: 20px;
+        color: #cbd5f5;
+      }
+      .metricas {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .metrica {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .metrica-label {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .metrica-valor {
+        font-size: 28px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .comparacoes {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .comparacao-item {
+        display: grid;
+        grid-template-columns: 150px 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 12px;
+      }
+      .comparacao-item .label {
+        font-size: 14px;
+        color: #94a3b8;
+      }
+      .comparacao-item .valor {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e2e8f0;
+        text-align: right;
+      }
+      .comparacao-item .diferenca {
+        font-size: 16px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+      }
+      .comparacao-item .diferenca.positivo {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+      }
+      .comparacao-item .diferenca.negativo {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+      .grafico-comparacao {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 24px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 16px;
+      }
+      .grafico-comparacao h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        color: #cbd5f5;
+      }
+      .barra-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .barra-label {
+        font-size: 12px;
+        color: #94a3b8;
+        display: flex;
+        justify-content: space-between;
+      }
+      .barra {
+        height: 32px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 16px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #0f172a;
+        transition: width 0.3s ease;
+      }
+      .barra.sua {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+      .barra.media {
+        background: linear-gradient(90deg, #10b981, #34d399);
+      }
+      .barra.top3 {
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="comparacao-container">
+        <div class="sua-performance">
+          <h3>Sua Performance</h3>
+          <div class="metricas">
+            <div class="metrica">
+              <div class="metrica-label">Taxa Semanal</div>
+              <div class="metrica-valor">{{ "%.1f"|format(sua_taxa) }}%</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-label">Posição no Ranking</div>
+              <div class="metrica-valor">{{ sua_posicao }}º de {{ total_lojas }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comparacoes">
+          <div class="comparacao-item">
+            <div class="label">Média Geral</div>
+            <div class="valor">{{ "%.1f"|format(media_geral) }}%</div>
+            <div class="diferenca {{ 'positivo' if acima_media else 'negativo' }}">
+              {{ '+' if diferenca_media > 0 else '' }}{{ "%.1f"|format(diferenca_media) }}%
+            </div>
+          </div>
+          <div class="comparacao-item">
+            <div class="label">Top 3 Média</div>
+            <div class="valor">{{ "%.1f"|format(top3_media) }}%</div>
+            <div class="diferenca negativo">
+              {{ "%.1f"|format(diferenca_top3) }}%
+            </div>
+          </div>
+        </div>
+
+        <div class="grafico-comparacao">
+          <h3>Comparação Visual</h3>
+          <div class="barra-container">
+            <div class="barra-label">
+              <span>Sua Taxa</span>
+              <span>{{ "%.1f"|format(sua_taxa) }}%</span>
+            </div>
+            <div class="barra sua" style="width: {{ sua_taxa }}%">{{ "%.1f"|format(sua_taxa) }}%</div>
+          </div>
+          <div class="barra-container">
+            <div class="barra-label">
+              <span>Média Geral</span>
+              <span>{{ "%.1f"|format(media_geral) }}%</span>
+            </div>
+            <div class="barra media" style="width: {{ media_geral }}%">{{ "%.1f"|format(media_geral) }}%</div>
+          </div>
+          <div class="barra-container">
+            <div class="barra-label">
+              <span>Top 3 Média</span>
+              <span>{{ "%.1f"|format(top3_media) }}%</span>
+            </div>
+            <div class="barra top3" style="width: {{ top3_media }}%">{{ "%.1f"|format(top3_media) }}%</div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

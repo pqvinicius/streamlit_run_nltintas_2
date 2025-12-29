@@ -1,0 +1,12 @@
+2025-11-27 12:30:02 | INFO     | src.desktop_automation | setup_logger:86 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.desktop_automation | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_123002.log
+2025-11-27 12:30:02 | INFO     | src.desktop_automation | setup_logger:88 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.email_sender | setup_logger:86 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.email_sender | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_123002.log
+2025-11-27 12:30:02 | INFO     | src.email_sender | setup_logger:88 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.report_generator | setup_logger:86 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.report_generator | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_123002.log
+2025-11-27 12:30:02 | INFO     | src.report_generator | setup_logger:88 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.web_automation | setup_logger:86 | ================================================================================
+2025-11-27 12:30:02 | INFO     | src.web_automation | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_123002.log
+2025-11-27 12:30:02 | INFO     | src.web_automation | setup_logger:88 | ================================================================================

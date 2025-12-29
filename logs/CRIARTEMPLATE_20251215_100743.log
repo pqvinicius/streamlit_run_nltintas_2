@@ -1,0 +1,36 @@
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _setup_root_logger:141 | ================================================================================
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251215_100743.log
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Modo: DESENVOLVIMENTO
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _setup_root_logger:146 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | ================================================================================
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:222 | ================================================================================
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:223 | INICIANDO CRIARTEMPLATE
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:224 | Modo: DESENVOLVIMENTO
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:227 | ================================================================================
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:232 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | main:238 | Executando ranking diário...
+2025-12-15 10:07:43 | INFO     | CRIARTEMPLATE | _run_ranking_diario:62 | Baixando planilha 'Meta por empresa geral' para o ranking diário...
+2025-12-15 10:09:24 | INFO     | CRIARTEMPLATE | _run_ranking_diario:77 | Gerando ranking diário a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\meta_empresa_20251215.xlsx ...
+2025-12-15 10:09:29 | INFO     | CRIARTEMPLATE | _run_ranking_diario:83 | ✅ Ranking diário gerado com sucesso: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_diario_p1.png
+2025-12-15 10:09:29 | INFO     | CRIARTEMPLATE | _run_ranking_diario:102 | Gerando ranking de vendedores a partir de C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\MetaVendedor_1512.xlsx ...
+2025-12-15 10:09:43 | INFO     | CRIARTEMPLATE | _run_ranking_diario:106 | ✅ Ranking de vendedores gerado com sucesso: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_vendedor_p1.png
+2025-12-15 10:09:43 | INFO     | CRIARTEMPLATE | _run_ranking_diario:127 | Gerando ranking semanal...
+2025-12-15 10:09:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:130 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p1.png
+2025-12-15 10:09:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:130 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p2.png
+2025-12-15 10:09:48 | INFO     | CRIARTEMPLATE | _run_ranking_diario:135 | Gerando ranking mensal...
+2025-12-15 10:09:52 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p1.png
+2025-12-15 10:09:52 | INFO     | CRIARTEMPLATE | _run_ranking_diario:138 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p2.png
+2025-12-15 10:09:52 | INFO     | CRIARTEMPLATE | _run_ranking_diario:148 | Gerando análises avançadas...
+2025-12-15 10:09:52 | INFO     | CRIARTEMPLATE | _run_ranking_diario:149 | Banco de dados: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\historico_meta.db (existe: True)
+2025-12-15 10:09:52 | INFO     | CRIARTEMPLATE | _run_ranking_diario:150 | Diretório de dados: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data
+2025-12-15 10:12:04 | INFO     | CRIARTEMPLATE | _run_ranking_diario:158 | Análises avançadas geradas com sucesso
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | _run_ranking_diario:170 | ================================================================================
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | _run_ranking_diario:171 | INICIANDO ENVIO VIA WHATSAPP
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | _run_ranking_diario:172 | ================================================================================
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | _run_ranking_diario:181 | 📊 Enviando ranking diário...
+2025-12-15 10:12:05 | WARNING  | CRIARTEMPLATE | _run_ranking_diario:189 | ⚠️ Falha ao enviar ranking diário
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | _run_ranking_diario:193 | 👥 Enviando ranking de vendedores...
+2025-12-15 10:12:05 | WARNING  | CRIARTEMPLATE | _run_ranking_diario:201 | ⚠️ Falha ao enviar ranking de vendedores
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | main:241 | ================================================================================
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | main:242 | FLUXO FINALIZADO COM SUCESSO
+2025-12-15 10:12:05 | INFO     | CRIARTEMPLATE | main:243 | ================================================================================

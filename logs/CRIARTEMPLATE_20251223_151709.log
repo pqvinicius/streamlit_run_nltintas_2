@@ -1,0 +1,9 @@
+2025-12-23 15:17:09 | INFO    | PIPELINE | Sistema de Logging Iniciado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_151709.log
+2025-12-23 15:17:10 | INFO    | ============================================================
+2025-12-23 15:17:10 | INFO    | PIPELINE | INICIANDO EXECUCAO: CRIARTEMPLATE
+2025-12-23 15:17:10 | INFO    | PIPELINE | Modo: DEV
+2025-12-23 15:17:10 | INFO    | ============================================================
+2025-12-23 15:17:10 | INFO    | INGESTAO | Iniciando download de planilhas (Foco: Meta Vendedor)
+2025-12-23 15:18:13 | INFO    | PROCESSAMENTO | Iniciando processamento do arquivo: MetaVendedor_2312.xlsx
+2025-12-23 15:18:34 | INFO    | RANKING | Sucesso! Ranking gerado em: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_vendedor_p1.png
+2025-12-23 15:18:34 | INFO    | PIPELINE | Execucao finalizada com sucesso

@@ -1,0 +1,77 @@
+2025-11-27 11:47:37 | INFO     | src.report_generator | setup_logger:86 | ================================================================================
+2025-11-27 11:47:37 | INFO     | src.report_generator | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114737.log
+2025-11-27 11:47:37 | INFO     | src.report_generator | setup_logger:88 | ================================================================================
+2025-11-27 11:47:37 | INFO     | src.web_automation | setup_logger:86 | ================================================================================
+2025-11-27 11:47:37 | INFO     | src.web_automation | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114737.log
+2025-11-27 11:47:37 | INFO     | src.web_automation | setup_logger:88 | ================================================================================
+2025-11-27 11:47:37 | INFO     | src.daily_ranking | setup_logger:86 | ================================================================================
+2025-11-27 11:47:37 | INFO     | src.daily_ranking | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114737.log
+2025-11-27 11:47:37 | INFO     | src.daily_ranking | setup_logger:88 | ================================================================================
+2025-11-27 11:47:37 | INFO     | BI_CITEL | setup_logger:86 | ================================================================================
+2025-11-27 11:47:37 | INFO     | BI_CITEL | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114737.log
+2025-11-27 11:47:37 | INFO     | BI_CITEL | setup_logger:88 | ================================================================================
+2025-11-27 11:47:37 | INFO     | BI_CITEL | main:60 | ================================================================================
+2025-11-27 11:47:37 | INFO     | BI_CITEL | main:61 | INICIANDO PIPELINE BI_CITEL
+2025-11-27 11:47:37 | INFO     | BI_CITEL | main:62 | ================================================================================
+2025-11-27 11:47:37 | INFO     | BI_CITEL | main:72 | Iniciando automação web...
+2025-11-27 11:47:40 | INFO     | src.web_automation | executar_web_automation:132 | Iniciando automação web...
+2025-11-27 11:47:40 | INFO     | src.web_automation | executar_web_automation:138 | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2025-11-27 11:47:44 | INFO     | src.web_automation | executar_web_automation:172 | Login realizado com sucesso!
+2025-11-27 11:47:49 | INFO     | src.web_automation | executar_web_automation:196 | Localizando a seção 'Meta por empresa geral'...
+2025-11-27 11:48:10 | INFO     | src.web_automation | executar_web_automation:280 | Exportação do primeiro painel solicitada. Aguardando download...
+2025-11-27 11:48:40 | INFO     | src.web_automation | mover_arquivo_apos_download:92 | Arquivo movido: Meta por empresa geral - 27 Nov 2025 (1).xlsx -> meta_empresa_20251127.xlsx
+2025-11-27 11:48:40 | INFO     | src.web_automation | executar_web_automation:289 | Arquivo BI Empresa baixado: meta_empresa_20251127.xlsx
+2025-11-27 11:48:40 | INFO     | src.web_automation | executar_web_automation:298 | Iniciando exportação do segundo painel (Ind. Profissionais)...
+2025-11-27 11:48:41 | INFO     | src.web_automation | executar_web_automation:336 | Procurando o widget 'Quantidade de Profissionais - Empresa/Mês'...
+2025-11-27 11:49:02 | INFO     | src.web_automation | executar_web_automation:430 | Exportação do segundo painel solicitada. Aguardando download...
+2025-11-27 11:49:32 | INFO     | src.web_automation | mover_arquivo_apos_download:92 | Arquivo movido: Quantidade de Profissionais - Empresa_Mês - 27 Nov 2025.xlsx -> IndProf2711.xlsx
+2025-11-27 11:49:32 | INFO     | src.web_automation | executar_web_automation:439 | Arquivo Ind. Profissionais baixado: IndProf2711.xlsx
+2025-11-27 11:49:32 | INFO     | src.web_automation | executar_web_automation:449 | Fechando o navegador.
+2025-11-27 11:49:34 | INFO     | src.web_automation | executar_web_automation:451 | Automação web concluída. Arquivos baixados: ['bi_empresa', 'ind_prof']
+2025-11-27 11:49:34 | INFO     | BI_CITEL | main:86 | Automação web concluída. Iniciando processamento local...
+2025-11-27 11:49:34 | INFO     | BI_CITEL | main:92 | Planilha principal ajustada: C:\Markup\BI_CITEL\meta_empresa_20251127.xlsx
+2025-11-27 11:49:34 | INFO     | BI_CITEL | main:95 | Planilhas por supervisor geradas: 5 arquivo(s)
+2025-11-27 11:49:34 | INFO     | BI_CITEL | main:100 | Gerando relatórios executivos em PDF...
+2025-11-27 11:49:34 | ERROR    | src.report_generator | gerar_relatorios_todos_supervisores:682 | Erro ao gerar relatório para Ninguem: Cannot convert non-finite values (NA or inf) to integer
+Traceback (most recent call last):
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\report_generator.py", line 678, in gerar_relatorios_todos_supervisores
+    gerar_relatorio_executivo(supervisor, df_principal, df_indprof, caminho_pdf, periodo)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\report_generator.py", line 344, in gerar_relatorio_executivo
+    df_rank = _calcular_ranking_lojas(df_principal)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\src\report_generator.py", line 61, in _calcular_ranking_lojas
+    df_rank["Ranking"] = df_rank["% Alcance"].rank(ascending=False, method="min").astype(int)
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\generic.py", line 6665, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\internals\managers.py", line 449, in astype
+    return self.apply(
+           ~~~~~~~~~~^
+        "astype",
+        ^^^^^^^^^
+    ...<3 lines>...
+        using_cow=using_copy_on_write(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\internals\blocks.py", line 784, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\venv\Lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+        "Cannot convert non-finite values (NA or inf) to integer"
+    )
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+2025-11-27 11:49:34 | INFO     | src.report_generator | gerar_relatorios_todos_supervisores:680 | Relatório PDF gerado: Relatorio_Pedro_20251127.pdf
+2025-11-27 11:49:34 | INFO     | src.report_generator | gerar_relatorios_todos_supervisores:680 | Relatório PDF gerado: Relatorio_Ricardo_20251127.pdf
+2025-11-27 11:49:35 | INFO     | src.report_generator | gerar_relatorios_todos_supervisores:680 | Relatório PDF gerado: Relatorio_Victor_20251127.pdf
+2025-11-27 11:49:35 | INFO     | src.report_generator | gerar_relatorios_todos_supervisores:680 | Relatório PDF gerado: Relatorio_Ze_20251127.pdf
+2025-11-27 11:49:35 | INFO     | BI_CITEL | main:105 | Relatórios PDF gerados: 4 arquivo(s)
+2025-11-27 11:49:35 | WARNING  | BI_CITEL | main:114 | Envio de e-mails desabilitado (config.ini -> enviar_email=false). Ignorando etapa de distribuição.

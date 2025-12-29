@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .historico-container {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        overflow-y: auto;
+      }
+      .secao {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .secao h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #cbd5f5;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ranking-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .ranking-item {
+        display: grid;
+        grid-template-columns: 60px 100px 1fr 200px;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 16px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 12px;
+      }
+      .ranking-item .posicao {
+        font-size: 20px;
+        font-weight: 700;
+        color: #3b82f6;
+        text-align: center;
+      }
+      .ranking-item .loja {
+        font-size: 24px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .ranking-item .periodo {
+        font-size: 14px;
+        color: #94a3b8;
+      }
+      .ranking-item .taxa {
+        text-align: right;
+        font-size: 16px;
+        font-weight: 600;
+        color: #10b981;
+      }
+      .ranking-item .taxa-detalhes {
+        font-size: 12px;
+        color: #64748b;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="historico-container">
+        <div class="secao">
+          <h2>🏆 Melhores Semanas de {{ ano }}</h2>
+          <div class="ranking-list">
+            {% for item in melhores_semanas %}
+            <div class="ranking-item">
+              <div class="posicao">{{ item.posicao }}º</div>
+              <div class="loja">Loja {{ item.loja }}</div>
+              <div class="periodo">{{ item.periodo }}</div>
+              <div class="taxa">
+                {{ "%.1f"|format(item.taxa) }}%
+                <div class="taxa-detalhes">{{ item.dias }}/{{ item.total }} dias</div>
+              </div>
+            </div>
+            {% endfor %}
+            {% if melhores_semanas|length == 0 %}
+            <div style="text-align: center; padding: 40px; color: #94a3b8;">
+              Nenhuma semana perfeita registrada ainda
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="secao">
+          <h2>🏆 Melhores Meses de {{ ano }}</h2>
+          <div class="ranking-list">
+            {% for item in melhores_meses %}
+            <div class="ranking-item">
+              <div class="posicao">{{ item.posicao }}º</div>
+              <div class="loja">Loja {{ item.loja }}</div>
+              <div class="periodo">{{ item.periodo }}</div>
+              <div class="taxa">
+                {{ "%.1f"|format(item.taxa) }}%
+                <div class="taxa-detalhes">{{ item.dias }}/{{ item.total }} dias</div>
+              </div>
+            </div>
+            {% endfor %}
+            {% if melhores_meses|length == 0 %}
+            <div style="text-align: center; padding: 40px; color: #94a3b8;">
+              Nenhum mês registrado ainda
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

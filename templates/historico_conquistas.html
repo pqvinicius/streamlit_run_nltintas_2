@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 40px 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        height: 100%;
+      }
+      header {
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(148, 163, 184, 0.2);
+      }
+      h1 {
+        font-size: 48px;
+        margin: 0;
+        letter-spacing: -0.5px;
+        color: #e2e8f0;
+        text-transform: uppercase;
+      }
+      .subtitle {
+        font-size: 18px;
+        color: #94a3b8;
+        margin-top: 8px;
+      }
+      .conquistas-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto;
+      }
+      .conquista-item {
+        background: rgba(2, 6, 23, 0.6);
+        border: 2px solid rgba(148, 163, 184, 0.2);
+        border-radius: 20px;
+        padding: 24px 32px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        transition: all 0.3s ease;
+      }
+      .conquista-item:hover {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: #10b981;
+        transform: translateX(5px);
+      }
+      .conquista-icon {
+        font-size: 48px;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        flex-shrink: 0;
+      }
+      .conquista-content {
+        flex: 1;
+      }
+      .conquista-header {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .conquista-loja {
+        font-size: 28px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .conquista-badge {
+        font-size: 24px;
+        font-weight: 600;
+        color: #10b981;
+      }
+      .conquista-desc {
+        font-size: 16px;
+        color: #94a3b8;
+        margin-bottom: 8px;
+      }
+      .conquista-date {
+        font-size: 14px;
+        color: #64748b;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #94a3b8;
+      }
+      .empty-state-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+      .empty-state-text {
+        font-size: 24px;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 20px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <h1>{{ title }}</h1>
+        <div class="subtitle">{{ subtitle }}</div>
+      </header>
+
+      <div class="conquistas-list">
+        {% if conquistas %}
+          {% for conquista in conquistas %}
+          <div class="conquista-item">
+            <div class="conquista-icon">{{ conquista.badge_icone }}</div>
+            <div class="conquista-content">
+              <div class="conquista-header">
+                <span class="conquista-loja">Loja {{ conquista.loja }}</span>
+                <span class="conquista-badge">- {{ conquista.badge_nome }}</span>
+              </div>
+              <div class="conquista-date">
+                {{ conquista.notificado_em[:16] if conquista.notificado_em else conquista.data_conquista }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <div class="empty-state-text">Nenhuma conquista registrada ainda</div>
+          </div>
+        {% endif %}
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

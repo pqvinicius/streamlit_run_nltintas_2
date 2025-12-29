@@ -1,0 +1,12 @@
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _setup_root_logger:142 | ================================================================================
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _setup_root_logger:143 | Sistema de Logging Iniciado - Arquivo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs\CRIARTEMPLATE_20251223_145922.log
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _setup_root_logger:144 | Modo: DESENVOLVIMENTO
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _setup_root_logger:147 | Diretório de logs: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\logs
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _setup_root_logger:148 | ================================================================================
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:121 | ================================================================================
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:122 | INICIANDO CRIARTEMPLATE
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:123 | Modo: DESENVOLVIMENTO
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:126 | ================================================================================
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:131 | Configurações carregadas. Diretório base: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | main:137 | Executando ranking diário...
+2025-12-23 14:59:22 | INFO     | CRIARTEMPLATE | _run_ranking_diario:69 | Baixando planilhas (Foco: Meta Vendedor)...

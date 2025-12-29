@@ -1,0 +1,11 @@
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:127 | ================================================================================
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:128 | Sistema de Logging Iniciado - Arquivo: CRIARTEMPLATE_20251127_150925.log
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | _setup_root_logger:129 | ================================================================================
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | main:81 | ================================================================================
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | main:82 | INICIANDO CRIARTEMPLATE
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | main:83 | ================================================================================
+2025-11-27 15:09:25 | INFO     | CRIARTEMPLATE | _run_ranking_diario:58 | Baixando planilha 'Meta por empresa geral' para o ranking diário...
+2025-11-27 15:10:42 | ERROR    | CRIARTEMPLATE | _run_ranking_diario:66 | Não foi possível obter o arquivo da Meta por empresa geral.
+2025-11-27 15:10:42 | INFO     | CRIARTEMPLATE | main:90 | ================================================================================
+2025-11-27 15:10:42 | INFO     | CRIARTEMPLATE | main:91 | FLUXO FINALIZADO
+2025-11-27 15:10:42 | INFO     | CRIARTEMPLATE | main:92 | ================================================================================

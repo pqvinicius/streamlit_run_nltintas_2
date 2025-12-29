@@ -1,0 +1,16 @@
+2025-11-27 11:47:36 | INFO     | src.desktop_automation | setup_logger:86 | ================================================================================
+2025-11-27 11:47:36 | INFO     | src.desktop_automation | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114736.log
+2025-11-27 11:47:36 | INFO     | src.desktop_automation | setup_logger:88 | ================================================================================
+2025-11-27 11:47:36 | INFO     | src.email_sender | setup_logger:86 | ================================================================================
+2025-11-27 11:47:36 | INFO     | src.email_sender | setup_logger:87 | Sistema de Logging Iniciado - Arquivo: BI_CITEL_20251127_114736.log
+2025-11-27 11:47:36 | INFO     | src.email_sender | setup_logger:88 | ================================================================================
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:503 | Iniciando processamento dos arquivos...
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:523 | Carregando DataFrame principal...
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:525 | DataFrame principal carregado: 24 linhas, 23 colunas
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:527 | Carregando planilha de supervisores: C:\Markup\BI_CITEL\supervisores.xlsx
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:529 | Supervisores carregados: 24 registros
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:532 | Processando arquivo de Ind. Profissionais...
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:539 | DataFrame Ind. Profissionais carregado: 25 linhas
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:580 | Gerando planilhas por supervisor...
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:588 | Planilhas por supervisor geradas: 5 arquivo(s)
+2025-11-27 11:49:34 | INFO     | src.desktop_automation | executar_pipeline:590 | Pipeline de processamento concluído com sucesso!

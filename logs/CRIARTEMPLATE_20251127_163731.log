@@ -1,0 +1,17 @@
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | _setup_root_logger:127 | ================================================================================
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | _setup_root_logger:128 | Sistema de Logging Iniciado - Arquivo: CRIARTEMPLATE_20251127_163731.log
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | _setup_root_logger:129 | ================================================================================
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | main:109 | ================================================================================
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | main:110 | INICIANDO CRIARTEMPLATE
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | main:111 | ================================================================================
+2025-11-27 16:37:31 | INFO     | CRIARTEMPLATE | _run_ranking_diario:73 | Gerando ranking diário a partir de data\meta_empresa_20251127.xlsx ...
+2025-11-27 16:37:33 | INFO     | CRIARTEMPLATE | _run_ranking_diario:75 | Ranking diário gerado com sucesso: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_diario.png
+2025-11-27 16:37:33 | INFO     | CRIARTEMPLATE | _run_ranking_diario:90 | Gerando ranking semanal...
+2025-11-27 16:37:36 | INFO     | CRIARTEMPLATE | _run_ranking_diario:93 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p1.png
+2025-11-27 16:37:36 | INFO     | CRIARTEMPLATE | _run_ranking_diario:93 | Ranking semanal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_semanal_p2.png
+2025-11-27 16:37:36 | INFO     | CRIARTEMPLATE | _run_ranking_diario:98 | Gerando ranking mensal...
+2025-11-27 16:37:39 | INFO     | CRIARTEMPLATE | _run_ranking_diario:101 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p1.png
+2025-11-27 16:37:39 | INFO     | CRIARTEMPLATE | _run_ranking_diario:101 | Ranking mensal gerado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingLojas\data\ranking_mensal_p2.png
+2025-11-27 16:37:39 | INFO     | CRIARTEMPLATE | main:118 | ================================================================================
+2025-11-27 16:37:39 | INFO     | CRIARTEMPLATE | main:119 | FLUXO FINALIZADO
+2025-11-27 16:37:39 | INFO     | CRIARTEMPLATE | main:120 | ================================================================================
