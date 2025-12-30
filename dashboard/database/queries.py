@@ -36,78 +36,39 @@ def load_medal_table(start_date: str, end_date: str) -> pd.DataFrame:
 
 
 def load_athlete_history(vendedor: str) -> pd.DataFrame:
-    """
-    Carrega histórico de conquistas de um atleta.
-    
-    Args:
-        vendedor: Nome do vendedor.
-    
-    Returns:
-        DataFrame com colunas: data_conquista, tipo_trofeu, pontos.
-        DataFrame vazio em caso de erro.
-    """
-    db = DatabaseConnection()
-    
-    if not db.exists:
-        return pd.DataFrame()
-    
-    query = """
-        SELECT 
-            data_conquista, 
-            tipo_trofeu, 
-            pontos 
-        FROM trofeus 
-        WHERE vendedor_nome = ? 
-        ORDER BY data_conquista DESC
-    """
-    
-    try:
-        with db.get_connection() as conn:
-            df = pd.read_sql(query, conn, params=[vendedor])
-        return df
-    except Exception:
-        return pd.DataFrame()
-
-
-def load_conquistas_raw(vendedor: str) -> pd.DataFrame:
-    """
-    Carrega conquistas brutas de um vendedor (para processamento).
-    
-    Args:
-        vendedor: Nome do vendedor.
-    
-    Returns:
-        DataFrame com colunas: data_conquista, tipo_trofeu, pontos.
-        DataFrame vazio em caso de erro.
-    """
-    db = DatabaseConnection()
-    
-    if not db.exists:
-        return pd.DataFrame()
-    
-    query = """
-        SELECT 
-            data_conquista,
-            tipo_trofeu,
-            pontos
-        FROM trofeus 
-        WHERE vendedor_nome = ? 
-        ORDER BY data_conquista DESC
-    """
-    
-    try:
-        with db.get_connection() as conn:
-            df = pd.read_sql(query, conn, params=[vendedor])
-        return df
-    except Exception:
-        return pd.DataFrame()
-
-
-def get_all_lojas() -> pd.DataFrame:
-    """Retorna lista de todas as lojas cadastradas."""
+    """Carrega histórico de conquistas de um atleta."""
     db = DatabaseConnection()
     if not db.exists: return pd.DataFrame()
-    query = "SELECT DISTINCT loja FROM vendedores WHERE ativo = 1 AND loja IS NOT NULL AND loja != '' ORDER BY loja"
+    query = """
+        SELECT data_conquista, tipo_trofeu, pontos 
+        FROM trofeus 
+        WHERE vendedor_nome = ? 
+        ORDER BY data_conquista DESC
+    """
+    try:
+        with db.get_connection() as conn:
+            df = pd.read_sql(query, conn, params=[vendedor])
+        return df
+    except Exception: return pd.DataFrame()
+
+
+def get_all_vendedores():
+    """Retorna lista de todos os vendedores ativos."""
+    db = DatabaseConnection()
+    if not db.exists: return pd.DataFrame()
+    query = "SELECT DISTINCT nome as Vendedor FROM vendedores WHERE ativo = 1 ORDER BY nome ASC"
+    try:
+        with db.get_connection() as conn:
+            df = pd.read_sql(query, conn)
+        return df
+    except Exception: return pd.DataFrame()
+
+
+def get_all_lojas():
+    """Retorna lista de todas as lojas ativas."""
+    db = DatabaseConnection()
+    if not db.exists: return pd.DataFrame()
+    query = "SELECT DISTINCT loja FROM vendedores WHERE ativo = 1 AND loja IS NOT NULL AND loja != '' ORDER BY loja ASC"
     try:
         with db.get_connection() as conn:
             df = pd.read_sql(query, conn)
@@ -116,23 +77,20 @@ def get_all_lojas() -> pd.DataFrame:
 
 
 def load_store_overview(loja: str, start_date: str, end_date: str) -> pd.DataFrame:
-    """Carrega visão geral de uma loja (pontos e medalhas)."""
+    """Resumo de performance de uma loja."""
     db = DatabaseConnection()
     if not db.exists: return pd.DataFrame()
     query = """
         SELECT 
-            v.loja,
-            COALESCE(SUM(t.pontos), 0) AS Pontos,
-            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'OURO' THEN 1 ELSE 0 END), 0) AS Ouro,
-            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'PRATA' THEN 1 ELSE 0 END), 0) AS Prata,
-            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'BRONZE' THEN 1 ELSE 0 END), 0) AS Bronze,
-            (SELECT COUNT(*) FROM vendedores v2 WHERE v2.loja = v.loja AND v2.ativo = 1 AND v2.tipo = 'VENDEDOR') AS Vendedores_Ativos
+            COUNT(DISTINCT v.nome) as vendedores_ativos,
+            COALESCE(SUM(t.pontos), 0) as total_pontos,
+            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'OURO' THEN 1 ELSE 0 END), 0) AS total_ouro,
+            COALESCE(SUM(CASE WHEN t.tipo_trofeu IN ('PRATA', 'BRONZE') THEN 1 ELSE 0 END), 0) AS total_outras
         FROM vendedores v
         LEFT JOIN trofeus t 
             ON v.nome = t.vendedor_nome 
             AND t.data_conquista BETWEEN ? AND ?
-        WHERE v.loja = ? AND v.ativo = 1 AND v.tipo = 'VENDEDOR'
-        GROUP BY v.loja
+        WHERE v.loja = ? AND v.ativo = 1
     """
     try:
         with db.get_connection() as conn:
@@ -142,7 +100,7 @@ def load_store_overview(loja: str, start_date: str, end_date: str) -> pd.DataFra
 
 
 def load_store_sellers(loja: str, start_date: str, end_date: str) -> pd.DataFrame:
-    """Carrega lista de vendedores de uma loja específica."""
+    """Lista de vendedores e medalhas de uma loja específica."""
     db = DatabaseConnection()
     if not db.exists: return pd.DataFrame()
     query = """
@@ -246,4 +204,3 @@ def load_normalized_store_ranking(start_date: str, end_date: str) -> pd.DataFram
             df = pd.read_sql(query, conn, params=[start_date, end_date])
         return df
     except Exception: return pd.DataFrame()
-

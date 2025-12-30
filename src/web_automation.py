@@ -205,13 +205,18 @@ def executar_web_automation(
     exec_mode = get_execution_mode()
     
     # Modo headless (sem abrir janela do Chrome)
-    if exec_mode == "BATCH" or WEB_CONFIG.get("headless", True):
-        logger.info(f"🌐 [WEB] Modo {exec_mode}: Ativando Headless Moderno")
+    # Roda headless automaticamente se for BATCH (Modo Noturno) OU se estiver explicitamente no config.ini
+    is_headless = (exec_mode == "BATCH") or WEB_CONFIG.get("headless", False)
+    
+    if is_headless:
+        motivo = "Modo Noturno (BATCH)" if exec_mode == "BATCH" else "Configuracão (config.ini)"
+        logger.info(f"🌐 [WEB] Ativando Headless Moderno. Motivo: {motivo}")
         chrome_options.add_argument("--headless=new")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
     else:
+        logger.info(f"🌐 [WEB] Modo {exec_mode}: Interface visível habilitada")
         chrome_options.add_argument("--window-size=1920,1080")
     
     # Logs reduzidos

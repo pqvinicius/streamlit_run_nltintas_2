@@ -386,66 +386,50 @@ class RankingService:
             
             ctx = self._montar_contexto(df_page, df_completo, logo, {'current': p+1, 'total': pages, 'start_rank': start+1})
             
-            # Renderizar PNG para cada página (formato Instagram 1080x1080, igual ao semanal)
             renderer = TemplateRenderer(self.cfg.templates_dir)
             html = renderer.render(self.cfg.template_name, ctx)
             paths_gerados.append(html_to_png(html, dest, viewport=(1080, 1080)))
+
         today = datetime.now().date()
         engine = self._execute_gamification_pipeline(df_completo, today)
         self.logger.info(f"🎮 GAMIFICACAO | Engine: {'OK' if engine else 'FALHA'}")
+        
         paths_pontos = []
         paths_semanal = []
         paths_mensal = []
 
         if engine:
-             # --- Pontos (Pode gerar sempre, mostra pontos já conquistados) ---
              paths_pontos = self._gerar_ranking_pontos(engine, destino_dir, logo)
-
-             # --- Semanal (Gera todo dia, atualiza resultado_semanal todo dia, medalhas PRATA só na sexta) ---
              paths_semanal = self._gerar_ranking_periodico(engine, destino_dir, logo, "semanal")
              
-             # Atualiza resultado_semanal TODO DIA (acumulativo)
-             # Medalhas PRATA só são processadas na sexta-feira
              engine.processar_semanal(today)
-
-             # --- Mensal (Gera todo dia, mostra acumulado do mês comercial até hoje, medalhas OURO só no fim do mês) ---
              paths_mensal = self._gerar_ranking_periodico(engine, destino_dir, logo, "mensal")
              
-             # Processa medalhas OURO apenas no fim do mês comercial (dia 25) ou último dia do mês civil
              from src.config import get_mes_comercial_config
              mes_config = get_mes_comercial_config()
-             dia_fim_comercial = mes_config["dia_fim"]  # Ex: 25
+             dia_fim_comercial = mes_config["dia_fim"]
              
-             # Verifica se é fim do mês comercial (dia 25)
-             is_end_commercial_month = (today.day == dia_fim_comercial)
-             
-             # Verifica se é último dia do mês civil
              proximo_dia = today + timedelta(days=1)
              is_end_civil_month = (proximo_dia.month != today.month)
-             
-             is_end_month = is_end_commercial_month or is_end_civil_month
+             is_end_month = (today.day == dia_fim_comercial) or is_end_civil_month
              
              if is_end_month:
-                 engine.processar_mensal(today) # Calcula Ouro, Bonus_1, Bonus_2
+                 engine.processar_mensal(today)
 
-        # 4. Notifications (All Types)
+        # 4. Notifications
         self._notify_all(paths_gerados, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp=send_whatsapp)
         
-        # 5. Export Data Snapshots for Dashboard (Streamlit Cloud Sync)
+        # 5. Snapshots
         if engine:
             self._export_snapshots(engine)
         
         return paths_gerados[0] if paths_gerados else None
 
-    # --- New Generation Methods ---
     def _gerar_ranking_pontos(self, engine: Any, destino_dir: Path, logo: Path | None) -> list[Path]:
-        """Gera os PNGs do Ranking Geral de Pontos (Olímpico)."""
         try:
             today = date.today()
             ranking_data = engine.db.get_ranking_pontos(today)
-            
-            if not ranking_data: 
-                return []
+            if not ranking_data: return []
 
             page_size = 12
             total = len(ranking_data)
@@ -456,46 +440,32 @@ class RankingService:
                 chunk = ranking_data[p*page_size : (p+1)*page_size]
                 ctx = {
                     "titulo": "🏆 QUADRO DE MEDALHAS",
-                    "pagina": p + 1,
-                    "total_paginas": pages,
+                    "pagina": p + 1, "total_paginas": pages,
                     "ranking": chunk,
                     "logo": str(logo.absolute()) if logo else None,
-                    "subtitle": f"Sincronizado em {datetime.now().strftime('%d/%m/%Y')} às {datetime.now().strftime('%H:%Mh')}"
+                    "subtitle": f"Sincronizado em {datetime.now():%d/%m/%Y} às {datetime.now():%H:%Mh}"
                 }
-                
                 renderer = TemplateRenderer(self.cfg.templates_dir)
                 html = renderer.render("ranking_pontos.html", ctx)
-                
-                fname = f"ranking_pontos_p{p+1}.png"
-                dest = destino_dir / fname
+                dest = destino_dir / f"ranking_pontos_p{p+1}.png"
                 paths.append(html_to_png(html, dest, viewport=(1080, 1920)))
-
             return paths
         except Exception as e:
-            self.logger.error(f"PONTOS | Erro ao gerar ranking de pontos: {e}")
+            self.logger.error(f"PONTOS | Erro: {e}")
             return []
 
     def _gerar_ranking_periodico(self, engine: Any, destino_dir: Path, logo: Path | None, tipo: str) -> list[Path]:
-        """Gera rankings de período (Semanal ou Mensal) com indicadores de performance."""
         try:
             today = date.today()
             if tipo == "semanal":
                 ranking_data = engine.db.get_ranking_semanal(today)
-                title = "🏆 RANKING SEMANAL"
-                template = "ranking_semanal.html"
-                fname_base = "ranking_semanal"
+                title, template, fname_base = "🏆 RANKING SEMANAL", "ranking_semanal.html", "ranking_semanal"
+                ranking_data = self._enriquecer_status_semanal(ranking_data, engine, today)
             else:
                 ranking_data = engine.db.get_ranking_mensal(today)
-                title = "📅 RANKING MENSAL"
-                template = "ranking_mensal.html"
-                fname_base = "ranking_mensal"
+                title, template, fname_base = "📅 RANKING MENSAL", "ranking_mensal.html", "ranking_mensal"
 
-            if not ranking_data:
-                return []
-
-            # Para o Ranking Semanal, adicionamos o status dos "quadradinhos" (Seg-Sex)
-            if tipo == "semanal":
-                ranking_data = self._enriquecer_status_semanal(ranking_data, engine, today)
+            if not ranking_data: return []
 
             page_size = 12
             total = len(ranking_data)
@@ -505,75 +475,51 @@ class RankingService:
             for p in range(pages):
                 start_rank = p * page_size + 1
                 chunk = ranking_data[p*page_size : (p+1)*page_size]
-                
-                # Adiciona rank calculado a cada item (para continuidade entre páginas)
-                chunk_com_rank = []
-                for idx, item in enumerate(chunk):
-                    item_copy = item.copy()
-                    item_copy['rank'] = start_rank + idx
-                    chunk_com_rank.append(item_copy)
+                chunk_com_rank = [{**item, 'rank': start_rank + i} for i, item in enumerate(chunk)]
                 
                 ctx = {
-                    "titulo": title,
-                    "pagina": p + 1,
-                    "total_paginas": pages,
+                    "titulo": title, "pagina": p + 1, "total_paginas": pages,
                     "ranking": chunk_com_rank,
                     "logo": str(logo.absolute()) if logo else None,
-                    "subtitle": f"Sincronizado em {datetime.now().strftime('%d/%m/%Y')} às {datetime.now().strftime('%H:%Mh')}"
+                    "subtitle": f"Sincronizado em {datetime.now():%d/%m/%Y} às {datetime.now():%H:%Mh}"
                 }
-                
                 renderer = TemplateRenderer(self.cfg.templates_dir)
                 html = renderer.render(template, ctx)
-                
-                fname = f"{fname_base}_p{p+1}.png"
-                dest = destino_dir / fname
-                # Viewport ajustado: semanal usa formato Instagram (1080x1080), mensal mantém vertical (1080x1920)
-                viewport_size = (1080, 1080) if tipo == "semanal" else (1080, 1920)
-                paths.append(html_to_png(html, dest, viewport=viewport_size))
-
+                dest = destino_dir / f"{fname_base}_p{p+1}.png"
+                viewport = (1080, 1080) if tipo == "semanal" else (1080, 1920)
+                paths.append(html_to_png(html, dest, viewport=viewport))
             return paths
-
         except Exception as e:
-            self.logger.error(f"PERIODICO | Erro ao gerar ranking '{tipo}': {e}")
+            self.logger.error(f"PERIODICO | Erro '{tipo}': {e}")
             return []
 
     def _enriquecer_status_semanal(self, ranking_data: list[dict], engine: Any, today: date) -> list[dict]:
-        """Adiciona a lista de booleanos (Seg-Sex) para os quadradinhos do template."""
         dt_segunda = today - timedelta(days=today.weekday())
-        dias_semana = [dt_segunda + timedelta(days=i) for i in range(5)] # Seg a Sex
+        dias_semana = [dt_segunda + timedelta(days=i) for i in range(5)]
         
         for item in ranking_data:
             nome = item['nome']
             status_list = []
             metas_batidas = 0.0
-            
             for d in dias_semana:
-                if d > today:
-                    status_list.append(None) # Futuro
-                    continue
-                    
-                # Verifica se bateu meta no dia
+                if d > today: status_list.append(None); continue
                 res = engine.db.get_resultados_periodo(nome, d, d)
                 if res:
-                    alcance = res[0][3] # Coluna 3 é alcance
-                    bateu = alcance >= 100
+                    bateu = res[0][3] >= 100
                     status_list.append(bateu)
                     if bateu: metas_batidas += 1.0
-                else:
-                    status_list.append(False)
+                else: status_list.append(False)
             
-            # Sábado (Indicador Extra +0.5)
             dt_sabado = dt_segunda + timedelta(days=5)
             if dt_sabado <= today:
                 res_sab = engine.db.get_resultados_periodo(nome, dt_sabado, dt_sabado)
-                if res_sab and res_sab[0][3] >= 100:
-                    metas_batidas += 0.5
+                if res_sab and res_sab[0][3] >= 100: metas_batidas += 0.5
             
             item['status_semana'] = status_list
             item['contador_metas'] = f"{metas_batidas} / 5.5"
-            
         return ranking_data
 
+    # --- Notifications ---
     def _notify_all(self, paths_diario, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp: bool):
         if not send_whatsapp: return
         
@@ -582,153 +528,101 @@ class RankingService:
         if not wa_cfg.get("enviar_whatsapp", False): return
 
         msg_service = get_message_service(engine.db)
-        msg_service.seed_initial_data() # Garante templates
+        msg_service.seed_initial_data()
 
-        # --- BLOQUEIO GLOBAL: BATCH OU FERIADO ---
         if get_execution_mode() == "BATCH":
             self.logger.info("🔕 MODO BATCH | Notificações desativadas (Horário Noturno).")
             return
 
         if msg_service.is_holiday(now.date()):
-            self.logger.info(f"🚩 FERIADO | {now.date()} é feriado registrado. Notificações suspensas.")
+            self.logger.info(f"🚩 FERIADO | {now.date()} feriado. Suspenso.")
             return
 
-        # 1. Obter status do turno e especial do dia
         shift = self.policy.deve_enviar_ranking_diario(now)
         especial_key = self.policy.hoje_tem_ranking_especial(now)
         
-        # 2. Lógica Diário & Individual (Sempre tenta respeitar janelas M/T)
-        # Nota: Se for Tarde de dia Especial, o _notify cuidará de pular o Diário.
+        # 1. Diário & Individual
         self._notify(paths_diario, engine, send_whatsapp=True)
 
-        # 3. Lógica Especial (APENAS NA TARDE 'T')
+        # 2. Especial
         if shift == "T" and especial_key:
-            # Selecionar caminhos e categorias baseadas na chave
-            paths = []
-            categoria = None
-            
+            paths, categoria = [], None
             if especial_key == "points" and paths_pontos and wa_cfg.get("enviar_ranking_vendedores", True):
-                paths = paths_pontos
-                categoria = "PONTOS"
+                paths, categoria = paths_pontos, "PONTOS"
             elif especial_key == "monthly" and paths_mensal:
-                paths = paths_mensal
-                categoria = "MENSAL"
+                paths, categoria = paths_mensal, "MENSAL"
             elif especial_key == "weekly" and paths_semanal:
-                paths = paths_semanal
-                categoria = "SEMANAL"
+                paths, categoria = paths_semanal, "SEMANAL"
 
             if paths and self.policy._check_weekly_idempotency(especial_key, now):
-                # Busca legenda randômica estratégica
                 caption = msg_service.get_randomized_message(categoria) if categoria else ""
-                
                 sender = WhatsAppService()
-                self.logger.info(f"🔥 ESPECIAL | Enviando Ranking {especial_key.upper()} com legenda estratégica...")
-                if sender.send_ranking(groups := wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")]), 
-                                    [str(p) for p in paths], caption=caption):
+                self.logger.info(f"🔥 ESPECIAL | Enviando {especial_key.upper()}...")
+                groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
+                if sender.send_ranking(groups, [str(p) for p in paths], caption=caption):
                     self.policy.registrar_envio_semanal(especial_key, now)
                 try: sender.driver.quit()
                 except: pass
 
-        if get_execution_mode() == "BATCH":
-            return
-            
+    def _notify(self, paths: list[Path], engine: Any, send_whatsapp: bool = True):
         wa_cfg = get_whatsapp_config()
-        if not wa_cfg.get("enviar_whatsapp", False): return
-        if not send_whatsapp:
-            self.logger.info("NOTIFICACAO | Envio WhatsApp desativado via argumento (no-whatsapp).")
-            return
+        if not wa_cfg.get("enviar_whatsapp", False) or not send_whatsapp: return
 
         now = datetime.now()
         sender = WhatsAppService()
         
-        # --- Lógica de Grupo (Diário) ---
+        # Grupo
         if wa_cfg.get("enviar_ranking_diario", True) and paths:
             shift = self.policy.deve_enviar_ranking_diario(now)
             especial_key = self.policy.hoje_tem_ranking_especial(now)
             
-            # REGRA: Se for Tarde de um dia Especial, NÃO enviar Diário (Especial tem prioridade na Tarde)
             if shift == "T" and especial_key:
-                self.logger.info(f"⏳ DIÁRIO | Pulando Diário: Hoje é dia de {especial_key.upper()} e a tarde é reservada para o Ranking Especial.")
-                pass
+                self.logger.info("⏳ DIÁRIO | Pulando (Tarde Especial).")
             elif shift:
-                # Busca legenda randômica
                 msg_service = get_message_service(engine.db)
-                hour = now.hour
-                categoria = "DIARIO_MANHA" if hour < 13 else "DIARIO_TARDE"
+                categoria = "DIARIO_MANHA" if now.hour < 13 else "DIARIO_TARDE"
                 caption = msg_service.get_randomized_message(categoria)
-                
                 groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
-                self.logger.info(f"🔔 DISPARO | Iniciando envio Ranking Diário ({categoria})...")
                 if sender.send_ranking(groups, [str(p) for p in paths], caption=caption):
                     self.policy.registrar_envio_diario(now, shift)
             else:
-                self.logger.info(f"⏳ DIÁRIO | Fora das janelas de envio (10h-14h ou 16h-20h) ou já enviado hoje.")
+                self.logger.info("⏳ DIÁRIO | Fora da janela ou já enviado.")
         
-        # --- Lógica Individual (Conquistas) ---
+        # Individual
         if wa_cfg.get("enviar_individual", False) and engine:
             resumo = engine.db.get_resumo_dia(now.date())
-            self.logger.info(f"📊 INDIVIDUAL | Verificando conquistas do dia: {len(resumo) if resumo else 0} vendedores com atividade.")
             contatos = self._carregar_contatos()
-            
             if resumo and contatos:
                 for info in resumo:
                     vendedor = info['nome']
                     conquistas = info.get('trofeus', [])
-                    pontos = info.get('pontos_mes', 0)
-                    
-                    # Log de debug para cada vendedor com troféu
-                    if conquistas:
-                        self.logger.debug(f"🔍 INDIVIDUAL | Vendedor: {vendedor} | Troféus: {conquistas}")
-                    
-                    if self.policy.deve_enviar_mensagem_individual(vendedor, now, conquistas):
+                    if conquistas and self.policy.deve_enviar_mensagem_individual(vendedor, now, conquistas):
                         nome_norm = self._normalizar_nome(vendedor)
                         fone_data = contatos.get(nome_norm)
-                        
                         if fone_data:
-                            fone = fone_data['telefone']
-                            msg = self.policy.gerar_mensagem_conquista(vendedor, conquistas, pontos)
-                            self.logger.info(f"📱 INDIVIDUAL | Notificando {vendedor} sobre novas conquistas...")
-                            if sender.send_individual_message(fone, msg):
+                            msg = self.policy.gerar_mensagem_conquista(vendedor, conquistas, info.get('pontos_mes', 0))
+                            if sender.send_individual_message(fone_data['telefone'], msg):
                                 self.policy.registrar_envio_individual(vendedor, now, conquistas)
-                                time.sleep(1) # Reduzido para 1s (pywhatkit já tem seus próprios delays)
-                    else:
-                        # Log silencioso ou debug para não poluir
-                        self.logger.debug(f"INDIVIDUAL | {vendedor} já recebeu as notificações de hoje ({conquistas}).")
+                                time.sleep(1)
 
         try: sender.driver.quit() 
         except: pass
 
+    # --- Snapshots ---
     def _export_snapshots(self, engine: Any):
-        """Exporta tabelas do banco para CSV para sincronização com o dashboard."""
         try:
             from src.config import get_paths
             data_dir = Path(get_paths()["data_dir"])
-            
-            # Tabelas para exportar
             tables = ["vendedores", "resultado_meta", "trofeus", "resultado_semanal", "metas_semanais"]
-            
-            self.logger.info(f"📊 SNAPSHOT | Exportando {len(tables)} tabelas para CSV...")
-            
             import sqlite3
-            db_path = engine.db.db_path
-            
-            with sqlite3.connect(db_path) as conn:
+            with sqlite3.connect(engine.db.db_path) as conn:
                 for table in tables:
                     try:
                         df = pd.read_sql(f"SELECT * FROM {table}", conn)
-                        dest = data_dir / f"{table}.csv"
-                        df.to_csv(dest, index=False, encoding="utf-8")
-                        # self.logger.debug(f"SNAPSHOT | {table} -> {dest.name}")
-                    except Exception as e:
-                        if "no such table" in str(e).lower():
-                            continue
-                        self.logger.warning(f"SNAPSHOT | Erro ao exportar tabela {table}: {e}")
-            
-            self.logger.info("📊 SNAPSHOT | Exportação concluída com sucesso.")
-            
+                        df.to_csv(data_dir / f"{table}.csv", index=False, encoding="utf-8")
+                    except: continue
         except Exception as e:
-            self.logger.error(f"SNAPSHOT | Erro crítico na exportação: {e}")
+            self.logger.error(f"SNAPSHOT | Erro: {e}")
 
-# Helper for Facade
 def get_ranking_service():
     return RankingService()

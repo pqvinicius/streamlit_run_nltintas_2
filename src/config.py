@@ -56,16 +56,23 @@ def get_execution_mode() -> str:
     """
     Detecta o modo de execução:
     1. Verifica variável de ambiente EXECUTION_MODE
-    2. Fallback para horário local (>= 20h -> BATCH)
+    2. Fallback para horário local (BATCH: 20h às 06h)
     3. Padrão: INTERACTIVE
     """
     override = os.getenv("EXECUTION_MODE")
-    if override:
-        return override.upper()
+    if override and override.strip():
+        # Ignora se for algo como "None" ou vazio
+        mode = override.strip().upper()
+        if mode not in ["NONE", "FALSE", "0", ""]:
+            return mode
 
     from datetime import datetime
-    hour = datetime.now().hour
-    return "BATCH" if hour >= 20 else "INTERACTIVE"
+    now = datetime.now()
+    # BATCH automático apenas na madrugada (20h até às 06h)
+    if now.hour >= 20 or now.hour < 6:
+        return "BATCH"
+        
+    return "INTERACTIVE"
 
 
 @lru_cache(maxsize=1)
@@ -89,7 +96,7 @@ def get_web_config() -> Dict[str, object]:
         "downloads_dir": web_section.get("downloads_dir", ""),  # opcional
         "output_dir": web_section.get("output_dir", ""),        # opcional (destino/montagem)
         "baixar_meta_vendedor": web_section.getboolean("baixar_meta_vendedor", fallback=True),
-        "headless": web_section.getboolean("headless", fallback=True),
+        "headless": web_section.getboolean("headless", fallback=False),
     }
 
 
