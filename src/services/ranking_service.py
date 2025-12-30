@@ -409,12 +409,12 @@ class RankingService:
              mes_config = get_mes_comercial_config()
              dia_fim_comercial = mes_config["dia_fim"]
              
-             proximo_dia = today + timedelta(days=1)
-             is_end_civil_month = (proximo_dia.month != today.month)
-             is_end_month = (today.day == dia_fim_comercial) or is_end_civil_month
+             # Processamento Semanal (Diário)
+             engine.processar_semanal(today)
              
-             if is_end_month:
-                 engine.processar_mensal(today)
+             # Processamento Mensal (Diário - Concessão Contínua)
+             # Agora verifica todo dia se alguém bateu a meta do mês
+             engine.processar_mensal(today)
 
         # 4. Notifications
         self._notify_all(paths_gerados, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp=send_whatsapp)

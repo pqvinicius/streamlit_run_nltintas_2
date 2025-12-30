@@ -257,6 +257,22 @@ class GamificacaoDB:
         conn.commit()
         conn.close()
 
+    def check_trofeu_existente(self, nome: str, tipo: str, data_inicio: date, data_fim: date) -> bool:
+        """Verifica se um troféu já foi concedido em um intervalo de datas."""
+        conn = self._get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT 1 FROM trofeus
+                WHERE vendedor_nome = ? 
+                  AND tipo_trofeu = ? 
+                  AND data_conquista BETWEEN ? AND ?
+                LIMIT 1
+            """, (nome, tipo, data_inicio, data_fim))
+            return cursor.fetchone() is not None
+        finally:
+            conn.close()
+
     def upsert_vendedor(self, nome: str, loja: str = "", tipo: str = "VENDEDOR"):
         conn = self._get_connection()
         try:
@@ -1045,16 +1061,19 @@ class MotorPontuacao:
                 logger.warning(f"⚠️ Meta semanal não encontrada para {nome} na semana {semana_uuid}")
                 continue
             
-            # 3. Processa medalhas PRATA (apenas na sexta-feira)
-            if is_friday:
-                # IMPORTANTE: Alcance calculado sobre meta TOTAL da semana (não proporcional)
-                # Medalha PRATA só é concedida se bater a meta total da semana inteira
-                if meta_semanal_total > 0:
-                    alcance_acumulado = (venda_acumulada / meta_semanal_total) * 100
+            # 3. Processa medalhas PRATA (Qualquer dia da semana se bater a meta TOTAL)
+            # A medalha só é concedida SE bater a Meta TOTAL da semana (não a proporcional).
+            # Verificamos se já ganhou na semana atual para não duplicar.
+            if meta_semanal_total > 0:
+                alcance_acumulado = (venda_acumulada / meta_semanal_total) * 100
+                
+                # Regra de Concessão: Bateu a Meta (100%)
+                if alcance_acumulado >= self.SCORING_RULES["PRATA"]["meta_pct"]:
+                    # Verifica idempotência semanal: Já ganhou PRATA nesta semana?
+                    ja_ganhou = self.db.check_trofeu_existente(nome, "PRATA", inicio_semana, fim_semana)
                     
-                    logger.info(f"PRATA | {nome}: Vendas={venda_acumulada:.2f}, Meta Total={meta_semanal_total:.2f}, Alcance={alcance_acumulado:.1f}%")
-                    
-                    if alcance_acumulado >= self.SCORING_RULES["PRATA"]["meta_pct"]:
+                    if not ja_ganhou:
+                        logger.info(f"[INFO] 🥈 Medalha PRATA concedida para {nome} — Meta semanal atingida ({alcance_acumulado:.1f}%)")
                         self.db.registrar_trofeu(
                             nome, 
                             data_ref, 
@@ -1062,6 +1081,8 @@ class MotorPontuacao:
                             self.SCORING_RULES["PRATA"]["pontos"], 
                             f"Meta Semanal Batida: {alcance_acumulado:.1f}%"
                         )
+                    else:
+                        logger.debug(f"[DEBUG] Medalha PRATA já concedida nesta semana para {nome} — ignorando.")
             
             # 4. Atualiza resultado acumulado da semana (TODO DIA)
             # Calcula alcance sobre meta TOTAL (não proporcional)
@@ -1083,24 +1104,13 @@ class MotorPontuacao:
 
     def _processar_mensal(self, data_ref: date):
         """
-        Processa medalhas OURO e BONUS (mensal) usando lógica unificada.
-        Compara vendas até hoje com meta proporcional até hoje.
+        Processa medalhas OURO e BONUS (mensal) usando lógica unificada e contínua.
+        Compara vendas acumuladas do ciclo com a META TOTAL DO MÊS.
         
-        IMPORTANTE: Esta função só deve ser chamada no FIM DO MÊS COMERCIAL (dia 25)
-        ou no último dia do mês civil.
+        Permite concessão ("You Win") a qualquer momento do mês, assim que o vendedor
+        atingir 100% (Ouro), 105% (Bônus 1) ou 110% (Bônus 2) da meta total.
         """
         from src.feriados import FeriadosManager
-        
-        # VALIDAÇÃO: Só processa no fim do mês comercial (dia 25) ou último dia civil
-        dia_fim_comercial = self.mes_config["dia_fim"]
-        is_end_commercial = (data_ref.day == dia_fim_comercial)
-        
-        proximo_dia = data_ref + timedelta(days=1)
-        is_end_civil = (proximo_dia.month != data_ref.month)
-        
-        if not (is_end_commercial or is_end_civil):
-            logger.warning(f"⚠️ _processar_mensal() chamado em {data_ref.strftime('%d/%m/%Y')} (dia {data_ref.day}). Deveria ser apenas no dia {dia_fim_comercial} (fim comercial) ou último dia do mês. Ignorando...")
-            return
         
         feriados_mgr = FeriadosManager()
         
@@ -1108,6 +1118,7 @@ class MotorPontuacao:
         inicio_ciclo, fim_ciclo = get_periodo_mes_comercial(data_ref, self.mes_config)
         
         # Calcula fim do período completo (dia 25)
+        # Necessário para definir a janela de 'check_trofeu_existente' (Ciclo Fechado)
         if data_ref.day <= self.mes_config["dia_fim"]:
             fim_periodo_completo = data_ref.replace(day=self.mes_config["dia_fim"])
         else:
@@ -1143,46 +1154,53 @@ class MotorPontuacao:
             if meta_diaria_ref <= 0:
                 continue
             
-            # 2. Calcula meta total do período completo
+            # 2. Calcula meta total do período completo (Ciclo Mensal Inteiro)
             du_mensal_total = feriados_mgr.calcular_dias_uteis_periodo(inicio_ciclo, fim_periodo_completo, loja)
             meta_total = meta_diaria_ref * du_mensal_total
             
-            # 3. Calcula meta proporcional (até hoje, não até dia 25)
-            meta_proporcional = calcular_meta_proporcional(
-                meta_total,
-                inicio_ciclo,
-                fim_ciclo,  # data_atual
-                fim_periodo_completo,  # data_fim_periodo (dia 25)
-                feriados_mgr,
-                loja
-            )
-            
-            if meta_proporcional > 0:
-                alcance_acumulado = (total_venda / meta_proporcional) * 100
+            # 3. Calcula Alcance sobre META TOTAL (Conceito de "Chegada")
+            # Se bater meta_total antes do fim do mês, já ganha Ouro.
+            if meta_total > 0:
+                alcance_acumulado = (total_venda / meta_total) * 100
                 
-                # Ouro
+                # --- OURO (100% da Meta Total) ---
                 if alcance_acumulado >= self.SCORING_RULES["OURO"]["meta_pct"]:
-                    self.db.registrar_trofeu(
-                        nome, data_ref, "OURO", 
-                        self.SCORING_RULES["OURO"]["pontos"], 
-                        f"Meta Mensal Batida: {alcance_acumulado:.1f}%"
-                    )
+                    ja_ganhou = self.db.check_trofeu_existente(nome, "OURO", inicio_ciclo, fim_periodo_completo)
+                    if not ja_ganhou:
+                        logger.info(f"[INFO] 🥇 Medalha OURO concedida para {nome} — Meta mensal atingida ({alcance_acumulado:.1f}%)")
+                        self.db.registrar_trofeu(
+                            nome, data_ref, "OURO", 
+                            self.SCORING_RULES["OURO"]["pontos"], 
+                            f"Meta Mensal Batida: {alcance_acumulado:.1f}%"
+                        )
+                    else:
+                        logger.debug(f"[DEBUG] Medalha OURO já concedida neste ciclo para {nome} — ignorando.")
                 
-                # Bonus 1 (105%)
+                # --- BONUS 1 (105% da Meta Total) ---
                 if alcance_acumulado >= self.SCORING_RULES["BONUS_1"]["meta_pct"]:
-                     self.db.registrar_trofeu(
-                        nome, data_ref, "BONUS_1", 
-                        self.SCORING_RULES["BONUS_1"]["pontos"], 
-                        f"Superação Mensal 105%: {alcance_acumulado:.1f}%"
-                    )
+                     ja_ganhou = self.db.check_trofeu_existente(nome, "BONUS_1", inicio_ciclo, fim_periodo_completo)
+                     if not ja_ganhou:
+                         logger.info(f"[INFO] 💎 Medalha BONUS_1 concedida para {nome} — Superação 105% atingida ({alcance_acumulado:.1f}%)")
+                         self.db.registrar_trofeu(
+                            nome, data_ref, "BONUS_1", 
+                            self.SCORING_RULES["BONUS_1"]["pontos"], 
+                            f"Superação Mensal 105%: {alcance_acumulado:.1f}%"
+                        )
+                     else:
+                        logger.debug(f"[DEBUG] Medalha BONUS_1 já concedida neste ciclo para {nome} — ignorando.")
 
-                # Bonus 2 (110%)
+                # --- BONUS 2 (110% da Meta Total) ---
                 if alcance_acumulado >= self.SCORING_RULES["BONUS_2"]["meta_pct"]:
-                     self.db.registrar_trofeu(
-                        nome, data_ref, "BONUS_2", 
-                        self.SCORING_RULES["BONUS_2"]["pontos"], 
-                        f"Superação Mensal 110%: {alcance_acumulado:.1f}%"
-                    )
+                     ja_ganhou = self.db.check_trofeu_existente(nome, "BONUS_2", inicio_ciclo, fim_periodo_completo)
+                     if not ja_ganhou:
+                         logger.info(f"[INFO] 🚀 Medalha BONUS_2 concedida para {nome} — Superação 110% atingida ({alcance_acumulado:.1f}%)")
+                         self.db.registrar_trofeu(
+                            nome, data_ref, "BONUS_2", 
+                            self.SCORING_RULES["BONUS_2"]["pontos"], 
+                            f"Superação Mensal 110%: {alcance_acumulado:.1f}%"
+                        )
+                     else:
+                        logger.debug(f"[DEBUG] Medalha BONUS_2 já concedida neste ciclo para {nome} — ignorando.")
         conn.close()
 
 def get_engine():
