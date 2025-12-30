@@ -1,0 +1,50 @@
+/* Ajuste geral */
+html,
+body,
+[class*="css"] {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Cards (metric, containers) */
+[data-testid="metric-container"] {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Títulos */
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Legacy Utilities preserved just in case */
+.big-font {
+  font-size: 24px !important;
+  font-weight: bold;
+}
+.gold {
+  color: #ffd700;
+}
+.silver {
+  color: #c0c0c0;
+}
+.bronze {
+  color: #cd7f32;
+}
+.metric-card {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
+}

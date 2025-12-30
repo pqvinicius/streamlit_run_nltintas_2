@@ -130,7 +130,15 @@ with tab_loja:
                 st.subheader("📈 Evolução de Pontos da Loja (Acumulado)")
                 df_evo = store_service.get_store_evolution(sel_loja, start_date_str, end_date_str)
                 if not df_evo.empty:
-                    st.line_chart(df_evo.set_index('data')['pontos_dia'].cumsum(), height=300)
+                    # Gráfico de Linha (Acumulado)
+                    st.line_chart(df_evo.set_index('data')['pontos_acumulados'], height=300)
+                
+                st.divider()
+                
+                # Bar Chart (Daily Comparison)
+                st.subheader("📊 Comparativo Diário (Pontos por Dia)")
+                if not df_evo.empty:
+                    st.bar_chart(df_evo.set_index('data')['pontos_dia'], height=300)
                 
                 st.divider()
                 

@@ -4,33 +4,18 @@ Estilos CSS customizados para o dashboard.
 import streamlit as st
 
 
+import os
+
 def load_custom_css():
     """
     Carrega CSS customizado para o dashboard.
     Deve ser chamado no início do app.
     """
-    st.markdown("""
-    <style>
-        .big-font { 
-            font-size: 24px !important; 
-            font-weight: bold; 
-        }
-        .gold { 
-            color: #FFD700; 
-        }
-        .silver { 
-            color: #C0C0C0; 
-        }
-        .bronze { 
-            color: #CD7F32; 
-        }
-        .metric-card {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    css_file = os.path.join(os.path.dirname(__file__), "styles.css")
+    if os.path.exists(css_file):
+        with open(css_file, "r") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        # Fallback se arquivo não encontrado
+        st.warning("Arquivo de estilos não encontrado.")
 

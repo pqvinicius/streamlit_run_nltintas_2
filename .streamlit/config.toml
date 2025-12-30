@@ -1,11 +1,41 @@
 # Configurações do Streamlit para o Dashboard
 
 [theme]
-primaryColor = "#FF6B6B"
+base = "light"
+
+# Fonte principal
+font = "Poppins:https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+
+# Cabeçalhos (pode ser a mesma ou outra)
+headingFont = "Poppins:https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap"
+
+# Código (monospace legível)
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+
+# Tamanhos
+baseFontSize = 15
+baseFontWeight = 400
+codeFontSize = "0.85rem"
+codeFontWeight = 400
+
+# Paleta moderna
+primaryColor = "#4F46E5"              # Indigo moderno
+backgroundColor = "#F9FAFB"           # Cinza claro clean
+secondaryBackgroundColor = "#FFFFFF"  # Cards brancos
+textColor = "#111827"                 # Cinza quase preto
+borderColor = "#E5E7EB"
+
+# Bordas e radius
+baseRadius = "large"
+buttonRadius = "large"
+showWidgetBorder = false
+
+[theme.sidebar]
 backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F0F2F6"
-textColor = "#262730"
-font = "sans serif"
+secondaryBackgroundColor = "#F3F4F6"
+textColor = "#111827"
+primaryColor = "#4F46E5"
+showWidgetBorder = true
 
 [server]
 headless = true
@@ -19,4 +49,3 @@ gatherUsageStats = false
 [runner]
 fastReruns = true
 magicEnabled = true
-
