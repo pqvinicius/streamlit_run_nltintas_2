@@ -119,10 +119,10 @@ with tab_loja:
             if not df_ov.empty:
                 row = df_ov.iloc[0]
                 c1, c2, c3, c4 = st.columns(4)
-                c1.metric("⭐ PONTOS TOTAIS", int(row['Pontos']))
-                c2.metric("👥 VENDEDORES", int(row['Vendedores_Ativos']))
-                c3.metric("🥇 OUROS", int(row['Ouro']))
-                c4.metric("🥈+🥉 MEDALHAS", int(row['Prata'] + row['Bronze']))
+                c1.metric("⭐ PONTOS TOTAIS", int(row.get('total_pontos', 0)))
+                c2.metric("👥 VENDEDORES", int(row.get('vendedores_ativos', 0)))
+                c3.metric("🥇 OUROS", int(row.get('total_ouro', 0)))
+                c4.metric("🥈+🥉 MEDALHAS", int(row.get('total_outras', 0)))
                 
                 st.divider()
                 
@@ -130,7 +130,7 @@ with tab_loja:
                 st.subheader("📈 Evolução de Pontos da Loja (Acumulado)")
                 df_evo = store_service.get_store_evolution(sel_loja, start_date_str, end_date_str)
                 if not df_evo.empty:
-                    st.line_chart(df_evo.set_index('data')['pontos_acumulados'], height=300)
+                    st.line_chart(df_evo.set_index('data')['pontos_dia'].cumsum(), height=300)
                 
                 st.divider()
                 
