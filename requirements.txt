@@ -1,6 +1,12 @@
 streamlit
 pandas
-plotly
-sqlite-utils
-matplotlib
+selenium
+webdriver-manager
 pywhatkit
+pillow
+pywin32
+streamlit-autorefresh
+watchdog
+openpyxl
+requests
+pyinstaller

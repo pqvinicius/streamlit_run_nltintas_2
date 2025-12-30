@@ -22,7 +22,10 @@ a = Analysis(
         'matplotlib', 
         'sqlite_utils',
         'win32clipboard',
-        'PIL'
+        'PIL',
+        'webdriver_manager',
+        'selenium.webdriver.edge.service',
+        'selenium.webdriver.edge.options'
     ],
     hookspath=[],
     hooksconfig={},

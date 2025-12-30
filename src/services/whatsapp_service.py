@@ -13,7 +13,11 @@ from datetime import datetime
 # Dependencies
 try:
     from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
+    # Edge Imports
+    from selenium.webdriver.edge.service import Service as EdgeService
+    from selenium.webdriver.edge.options import Options as EdgeOptions
+    from webdriver_manager.microsoft import EdgeChromiumDriverManager
+    
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.support.ui import WebDriverWait
@@ -33,17 +37,17 @@ from src.config import get_whatsapp_config
 class WhatsAppService:
     """
     Serviço centralizado para envio de mensagens via WhatsApp Web (Selenium).
-    Implementa patrão Singleton por conveniência ou instância única controlada.
+    MIGRADO PARA MICROSOFT EDGE (Chromium) para maior estabilidade.
     """
 
-    def __init__(self, session_dir: str = "whatsapp_session", headless: bool = False):
+    def __init__(self, session_dir: str = "edge_whatsapp_session", headless: bool = False):
         self.logger = get_logger(__name__)
         self.session_dir = session_dir
         self.headless = headless
-        self.driver: Optional[webdriver.Chrome] = None
+        self.driver: Optional[webdriver.Edge] = None
 
     def _init_driver(self) -> bool:
-        """Inicializa o driver do Selenium."""
+        """Inicializa o driver do Microsoft Edge."""
         if webdriver is None:
             self.logger.error("❌ Selenium/Drivers não instalados.")
             return False
@@ -52,54 +56,51 @@ class WhatsAppService:
             return True
 
         wa_cfg = get_whatsapp_config()
-        usar_perfil_real = wa_cfg.get("usar_perfil_real", True)
+        
+        # --- Caminho do Perfil (Fixo para Estabilidade) ---
+        # Usa diretório local "edge_whatsapp_session" para garantir persistência do login/QR
+        base_dir = Path.cwd()
+        profile_path = base_dir / self.session_dir
+        profile_path.mkdir(parents=True, exist_ok=True)
+        
+        self.logger.info(f"🌐 Inicializando WhatsApp EDGE (Perfil: {self.session_dir})...")
 
-        def create_driver(use_real_profile: bool) -> Optional[webdriver.Chrome]:
-            # --- Forçar fechamento do Chrome para liberar LOCK ---
+        def create_driver() -> Optional[webdriver.Edge]:
+            # --- Forçar fechamento do Edge para liberar LOCK ---
             try:
-                self.logger.info("🧹 Limpando instâncias residuais do Chrome...")
-                # Usando shell=True para garantir execução do comando legado
-                subprocess.call("taskkill /F /IM chrome.exe /T", shell=True)
+                self.logger.info("🧹 Limpando instâncias residuais do Edge...")
+                subprocess.call("taskkill /F /IM msedge.exe /T", shell=True)
                 time.sleep(2)
             except: pass
 
-            chrome_options = Options()
+            edge_options = EdgeOptions()
             
-            if use_real_profile:
-                # CAMINHO REAL (Windows Default)
-                user_data_dir = os.path.join(os.environ['LOCALAPPDATA'], 'Google', 'Chrome', 'User Data')
-                chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
-                chrome_options.add_argument("--profile-directory=Default")
-                self.logger.info("🌐 Inicializando WhatsApp (PERFIL REAL - DEFAULT)...")
-            else:
-                # CAMINHO LOCAL PERSISTENTE (whatsapp_session)
-                # Garante que o QR code persistirá aqui se o perfil real falhar
-                base_dir = Path(__file__).parent.parent.parent
-                session_path = (base_dir / self.session_dir).absolute()
-                session_path.mkdir(parents=True, exist_ok=True)
-                
-                chrome_options.add_argument(f"--user-data-dir={session_path}")
-                self.logger.info(f"🌐 Inicializando WhatsApp (SESSÃO LOCAL PERSISTENTE: {self.session_dir})...")
+            # --- Perfil Persistente ---
+            edge_options.add_argument(f"--user-data-dir={str(profile_path)}")
+            edge_options.add_argument("--profile-directory=Default")
 
-            # Anti-Bot Flags Essenciais
-            chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-            chrome_options.add_argument("--start-maximized")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            # NÃO usar Headless para persistência de login
+            # --- Anti-Bot Flags Essenciais ---
+            edge_options.add_argument("--disable-blink-features=AutomationControlled")
+            edge_options.add_argument("--start-maximized")
+            edge_options.add_argument("--no-sandbox")
+            edge_options.add_argument("--disable-dev-shm-usage")
+            edge_options.add_argument("--disable-gpu")
             
-            # User-Agent Real
-            chrome_options.add_argument(
+            # User-Agent Real (Edge 131)
+            edge_options.add_argument(
                 "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36"
+                "Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0"
             )
-            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            chrome_options.add_experimental_option('useAutomationExtension', False)
+            edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            edge_options.add_experimental_option('useAutomationExtension', False)
 
-            driver = webdriver.Chrome(options=chrome_options)
+            # --- Instalação Automática do Driver ---
+            service = EdgeService(EdgeChromiumDriverManager().install())
             
-            # Navegação IMEDIATA para o WhatsApp (Resolve o problema da janela parada)
+            driver = webdriver.Edge(service=service, options=edge_options)
+            
+            # Navegação IMEDIATA
             driver.get("https://web.whatsapp.com")
             
             # Bypass adicional via JS
@@ -108,23 +109,10 @@ class WhatsAppService:
             return driver
 
         try:
-            # 1. Tenta Perfil Real se configurado (Prioridade 1)
-            if usar_perfil_real:
-                try:
-                    self.driver = create_driver(use_real_profile=True)
-                    return True
-                except Exception as e:
-                    if "user data directory is already in use" in str(e).lower() or "session not created" in str(e).lower():
-                        self.logger.warning("⚠️ Perfil Real travado. Tentando Fallback para Sessão Local...")
-                    else:
-                        raise e
-            
-            # 2. Fallback para Sessão Local Isolada (QR persiste aqui se escaneado uma vez)
-            self.driver = create_driver(use_real_profile=False)
+            self.driver = create_driver()
             return True
-
         except Exception as e:
-            self.logger.error(f"❌ Falha crítica ao iniciar driver: {e}")
+            self.logger.error(f"❌ Falha crítica ao iniciar Edge driver: {e}")
             if self.driver:
                 try: self.driver.quit()
                 except: pass

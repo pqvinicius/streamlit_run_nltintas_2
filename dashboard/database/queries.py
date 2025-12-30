@@ -204,3 +204,28 @@ def load_normalized_store_ranking(start_date: str, end_date: str) -> pd.DataFram
             df = pd.read_sql(query, conn, params=[start_date, end_date])
         return df
     except Exception: return pd.DataFrame()
+
+
+def load_conquistas_raw(vendedor_nome: str) -> pd.DataFrame:
+    """
+    Carrega tabela crua de conquistas para processamento semanal.
+    Retorna: data_conquista, tipo_trofeu, pontos
+    """
+    db = DatabaseConnection()
+    if not db.exists: return pd.DataFrame()
+    
+    query = """
+        SELECT
+            data_conquista,
+            tipo_trofeu,
+            pontos,
+            vendedor_nome
+        FROM trofeus
+        WHERE vendedor_nome = ?
+        ORDER BY data_conquista ASC
+    """
+    try:
+        with db.get_connection() as conn:
+            df = pd.read_sql(query, conn, params=[vendedor_nome])
+        return df
+    except Exception: return pd.DataFrame()
