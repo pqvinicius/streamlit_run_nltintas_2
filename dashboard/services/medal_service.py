@@ -50,14 +50,18 @@ class MedalService:
             df['_alcance_mensal'] = df['Vendedor'].map(mapa_alcance).fillna(0.0)
             
             # 4. Ordena Python-side (Multi-index sort)
-            # Pontos DESC, Alcance DESC, Nome ASC
+            # Ordem Rígida (User Request 30/12/2024 - 16:50):
+            # 1. Pontos DESC
+            # 2. % Alcance Mensal DESC
+            # 3. Ouro DESC
+            # 4. Prata DESC
+            # 5. Bronze DESC
             df = df.sort_values(
-                by=['Pontos', '_alcance_mensal', 'Vendedor'], 
-                ascending=[False, False, True]
+                by=['Pontos', '_alcance_mensal', 'Ouro', 'Prata', 'Bronze'], 
+                ascending=[False, False, False, False, False]
             )
             
-            # Remove coluna auxiliar se não quiser exibir (User pediu ordenação, não exibição explicita)
-            # Mas pode ser útil manter oculta ou remover. Vamos remover para não quebrar UI existente.
+            # Remove coluna auxiliar se não quiser exibir
             df = df.drop(columns=['_alcance_mensal'])
             
             return df
