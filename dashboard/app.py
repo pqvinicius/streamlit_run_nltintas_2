@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 from datetime import date
 from pathlib import Path
 
@@ -13,8 +14,11 @@ from dashboard.services.period_service import PeriodService
 from dashboard.ui import components, styles
 
 # --- INITIALIZATION ---
-st.set_page_config(page_title="Olimpíadas de Vendas", page_icon="🥇", layout="wide")
+st.set_page_config(page_title="NL CHAMPIONS LEAGUE", page_icon="🥇", layout="wide")
 styles.load_custom_css()
+
+# Auto-refresh every 10 minutes (600 seconds)
+st_autorefresh(interval=600 * 1000, key="data_refresh")
 
 # Initialize Services
 settings = AppSettings()
@@ -22,7 +26,7 @@ medal_service = MedalService()
 period_service = PeriodService()
 
 # --- HEADER ---
-st.title("🏆 OLIMPÍADAS DE VENDAS")
+st.title("🏆 NL CHAMPIONS LEAGUE")
 st.markdown("### 🔥 Competição em andamento")
 st.divider()
 

@@ -2,6 +2,7 @@ import argparse
 import sys
 import traceback
 import time
+from datetime import datetime
 
 import pandas as pd
 from pathlib import Path
@@ -187,6 +188,24 @@ def main() -> None:
             send_whatsapp, 
             exec_log
         )
+        
+        # === GIT SYNC (Bonus: Atualiza Streamlit Cloud) ===
+        try:
+            import subprocess
+            logger.info("GIT SYNC | Sincronizando dados com o repositório...")
+            # Adiciona DBs e Imagens
+            subprocess.run(["git", "add", "data/*.db", "data/*.png"], capture_output=True)
+            # Tenta commitar se houver mudanças
+            commit_res = subprocess.run(["git", "commit", "-m", f"Auto-sync: {datetime.now():%d/%m/%Y %H:%M}"], capture_output=True)
+            if commit_res.returncode == 0:
+                logger.info("GIT SYNC | Mudanças detectadas, realizando push...")
+                subprocess.run(["git", "push"], capture_output=True)
+                logger.info("GIT SYNC | Sucesso!")
+            else:
+                logger.info("GIT SYNC | Sem mudanças para sincronizar.")
+        except Exception as e:
+            logger.warning(f"GIT SYNC | Falha ao sincronizar: {e}")
+        # ==================================================
         
         logger.info("PIPELINE | Execucao finalizada com sucesso")
         exec_log.log("PIPELINE", "SUCCESS")

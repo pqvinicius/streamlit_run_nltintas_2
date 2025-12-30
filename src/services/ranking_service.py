@@ -25,6 +25,7 @@ from src.html_renderer import TemplateRenderer, html_to_png, image_to_data_uri
 from src.logger import get_logger
 from src.gamificacao_vendedores import get_engine
 from src.services.whatsapp_service import WhatsAppService
+from src.services.notification_policy import NotificationPolicy
 
 # Dataclass Definition
 BASE_DIR = get_base_dir()
@@ -52,6 +53,7 @@ class RankingService:
     def __init__(self):
         self.logger = get_logger(__name__)
         self.cfg = SellerRankingConfig()
+        self.policy = NotificationPolicy()
 
     # --- Utils ---
     def _normalizar_nome(self, nome: str) -> str:
@@ -566,22 +568,48 @@ class RankingService:
         return ranking_data
 
     def _notify_all(self, paths_diario, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp: bool):
-         if not send_whatsapp: return
-         
-         # 1. Diário (Já existente)
-         self._notify(paths_diario, engine, send_whatsapp=True)
+        if not send_whatsapp: return
+        
+        now = datetime.now()
+        wa_cfg = get_whatsapp_config()
+        if not wa_cfg.get("enviar_whatsapp", False): return
 
-         # 2. Pontos (Envio Grupo)
-         if paths_pontos:
-             wa_cfg = get_whatsapp_config()
-             if wa_cfg.get("enviar_grupo", False):
-                 if not self._ja_enviou_hoje("grupo_pontos"):
-                     sender = WhatsAppService()
-                     grp = wa_cfg.get("nome_grupo", "Informações Comercial NL")
-                     sender.send_ranking(grp, [str(p) for p in paths_pontos], caption="🏆 *Ranking de Pontos Oficial* 🏆\nConfira quem está liderando as Olimpíadas de Vendas!")
-                     try: sender.driver.quit()
-                     except: pass
-                     self._registrar_envio_hoje("grupo_pontos")
+        # 1. Diário & Individual
+        self._notify(paths_diario, engine, send_whatsapp=True)
+
+        # 2. Pontos (Envio Grupo - Segunda-feira)
+        if paths_pontos and wa_cfg.get("enviar_ranking_vendedores", True):
+            if self.policy.deve_enviar_ranking_pontos(now):
+                sender = WhatsAppService()
+                groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
+                self.logger.info("🔔 DISPARO | Enviando Ranking de Pontos...")
+                if sender.send_ranking(groups, [str(p) for p in paths_pontos], 
+                                    caption="🏆 *Ranking de Pontos Oficial* 🏆\nConfira quem está liderando as Olimpíadas de Vendas!"):
+                    self.policy.registrar_envio_semanal("points", now)
+                try: sender.driver.quit()
+                except: pass
+
+        # 3. Semanal (Sexta-feira)
+        if paths_semanal and self.policy.deve_enviar_ranking_semanal(now):
+            sender = WhatsAppService()
+            groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
+            self.logger.info("🔔 DISPARO | Enviando Ranking Semanal...")
+            if sender.send_ranking(groups, [str(p) for p in paths_semanal], 
+                                caption="📅 *Ranking Semanal Concluído* 📅"):
+                self.policy.registrar_envio_semanal("weekly", now)
+            try: sender.driver.quit()
+            except: pass
+
+        # 4. Mensal (Quarta-feira - Snapshot)
+        if paths_mensal and self.policy.deve_enviar_ranking_mensal(now):
+            sender = WhatsAppService()
+            groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
+            self.logger.info("🔔 DISPARO | Enviando Snapshot Mensal...")
+            if sender.send_ranking(groups, [str(p) for p in paths_mensal], 
+                                caption="📊 *Acompanhamento Mensal de Performance* 📊"):
+                self.policy.registrar_envio_semanal("monthly", now)
+            try: sender.driver.quit()
+            except: pass
 
     def _notify(self, paths: list[Path], engine: Any, send_whatsapp: bool = True):
         wa_cfg = get_whatsapp_config()
@@ -590,70 +618,44 @@ class RankingService:
             self.logger.info("NOTIFICACAO | Envio WhatsApp desativado via argumento (no-whatsapp).")
             return
 
+        now = datetime.now()
         sender = WhatsAppService()
         
-        # Group
-        if wa_cfg.get("enviar_grupo", False) and paths:
-            if not self._ja_enviou_hoje("grupo_ranking"):
-                grp = wa_cfg.get("nome_grupo", "Informações Comercial NL")
-                sender.send_ranking(grp, [str(p) for p in paths])
-                self._registrar_envio_hoje("grupo_ranking")
+        # --- Lógica de Grupo (Diário) ---
+        if wa_cfg.get("enviar_ranking_diario", True) and paths:
+            shift = self.policy.deve_enviar_ranking_diario(now)
+            if shift:
+                groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
+                self.logger.info(f"🔔 DISPARO | Iniciando envio Ranking Diário (Turno {shift})...")
+                if sender.send_ranking(groups, [str(p) for p in paths]):
+                    self.policy.registrar_envio_diario(now, shift)
         
-        # Individual
+        # --- Lógica Individual (Conquistas) ---
         if wa_cfg.get("enviar_individual", False) and engine:
-             if not self._ja_enviou_hoje("individual_premios"):
-                 resumo = engine.db.get_resumo_dia(datetime.now().date())
-                 contatos = self._carregar_contatos()
-                 if resumo and contatos:
-                     for info in resumo:
-                         nome_norm = self._normalizar_nome(info['nome'])
+             resumo = engine.db.get_resumo_dia(now.date())
+             contatos = self._carregar_contatos()
+             
+             if resumo and contatos:
+                 for info in resumo:
+                     vendedor = info['nome']
+                     conquistas = info.get('trofeus', [])
+                     pontos = info.get('pontos_mes', 0)
+                     
+                     if self.policy.deve_enviar_mensagem_individual(vendedor, now, conquistas):
+                         nome_norm = self._normalizar_nome(vendedor)
                          fone_data = contatos.get(nome_norm)
+                         
                          if fone_data:
                              fone = fone_data['telefone']
-                             msg = self._build_individual_msg(info)
+                             msg = self.policy.gerar_mensagem_conquista(vendedor, conquistas, pontos)
+                             self.logger.info(f"📱 INDIVIDUAL | Notificando {vendedor} sobre novas conquistas...")
                              if sender.send_individual_message(fone, msg):
-                                 time.sleep(15)
-                     self._registrar_envio_hoje("individual_premios")
-                     try: sender.driver.quit() 
-                     except: pass
+                                 # Registrar envio para evitar spam na próxima execução do mesmo dia
+                                 self.policy.registrar_envio_individual(vendedor, now, conquistas)
+                                 time.sleep(15) # Rate limit
 
-    def _build_individual_msg(self, info: Dict) -> str:
-        trofeu = info['trofeus'][0] if info['trofeus'] else "medalha"
-        pontos = info.get('pontos_mes', 0)
-        return (
-            f"🌟 *PARABÉNS!* 🌟\n\n"
-            f"Você conquistou uma medalha de *{trofeu}* hoje!\n"
-            f"Sua pontuação total nas Olimpíadas está em *{pontos} pontos*.\n\n"
-            f"Continue acelerando! 🚀"
-        )
-
-    def _get_idempotency_file(self) -> Path:
-        from src.config import get_paths
-        return Path(get_paths()["data_dir"]) / "execucao_diaria.json"
-
-    def _ja_enviou_hoje(self, tipo: str) -> bool:
-        f = self._get_idempotency_file()
-        if not f.exists(): return False
-        try:
-            with open(f) as fp:
-                return json.load(fp).get(datetime.now().strftime("%Y-%m-%d"), {}).get(tipo, False)
-        except:
-            return False
-
-    def _registrar_envio_hoje(self, tipo: str):
-        f = self._get_idempotency_file()
-        data = {}
-        if f.exists():
-            try:
-                with open(f) as fp:
-                    data = json.load(fp)
-            except:
-                pass
-        hoje = datetime.now().strftime("%Y-%m-%d")
-        if hoje not in data: data[hoje] = {}
-        data[hoje][tipo] = True
-        with open(f, "w") as fp:
-            json.dump(data, fp)
+                 try: sender.driver.quit() 
+                 except: pass
 
 # Helper for Facade
 def get_ranking_service():

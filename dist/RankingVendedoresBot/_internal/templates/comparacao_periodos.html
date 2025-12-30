@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(circle at top, #172554, #020617 70%);
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .comparacao-container {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 24px;
+        align-items: center;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+      }
+      .periodo-card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(14, 165, 233, 0.05));
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .periodo-card h3 {
+        margin: 0;
+        font-size: 20px;
+        color: #cbd5f5;
+        text-align: center;
+      }
+      .periodo-card .periodo-datas {
+        text-align: center;
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 8px;
+      }
+      .metricas {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .metrica {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 12px;
+      }
+      .metrica-label {
+        font-size: 14px;
+        color: #94a3b8;
+      }
+      .metrica-valor {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e2e8f0;
+      }
+      .seta {
+        font-size: 48px;
+        color: #3b82f6;
+        text-align: center;
+      }
+      .evolucao {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 16px;
+        margin-top: 16px;
+      }
+      .evolucao-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .evolucao-label {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .evolucao-valor {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .evolucao-valor.positivo {
+        color: #10b981;
+      }
+      .evolucao-valor.negativo {
+        color: #ef4444;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+        padding-top: 12px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+        {% if logo_data_uri %}
+        <img src="{{ logo_data_uri }}" alt="Logo" class="logo" />
+        {% endif %}
+      </header>
+
+      <div class="comparacao-container">
+        <div class="periodo-card">
+          <h3>Semana Atual</h3>
+          <div class="periodo-datas">{{ periodo_atual.inicio }} a {{ periodo_atual.fim }}</div>
+          <div class="metricas">
+            <div class="metrica">
+              <span class="metrica-label">Taxa de Sucesso</span>
+              <span class="metrica-valor">{{ "%.1f"|format(periodo_atual.taxa) }}%</span>
+            </div>
+            <div class="metrica">
+              <span class="metrica-label">Alcance Médio</span>
+              <span class="metrica-valor">{{ "%.1f"|format(periodo_atual.alcance) }}%</span>
+            </div>
+            <div class="metrica">
+              <span class="metrica-label">Dias que Bateu</span>
+              <span class="metrica-valor">{{ periodo_atual.dias_bateu }}/{{ periodo_atual.total_dias }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="seta">→</div>
+
+        <div class="periodo-card">
+          <h3>Semana Anterior</h3>
+          <div class="periodo-datas">{{ periodo_anterior.inicio }} a {{ periodo_anterior.fim }}</div>
+          <div class="metricas">
+            <div class="metrica">
+              <span class="metrica-label">Taxa de Sucesso</span>
+              <span class="metrica-valor">{{ "%.1f"|format(periodo_anterior.taxa) }}%</span>
+            </div>
+            <div class="metrica">
+              <span class="metrica-label">Alcance Médio</span>
+              <span class="metrica-valor">{{ "%.1f"|format(periodo_anterior.alcance) }}%</span>
+            </div>
+            <div class="metrica">
+              <span class="metrica-label">Dias que Bateu</span>
+              <span class="metrica-valor">{{ periodo_anterior.dias_bateu }}/{{ periodo_anterior.total_dias }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="evolucao">
+          <div class="evolucao-item">
+            <div class="evolucao-label">Taxa</div>
+            <div class="evolucao-valor {{ 'positivo' if evolucao.taxa_positiva else 'negativo' }}">
+              {{ '+' if evolucao.taxa_positiva else '' }}{{ "%.1f"|format(evolucao.taxa) }}%
+            </div>
+          </div>
+          <div class="evolucao-item">
+            <div class="evolucao-label">Alcance</div>
+            <div class="evolucao-valor {{ 'positivo' if evolucao.alcance_positivo else 'negativo' }}">
+              {{ '+' if evolucao.alcance_positivo else '' }}{{ "%.1f"|format(evolucao.alcance) }}%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Atualizado em {{ generated_at }}</span>
+        <span>BI Automação • © {{ company_name }} • {{ producer_signature }}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+

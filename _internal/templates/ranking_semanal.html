@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-grad-start: #0f172a;
+        --bg-grad-end: #1e3a8a; /* Azul mais forte para semanal */
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Inter", sans-serif;
+        background: radial-gradient(
+          circle at top,
+          var(--bg-grad-end),
+          var(--bg-grad-start) 70%
+        );
+        color: #e2e8f0;
+        width: 1080px;
+        height: 1080px;
+      }
+      .board {
+        padding: 28px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        height: 100%;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headline {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .logo {
+        width: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .card {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 64, 175, 0.3),
+          /* Azul Indigo */ rgba(30, 58, 138, 0.1)
+        );
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 18px;
+        padding: 16px 18px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.4);
+      }
+      .card h3 {
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.3em;
+        color: #e0e7ff;
+      }
+      .card p {
+        margin: 6px 0 0;
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .ranking {
+        flex: 1;
+        background: rgba(2, 6, 23, 0.85);
+        border-radius: 24px;
+        padding: 18px 28px;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 50px 220px 140px 1fr 120px;
+        align-items: center;
+        gap: 15px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .rank {
+        font-size: 28px;
+        font-weight: 800;
+        color: #94a3b8;
+        text-align: center;
+      }
+      .vendedor-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .nome {
+        font-size: 18px;
+        font-weight: 700;
+        color: #f8fafc;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .loja-tag {
+        font-size: 11px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      
+      /* New: Weekly Indicators */
+      .indicators {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .square {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        background: #334155; /* Neutral */
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+      .square.hit { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
+      .square.miss { background: #ef4444; }
+      .square.future { background: rgba(51, 65, 85, 0.4); border-style: dashed; }
+      
+      .sat-indicator {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #334155;
+      }
+      .sat-indicator.hit { background: #22c55e; border-color: #22c55e; }
+
+      .counter {
+        font-size: 14px;
+        font-weight: 700;
+        color: #94a3b8;
+        background: rgba(15, 23, 42, 0.6);
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-align: center;
+      }
+      .counter span { color: #facc15; }
+
+      .bar-container {
+        flex: 1;
+      }
+      .bar {
+        height: 16px;
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 8px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-size: 11px;
+        min-width: 2%;
+        width: var(--w, 0%);
+        background: linear-gradient(
+          90deg,
+          var(--bg-start, #3b82f6),
+          var(--bg-end, #60a5fa)
+        );
+        background-color: var(--bg-start, #3b82f6);
+        color: var(--text, #0f172a);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      .alcance-label {
+        font-size: 11px;
+        color: #94a3b8;
+        padding-left: 10px;
+        line-height: 1.4;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-top: 2px;
+        letter-spacing: 0.05em;
+        background: var(--badge-bg, #334155);
+        color: var(--badge-color, #e2e8f0);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div class="headline">
+          <h1>{{ titulo }}</h1>
+          <p class="subtitle">{{ subtitle }}</p>
+        </div>
+        {% if logo %}
+        <img class="logo" src="file:///{{ logo }}" alt="Logo" />
+        {% endif %}
+      </header>
+
+      <section class="ranking">
+        {% for item in ranking %}
+        <div class="row">
+          <div class="rank">{{ "%02d"|format(item.rank) }}</div>
+          
+          <div class="vendedor-info">
+            <span class="nome">{{ item.nome }}</span>
+            <span class="loja-tag">{{ item.loja }}</span>
+          </div>
+
+          <div class="indicators">
+            {% for hit in item.status_semana %}
+              <div class="square {% if hit == True %}hit{% elif hit == False %}miss{% else %}future{% endif %}"></div>
+            {% endfor %}
+            <div class="counter"><span>{{ item.contador_metas.split(' / ')[0] }}</span>/5.5</div>
+          </div>
+
+          <div class="bar-container">
+            <div class="bar">
+              <div
+                class="bar-fill"
+                style="--w: {{ item.bar_width }}%; --bg-start: {{ item.grad_start }}; --bg-end: {{ item.grad_end }}; --text: {{ item.text_on_bar }};"
+              >
+                {{ item.alcance_label }}
+              </div>
+            </div>
+          </div>
+
+          <div class="alcance-label">
+            <span>{{ item.alcance_label }}</span><br />
+            <span
+              class="badge"
+              style="--badge-bg: {{ item.badge_bg }}; --badge-color: {{ item.badge_text }};"
+            >
+              {{ item.badge_label }}
+            </span>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+
+      <footer class="footer">
+        <span>Próximo fechamento oficial: Sexta-feira às 19:00h</span>
+        <span
+          >Olimpíadas de Vendas • © {{ company_name|default('Nossa Loja') }} • {{ producer_signature|default('Vinicius Xavier') }}</span
+        >
+        {% if total_paginas > 1 %}
+        <div class="paginacao">
+          Página {{ pagina }} de {{ total_paginas }}
+        </div>
+        {% endif %}
+      </footer>
+    </main>
+  </body>
+</html>

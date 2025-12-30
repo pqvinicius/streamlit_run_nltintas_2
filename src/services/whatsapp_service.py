@@ -241,45 +241,55 @@ class WhatsAppService:
         
         return random.choice(messages[key])
 
-    def send_ranking(self, group_name: str, image_paths: List[str]) -> bool:
-        """Orquestra o envio do ranking."""
+    def send_ranking(self, group_names: str | List[str], image_paths: List[str], caption: Optional[str] = None) -> bool:
+        """Orquestra o envio do ranking para um ou mais grupos."""
+        if isinstance(group_names, str):
+            group_names = [group_names]
+            
         if not self._init_driver(): return False
         if not self._wait_for_login(): return False
         
-        if not self._find_group(group_name):
-            self.driver.quit()
-            return False
-            
-        # Send Text
-        try:
-            msg = self._get_dynamic_message()
-            box = self.driver.find_element(By.CSS_SELECTOR, 'div[contenteditable="true"][data-tab="10"]')
-            box.send_keys(msg + Keys.ENTER)
-            time.sleep(2)
-        except Exception as e:
-            self.logger.warning(f"Texto dinâmico falhou: {e}")
-
-        # Send Images
-        success_count = 0
-        for idx, img_path in enumerate(image_paths, 1):
-            if not os.path.exists(img_path):
+        overall_success = False
+        
+        for group_name in group_names:
+            self.logger.info(f"👥 Preparando envio para o grupo: {group_name}")
+            if not self._find_group(group_name):
+                self.logger.error(f"❌ Não foi possível encontrar o grupo: {group_name}")
                 continue
                 
-            self.logger.info(f"📤 [{idx}/{len(image_paths)}] Enviando {Path(img_path).name}")
-            if self._copy_image_to_clipboard(img_path):
-                if self._send_clipboard_image():
-                    success_count += 1
-                    time.sleep(5) # Rate limit
-                else:
-                    self.logger.error(f"Falha no envio do arquivo {img_path}")
-            else:
-                 self.logger.error(f"Falha no clipboard do arquivo {img_path}")
+            # Send Text / Caption
+            try:
+                msg = caption if caption else self._get_dynamic_message()
+                box = self.driver.find_element(By.CSS_SELECTOR, 'div[contenteditable="true"][data-tab="10"]')
+                box.send_keys(msg + Keys.ENTER)
+                time.sleep(2)
+            except Exception as e:
+                self.logger.warning(f"Texto dinâmico falhou: {e}")
 
-        self.logger.info(f"✅ Envio concluído. {success_count}/{len(image_paths)} imagens.")
+            # Send Images
+            success_count = 0
+            for idx, img_path in enumerate(image_paths, 1):
+                if not os.path.exists(img_path):
+                    continue
+                    
+                self.logger.info(f"📤 [{idx}/{len(image_paths)}] Enviando {Path(img_path).name} para {group_name}")
+                if self._copy_image_to_clipboard(img_path):
+                    if self._send_clipboard_image():
+                        success_count += 1
+                        time.sleep(5) # Rate limit
+                    else:
+                        self.logger.error(f"Falha no envio do arquivo {img_path}")
+                else:
+                     self.logger.error(f"Falha no clipboard do arquivo {img_path}")
+
+            self.logger.info(f"✅ Envio concluído para {group_name}. {success_count}/{len(image_paths)} imagens.")
+            if success_count > 0:
+                overall_success = True
+            
+            time.sleep(5) # Delay entre grupos
         
-        time.sleep(5)
         self.driver.quit()
-        return success_count > 0
+        return overall_success
 
     def send_individual_message(self, phone: str, message: str) -> bool:
         """Envia mensagem de texto para um número específico (link direto)."""

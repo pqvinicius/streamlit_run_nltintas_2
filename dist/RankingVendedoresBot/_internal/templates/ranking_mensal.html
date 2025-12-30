@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: rgba(30, 41, 59, 0.7);
+            --accent: #8b5cf6;
+            --text: #f8fafc;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top, #2e1065, var(--bg));
+            color: var(--text);
+            font-family: 'Segoe UI', 'Inter', sans-serif;
+            width: 1080px;
+            height: 1920px;
+        }
+        .container {
+            padding: 60px 50px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+            padding-bottom: 30px;
+        }
+        .header-text h1 {
+            font-size: 48px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ddd6fe;
+        }
+        .header-text p {
+            color: #a78bfa;
+            font-size: 20px;
+            margin: 5px 0 0;
+        }
+        .logo { max-height: 100px; }
+
+        .ranking {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 80px 1fr 180px 120px;
+            padding: 25px 30px;
+            align-items: center;
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+        .rank { font-size: 36px; font-weight: 900; color: #a78bfa; text-align: center; }
+        .vinfo { display: flex; flex-direction: column; }
+        .name { font-size: 26px; font-weight: 700; color: #fdf4ff; }
+        .loja { font-size: 14px; color: #a78bfa; text-transform: uppercase; }
+
+        .bar-wrap { position: relative; height: 16px; background: #1e1b4b; border-radius: 999px; overflow: hidden; }
+        .bar-fill { height: 100%; width: var(--w, 0%); background: linear-gradient(90deg, #7c3aed, #a78bfa); border-radius: inherit; }
+        
+        .perc { font-size: 28px; font-weight: 900; text-align: right; color: #faf5ff; }
+
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            color: #6d28d9;
+            font-size: 14px;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-text">
+                <h1>{{ titulo }}</h1>
+                <p>{{ subtitle }}</p>
+            </div>
+            {% if logo %}
+            <img src="file:///{{ logo }}" class="logo">
+            {% endif %}
+        </div>
+
+        <div class="ranking">
+            {% for item in ranking %}
+            <div class="row">
+                <div class="rank">{{ item.rank }}</div>
+                <div class="vinfo">
+                    <span class="name">{{ item.nome }}</span>
+                    <span class="loja">{{ item.loja }}</span>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-fill" style="--w: {{ [item.alcance, 100]|min }}%;"></div>
+                </div>
+                <div class="perc">{{ "%.1f"|format(item.alcance) }}%</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            CONQUISTE SEU LUGAR NO TOPO • © {{ company_name|default('Nossa Loja') }}
+            {% if total_paginas > 1 %}<br>Página {{ pagina }} de {{ total_paginas }}{% endif %}
+        </div>
+    </div>
+</body>
+</html>

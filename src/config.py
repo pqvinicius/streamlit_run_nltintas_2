@@ -252,9 +252,13 @@ def get_whatsapp_config() -> Dict[str, Any]:
         val = sec.get(key, str(default)).lower()
         return val in ("true", "1", "yes", "sim")
     
+    nome_grupo_raw = sec.get("nome_grupo", "Informações Comercial NL")
+    nome_grupos = [g.strip() for g in nome_grupo_raw.split(",") if g.strip()]
+    
     return {
         "enviar_whatsapp": get_bool("enviar_whatsapp", False),
-        "nome_grupo": sec.get("nome_grupo", "Informações Comercial NL"),
+        "nome_grupo": nome_grupos[0] if nome_grupos else "Informações Comercial NL",
+        "nome_grupos": nome_grupos,
         "group_id": sec.get("group_id", ""),
         "intervalo_entre_envios": sec.getint("intervalo_entre_envios", fallback=15),
         "wait_time": sec.getint("wait_time", fallback=15),
