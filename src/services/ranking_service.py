@@ -25,6 +25,7 @@ from src.config import (
 from src.html_renderer import TemplateRenderer, html_to_png, image_to_data_uri
 from src.logger import get_logger
 from src.gamificacao_vendedores import get_engine
+from src.services.message_service import get_message_service
 from src.services.whatsapp_service import WhatsAppService
 from src.services.notification_policy import NotificationPolicy
 
@@ -580,8 +581,16 @@ class RankingService:
         wa_cfg = get_whatsapp_config()
         if not wa_cfg.get("enviar_whatsapp", False): return
 
+        msg_service = get_message_service(engine.db)
+        msg_service.seed_initial_data() # Garante templates
+
+        # --- BLOQUEIO GLOBAL: BATCH OU FERIADO ---
         if get_execution_mode() == "BATCH":
             self.logger.info("🔕 MODO BATCH | Notificações desativadas (Horário Noturno).")
+            return
+
+        if msg_service.is_holiday(now.date()):
+            self.logger.info(f"🚩 FERIADO | {now.date()} é feriado registrado. Notificações suspensas.")
             return
 
         # 1. Obter status do turno e especial do dia
@@ -594,22 +603,26 @@ class RankingService:
 
         # 3. Lógica Especial (APENAS NA TARDE 'T')
         if shift == "T" and especial_key:
-            # Selecionar caminhos e legendas baseados na chave
+            # Selecionar caminhos e categorias baseadas na chave
             paths = []
-            caption = ""
+            categoria = None
+            
             if especial_key == "points" and paths_pontos and wa_cfg.get("enviar_ranking_vendedores", True):
                 paths = paths_pontos
-                caption = "🏆 *Ranking de Pontos Oficial* 🏆\nConfira quem está liderando as Olimpíadas de Vendas!"
+                categoria = "PONTOS"
             elif especial_key == "monthly" and paths_mensal:
                 paths = paths_mensal
-                caption = "📊 *Acompanhamento Mensal de Performance* 📊"
+                categoria = "MENSAL"
             elif especial_key == "weekly" and paths_semanal:
                 paths = paths_semanal
-                caption = "📅 *Ranking Semanal Concluído* 📅"
+                categoria = "SEMANAL"
 
             if paths and self.policy._check_weekly_idempotency(especial_key, now):
+                # Busca legenda randômica estratégica
+                caption = msg_service.get_randomized_message(categoria) if categoria else ""
+                
                 sender = WhatsAppService()
-                self.logger.info(f"🔥 ESPECIAL | Enviando Ranking {especial_key.upper()} na última execução do dia...")
+                self.logger.info(f"🔥 ESPECIAL | Enviando Ranking {especial_key.upper()} com legenda estratégica...")
                 if sender.send_ranking(groups := wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")]), 
                                     [str(p) for p in paths], caption=caption):
                     self.policy.registrar_envio_semanal(especial_key, now)
@@ -638,9 +651,15 @@ class RankingService:
                 self.logger.info(f"⏳ DIÁRIO | Pulando Diário: Hoje é dia de {especial_key.upper()} e a tarde é reservada para o Ranking Especial.")
                 pass
             elif shift:
+                # Busca legenda randômica
+                msg_service = get_message_service(engine.db)
+                hour = now.hour
+                categoria = "DIARIO_MANHA" if hour < 13 else "DIARIO_TARDE"
+                caption = msg_service.get_randomized_message(categoria)
+                
                 groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
-                self.logger.info(f"🔔 DISPARO | Iniciando envio Ranking Diário (Turno {shift})...")
-                if sender.send_ranking(groups, [str(p) for p in paths]):
+                self.logger.info(f"🔔 DISPARO | Iniciando envio Ranking Diário ({categoria})...")
+                if sender.send_ranking(groups, [str(p) for p in paths], caption=caption):
                     self.policy.registrar_envio_diario(now, shift)
             else:
                 self.logger.info(f"⏳ DIÁRIO | Fora das janelas de envio (10h-14h ou 16h-20h) ou já enviado hoje.")

@@ -117,3 +117,35 @@ def render_weekly_chart(df_semanas: pd.DataFrame):
         height=300
     )
 
+
+def render_store_leaderboard(df_stores: pd.DataFrame):
+    """Renderiza a tabela de ranking de lojas (Normalizada)."""
+    if df_stores.empty:
+        st.info("Ainda não há dados suficientes para o ranking de lojas.")
+        return
+
+    st.dataframe(
+        df_stores,
+        column_config={
+            "Loja": st.column_config.TextColumn("Unidade", width="medium"),
+            "Vendedores": st.column_config.NumberColumn("👥 Time", format="%d"),
+            "Total Pontos": st.column_config.NumberColumn("⭐ Total", format="%d"),
+            "Pontos por Vendedor": st.column_config.NumberColumn("⚡ Eficiência (Pts/Vend)", format="%.1f"),
+            "Total Ouro": st.column_config.NumberColumn("🥇", format="%d"),
+        },
+        use_container_width=True,
+        hide_index=True
+    )
+
+
+def render_store_comparison_chart(df_comp: pd.DataFrame):
+    """Renderiza gráfico de evolução comparativo entre lojas."""
+    if df_comp.empty:
+        st.info("Selecione lojas para visualizar a comparação de evolução.")
+        return
+
+    # Pivot table to have dates as index and stores as columns
+    df_pivot = df_comp.pivot(index='data', columns='loja', values='pontos_acumulados').fillna(method='ffill').fillna(0)
+    
+    st.line_chart(df_pivot, height=400)
+

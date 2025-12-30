@@ -193,7 +193,6 @@ class GamificacaoDB:
                 UNIQUE(vendedor_nome, semana_uuid)
             )
         """)
-        
         # Tabela Resultado Semanal (Persistência do resultado final da semana - apenas no sábado)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS resultado_semanal (
@@ -218,6 +217,40 @@ class GamificacaoDB:
                 data_envio DATE NOT NULL,
                 hora_envio TEXT NOT NULL,
                 UNIQUE(vendedor_nome, tipo, referencia, data_envio)
+            )
+        """)
+        
+        # --- TABELAS DE MENSAGENS ESTRATÉGICAS ---
+        # 1. Repertório de Frases (Templates)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS mensagens_templates (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                categoria TEXT NOT NULL, -- DIARIO_MANHA, DIARIO_TARDE, SEMANAL, MENSAL, PONTOS
+                texto TEXT NOT NULL,
+                ativo INTEGER DEFAULT 1
+            )
+        """)
+        
+        # 2. Histórico de Envios (Log de Uso)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS mensagens_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                categoria TEXT NOT NULL,
+                template_id INTEGER NOT NULL,
+                data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (template_id) REFERENCES mensagens_templates(id)
+            )
+        """)
+        
+        # 3. Tabela de Feriados
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS feriados (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                data DATE NOT NULL UNIQUE,
+                descricao TEXT,
+                abrangencia TEXT NOT NULL, -- NACIONAL, ESTADUAL, MUNICIPAL
+                uf TEXT,
+                cidade TEXT
             )
         """)
         
@@ -354,6 +387,101 @@ class GamificacaoDB:
         finally:
             conn.close()
     
+    # ============================================================================
+    # MÓDULO DE MENSAGENS RANDÔMICAS (GRUPOS)
+    # ============================================================================
+
+    def get_random_template(self, categoria: str, limite_repeticao: int = 5) -> Optional[tuple[int, str]]:
+        """
+        Busca um template aleatório para a categoria, evitando os últimos X enviados.
+        """
+        conn = self._get_connection()
+        try:
+            cursor = conn.cursor()
+            # Seleciona uma frase ativa da categoria que não esteja no log recente
+            cursor.execute("""
+                SELECT id, texto
+                FROM mensagens_templates
+                WHERE categoria = ?
+                  AND ativo = 1
+                  AND id NOT IN (
+                      SELECT template_id
+                      FROM mensagens_log
+                      WHERE categoria = ?
+                      ORDER BY data_envio DESC
+                      LIMIT ?
+                  )
+                ORDER BY RANDOM()
+                LIMIT 1
+            """, (categoria, categoria, limite_repeticao))
+            
+            return cursor.fetchone()
+        finally:
+            conn.close()
+
+    def registrar_envio_template(self, categoria: str, template_id: int):
+        """Registra o uso de um template no log."""
+        conn = self._get_connection()
+        try:
+            conn.execute("""
+                INSERT INTO mensagens_log (categoria, template_id)
+                VALUES (?, ?)
+            """, (categoria, template_id))
+            conn.commit()
+        finally:
+            conn.close()
+
+    def is_feriado(self, data: date, uf: str = None, cidade: str = None) -> bool:
+        """Verifica se uma data é feriado (Nacional, Estadual ou Municipal)."""
+        conn = self._get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT 1 FROM feriados
+                WHERE data = ?
+                  AND (
+                      abrangencia = 'NACIONAL'
+                      OR (abrangencia = 'ESTADUAL' AND uf = ?)
+                      OR (abrangencia = 'MUNICIPAL' AND cidade = ?)
+                  )
+                LIMIT 1
+            """, (data.isoformat(), uf, cidade))
+            return cursor.fetchone() is not None
+        finally:
+            conn.close()
+
+    def seed_templates(self, templates: List[tuple[str, str]]):
+        """Popula a tabela de templates (inicialização)."""
+        conn = self._get_connection()
+        try:
+            # Verifica se já está populado para evitar duplicidade
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM mensagens_templates")
+            if cursor.fetchone()[0] > 0:
+                logger.info("MENSAGENS | Tabela de templates já populada.")
+                return
+
+            logger.info(f"MENSAGENS | Semeando {len(templates)} templates iniciais...")
+            conn.executemany(
+                "INSERT INTO mensagens_templates (categoria, texto) VALUES (?, ?)",
+                templates
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+    def seed_feriados(self, feriados_list: List[tuple[str, str, str]]):
+        """Popula feriados nacionais (exemplo)."""
+        conn = self._get_connection()
+        try:
+            conn.executemany(
+                "INSERT OR IGNORE INTO feriados (data, descricao, abrangencia) VALUES (?, ?, ?)",
+                feriados_list
+            )
+            conn.commit()
+        finally:
+            conn.close()
+            
     # ============================================================================
     # FUNÇÕES AUXILIARES PARA ESTILO DO RANKING
     # ============================================================================
