@@ -95,8 +95,29 @@ class WhatsAppService:
             edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
             edge_options.add_experimental_option('useAutomationExtension', False)
 
-            # --- Instalação Automática do Driver ---
-            service = EdgeService(EdgeChromiumDriverManager().install())
+            # --- Instalação Automática do Driver com Fallback ---
+            try:
+                # Tenta evitar erros de SSL/Rede corporativa
+                os.environ['WDM_SSL_VERIFY'] = '0'
+                os.environ['WDM_LOG'] = '0'
+                
+                driver_path = EdgeChromiumDriverManager().install()
+                service = EdgeService(driver_path)
+                self.logger.info(f"✅ Driver do Edge baixado/encontrado em: {driver_path}")
+            
+            except Exception as e:
+                self.logger.warning(f"⚠️ Falha ao baixar driver via Manager: {e}")
+                self.logger.info("🔄 Tentando usar msedgedriver.exe local ou do PATH...")
+                
+                # Fallback: Tenta driver local ou do PATH
+                local_driver = Path.cwd() / "msedgedriver.exe"
+                if local_driver.exists():
+                    service = EdgeService(str(local_driver))
+                    self.logger.info(f"✅ Usando driver local: {local_driver}")
+                else:
+                    # Tenta sorte no PATH do sistema
+                    service = EdgeService()
+                    self.logger.info("🤞 Tentando driver do PATH do sistema...")
             
             driver = webdriver.Edge(service=service, options=edge_options)
             
