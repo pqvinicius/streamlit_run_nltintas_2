@@ -802,8 +802,10 @@ class GamificacaoDB:
     def get_ranking_pontos(self, data_ref: date) -> List[Dict[str, Any]]:
         """
         Ranking Geral de Pontos (Nível Olimpíadas).
-        Acumulado desde o início da campanha (29/12/2024).
-        Filtra gerentes e vendedores inativos (mesma lógica do ranking diário).
+        Critérios de Ordenação (User Request 30/12/2024):
+        1. Pontos Totais (Decrescente)
+        2. % Alcance Meta Mensal (Decrescente) - Desempate
+        3. Nome (Crescente) - Desempate final
         """
         inicio = date(2024, 12, 29)
         fim = data_ref
@@ -811,7 +813,8 @@ class GamificacaoDB:
         conn = self._get_connection()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        # JOIN com vendedores para filtrar inativos e gerentes
+        
+        # 1. Busca Pontos Totais (Query Original)
         c.execute("""
             SELECT 
                 t.vendedor_nome as nome, 
@@ -820,6 +823,7 @@ class GamificacaoDB:
                 SUM(CASE WHEN t.tipo_trofeu='PRATA' THEN 1 ELSE 0 END) as qtd_prata,
                 SUM(CASE WHEN t.tipo_trofeu='OURO' THEN 1 ELSE 0 END) as qtd_ouro,
                 SUM(CASE WHEN t.tipo_trofeu LIKE 'BONUS_%' THEN 1 ELSE 0 END) as qtd_bonus,
+                v.loja as loja,
                 v.tipo as tipo_vendedor,
                 v.ativo as ativo
             FROM trofeus t
@@ -827,27 +831,81 @@ class GamificacaoDB:
             WHERE t.data_conquista BETWEEN ? AND ?
               AND (v.ativo IS NULL OR v.ativo = 1) 
               AND (v.tipo IS NULL OR v.tipo != 'GERENTE')
-            GROUP BY t.vendedor_nome, v.tipo, v.ativo
-            ORDER BY pontos_total DESC
+            GROUP BY t.vendedor_nome, v.loja, v.tipo, v.ativo
         """, (inicio, fim))
         rows = c.fetchall()
+        
+        # 2. Prepara cálculo de % Meta Mensal (para desempate)
+        from src.feriados import FeriadosManager
+        from src.config import get_mes_comercial_config
+        
+        mes_config = get_mes_comercial_config()
+        feriados_mgr = FeriadosManager()
+        inicio_mes, fim_mes = get_periodo_mes_comercial(data_ref, mes_config)
+        
+        # Calcula fim do período completo (dia 25)
+        if data_ref.day <= mes_config["dia_fim"]:
+            fim_periodo_completo = data_ref.replace(day=mes_config["dia_fim"])
+        else:
+            if data_ref.month == 12:
+                fim_periodo_completo = date(data_ref.year + 1, 1, mes_config["dia_fim"])
+            else:
+                fim_periodo_completo = date(data_ref.year, data_ref.month + 1, mes_config["dia_fim"])
+
+        # Cache de Métricas Mensais
+        stats_mensais = {}
+        c.execute("""
+            SELECT vendedor_nome, SUM(venda) as venda_mes, MAX(meta) as meta_diaria
+            FROM resultado_meta
+            WHERE data BETWEEN ? AND ?
+            GROUP BY vendedor_nome
+        """, (inicio_mes, fim_mes))
+        for rm in c.fetchall():
+            stats_mensais[rm['vendedor_nome']] = {
+                'venda': rm['venda_mes'] or 0,
+                'meta_diaria': rm['meta_diaria'] or 0
+            }
+        
         conn.close()
         
         res = []
-        rank = 1
         for r in rows:
+            nome = r['nome']
+            loja = r['loja'] or ""
+            
+            # Recupera/Calcula Alcance Mensal
+            alcance_mensal = 0.0
+            stats = stats_mensais.get(nome)
+            
+            if stats and stats['meta_diaria'] > 0:
+                du_total = feriados_mgr.calcular_dias_uteis_periodo(inicio_mes, fim_periodo_completo, loja)
+                meta_mensal_total = stats['meta_diaria'] * du_total
+                
+                if meta_mensal_total > 0:
+                    alcance_mensal = (stats['venda'] / meta_mensal_total) * 100
+            
             res.append({
-                "rank": rank,
-                "nome": r['nome'],
+                "nome": nome,
                 "pontos": r['pontos_total'] or 0,
                 "medalhas": {
                     "BRONZE": r['qtd_bronze'] or 0,
                     "PRATA": r['qtd_prata'] or 0,
                     "OURO": r['qtd_ouro'] or 0,
                     "BONUS": r['qtd_bonus'] or 0
-                }
+                },
+                "_alcance_mensal": alcance_mensal  # Campo interno para ordenação
             })
-            rank += 1
+
+        # 3. Aplica Ordenação: Pontos DESC > % Meta DESC > Nome ASC
+        # Python sort é estável, então ordenamos na ordem inversa dos critérios
+        res.sort(key=lambda x: x['nome']) # 3. Nome ASC
+        res.sort(key=lambda x: x['_alcance_mensal'], reverse=True) # 2. % Meta DESC
+        res.sort(key=lambda x: x['pontos'], reverse=True) # 1. Pontos DESC
+        
+        # Atribui Rank final
+        for idx, item in enumerate(res, start=1):
+            item['rank'] = idx
+            
         return res
 
 

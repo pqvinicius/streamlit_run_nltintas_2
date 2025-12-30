@@ -21,15 +21,51 @@ class MedalService:
     ) -> pd.DataFrame:
         """
         Carrega tabela de medalhas (quadro geral).
-        
-        Args:
-            start_date: Data de início (formato YYYY-MM-DD).
-            end_date: Data de fim (formato YYYY-MM-DD).
-        
-        Returns:
-            DataFrame com colunas: Vendedor, Pontos, Ouro, Prata, Bronze.
+        Ordenação (User Request 30/12/2024):
+        1. Pontos (filtro de data) - Decrescente
+        2. % Meta Mensal (Current Status) - Decrescente
+        3. Nome - Crescente
         """
-        return queries.load_medal_table(start_date, end_date)
+        # 1. Carrega dados base (Pontos/Medalhas no período selecionado)
+        df = queries.load_medal_table(start_date, end_date)
+        
+        if df.empty:
+            return df
+
+        # 2. Busca dados de Alcance Mensal (via GamificacaoDB para consistência)
+        # Precisamos do % de alcance mensal atual para desempatar
+        from src.gamificacao_vendedores import GamificacaoDB
+        from datetime import date
+        
+        try:
+            db = GamificacaoDB()
+            # Reaproveita a lógica de cálculo mensal do ranking oficial
+            # Ranking oficial já retorna calculado e sorted, mas precisamos mapear para o DF atual
+            rank_oficial = db.get_ranking_pontos(date.today())
+            
+            # Cria mapa {nome: alcance_mensal}
+            mapa_alcance = {item['nome']: item.get('_alcance_mensal', 0.0) for item in rank_oficial}
+            
+            # 3. Enriquece DF
+            df['_alcance_mensal'] = df['Vendedor'].map(mapa_alcance).fillna(0.0)
+            
+            # 4. Ordena Python-side (Multi-index sort)
+            # Pontos DESC, Alcance DESC, Nome ASC
+            df = df.sort_values(
+                by=['Pontos', '_alcance_mensal', 'Vendedor'], 
+                ascending=[False, False, True]
+            )
+            
+            # Remove coluna auxiliar se não quiser exibir (User pediu ordenação, não exibição explicita)
+            # Mas pode ser útil manter oculta ou remover. Vamos remover para não quebrar UI existente.
+            df = df.drop(columns=['_alcance_mensal'])
+            
+            return df
+            
+        except Exception as e:
+            # Fallback: retorna ordenação original do SQL se der erro na lógica extra
+            print(f"Erro no tie-breaker: {e}")
+            return df
     
     @st.cache_data(ttl=60, show_spinner=True)
     def get_athlete_history(_self, vendedor: str) -> pd.DataFrame:
