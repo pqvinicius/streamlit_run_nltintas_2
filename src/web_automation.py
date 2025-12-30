@@ -17,7 +17,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from src.config import get_web_config, get_paths, get_base_dir
+from src.config import get_web_config, get_paths, get_base_dir, get_execution_mode
 from src.logger import get_logger
 import pandas as pd
 
@@ -202,14 +202,17 @@ def executar_web_automation(
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.accept_insecure_certs = True
     
+    exec_mode = get_execution_mode()
+    
     # Modo headless (sem abrir janela do Chrome)
-    if WEB_CONFIG.get("headless", True):
-        chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--window-size=1920,1080")
+    if exec_mode == "BATCH" or WEB_CONFIG.get("headless", True):
+        logger.info(f"🌐 [WEB] Modo {exec_mode}: Ativando Headless Moderno")
+        chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+    else:
+        chrome_options.add_argument("--window-size=1920,1080")
     
     # Logs reduzidos
     chrome_options.add_argument("--log-level=3")  # Apenas erros fatais

@@ -52,25 +52,43 @@ class DatabaseConnection:
             FileNotFoundError: Se o banco não existir.
             sqlite3.Error: Em caso de erro de conexão.
         """
-        if not self.exists:
-            raise FileNotFoundError(
-                f"Banco de dados não encontrado em {self._db_path}. "
-                "Certifique-se de que o arquivo existe e está acessível."
-            )
-        
-        if read_only:
-            # Modo read-only usando URI
-            uri = f"file:{self._db_path}?mode=ro"
-            conn = sqlite3.connect(uri, uri=True)
-        else:
-            conn = sqlite3.connect(str(self._db_path))
-        
-        conn.row_factory = sqlite3.Row
-        
+        conn = None
         try:
+            if not self.exists or self._db_path.stat().st_size < 10240:
+                # MODO HÍBRIDO (In-Memory Fallback)
+                conn = sqlite3.connect(":memory:")
+                self._load_csv_snapshots(conn)
+            else:
+                # MODO PADRÃO (Physical DB)
+                if read_only:
+                    uri = f"file:{self._db_path}?mode=ro"
+                    conn = sqlite3.connect(uri, uri=True)
+                else:
+                    conn = sqlite3.connect(str(self._db_path))
+            
+            conn.row_factory = sqlite3.Row
             yield conn
+        except Exception as e:
+            if not conn and not self.exists:
+                 raise FileNotFoundError(f"Banco não encontrado e erro ao carregar snapshots: {e}")
+            raise e
         finally:
-            conn.close()
+            if conn:
+                conn.close()
+
+    def _load_csv_snapshots(self, conn: sqlite3.Connection):
+        """Carrega arquivos CSV do diretório data/ para o banco em memória."""
+        import pandas as pd
+        from dashboard.config.paths import get_data_dir
+        
+        data_dir = get_data_dir()
+        tables = ["vendedores", "resultado_meta", "trofeus", "resultado_semanal", "metas_semanais"]
+        
+        for table in tables:
+            csv_path = data_dir / f"{table}.csv"
+            if csv_path.exists():
+                df = pd.read_csv(csv_path)
+                df.to_sql(table, conn, if_exists="replace", index=False)
     
     def test_connection(self) -> bool:
         """

@@ -20,6 +20,7 @@ from src.config import (
     get_gamificacao_config,
     get_mes_comercial_config,
     get_whatsapp_config,
+    get_execution_mode,
 )
 from src.html_renderer import TemplateRenderer, html_to_png, image_to_data_uri
 from src.logger import get_logger
@@ -390,6 +391,7 @@ class RankingService:
             paths_gerados.append(html_to_png(html, dest, viewport=(1080, 1080)))
         today = datetime.now().date()
         engine = self._execute_gamification_pipeline(df_completo, today)
+        self.logger.info(f"🎮 GAMIFICACAO | Engine: {'OK' if engine else 'FALHA'}")
         paths_pontos = []
         paths_semanal = []
         paths_mensal = []
@@ -427,6 +429,10 @@ class RankingService:
 
         # 4. Notifications (All Types)
         self._notify_all(paths_gerados, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp=send_whatsapp)
+        
+        # 5. Export Data Snapshots for Dashboard (Streamlit Cloud Sync)
+        if engine:
+            self._export_snapshots(engine)
         
         return paths_gerados[0] if paths_gerados else None
 
@@ -574,44 +580,45 @@ class RankingService:
         wa_cfg = get_whatsapp_config()
         if not wa_cfg.get("enviar_whatsapp", False): return
 
-        # 1. Diário & Individual
+        if get_execution_mode() == "BATCH":
+            self.logger.info("🔕 MODO BATCH | Notificações desativadas (Horário Noturno).")
+            return
+
+        # 1. Obter status do turno e especial do dia
+        shift = self.policy.deve_enviar_ranking_diario(now)
+        especial_key = self.policy.hoje_tem_ranking_especial(now)
+        
+        # 2. Lógica Diário & Individual (Sempre tenta respeitar janelas M/T)
+        # Nota: Se for Tarde de dia Especial, o _notify cuidará de pular o Diário.
         self._notify(paths_diario, engine, send_whatsapp=True)
 
-        # 2. Pontos (Envio Grupo - Segunda-feira)
-        if paths_pontos and wa_cfg.get("enviar_ranking_vendedores", True):
-            if self.policy.deve_enviar_ranking_pontos(now):
+        # 3. Lógica Especial (APENAS NA TARDE 'T')
+        if shift == "T" and especial_key:
+            # Selecionar caminhos e legendas baseados na chave
+            paths = []
+            caption = ""
+            if especial_key == "points" and paths_pontos and wa_cfg.get("enviar_ranking_vendedores", True):
+                paths = paths_pontos
+                caption = "🏆 *Ranking de Pontos Oficial* 🏆\nConfira quem está liderando as Olimpíadas de Vendas!"
+            elif especial_key == "monthly" and paths_mensal:
+                paths = paths_mensal
+                caption = "📊 *Acompanhamento Mensal de Performance* 📊"
+            elif especial_key == "weekly" and paths_semanal:
+                paths = paths_semanal
+                caption = "📅 *Ranking Semanal Concluído* 📅"
+
+            if paths and self.policy._check_weekly_idempotency(especial_key, now):
                 sender = WhatsAppService()
-                groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
-                self.logger.info("🔔 DISPARO | Enviando Ranking de Pontos...")
-                if sender.send_ranking(groups, [str(p) for p in paths_pontos], 
-                                    caption="🏆 *Ranking de Pontos Oficial* 🏆\nConfira quem está liderando as Olimpíadas de Vendas!"):
-                    self.policy.registrar_envio_semanal("points", now)
+                self.logger.info(f"🔥 ESPECIAL | Enviando Ranking {especial_key.upper()} na última execução do dia...")
+                if sender.send_ranking(groups := wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")]), 
+                                    [str(p) for p in paths], caption=caption):
+                    self.policy.registrar_envio_semanal(especial_key, now)
                 try: sender.driver.quit()
                 except: pass
 
-        # 3. Semanal (Sexta-feira)
-        if paths_semanal and self.policy.deve_enviar_ranking_semanal(now):
-            sender = WhatsAppService()
-            groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
-            self.logger.info("🔔 DISPARO | Enviando Ranking Semanal...")
-            if sender.send_ranking(groups, [str(p) for p in paths_semanal], 
-                                caption="📅 *Ranking Semanal Concluído* 📅"):
-                self.policy.registrar_envio_semanal("weekly", now)
-            try: sender.driver.quit()
-            except: pass
-
-        # 4. Mensal (Quarta-feira - Snapshot)
-        if paths_mensal and self.policy.deve_enviar_ranking_mensal(now):
-            sender = WhatsAppService()
-            groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
-            self.logger.info("🔔 DISPARO | Enviando Snapshot Mensal...")
-            if sender.send_ranking(groups, [str(p) for p in paths_mensal], 
-                                caption="📊 *Acompanhamento Mensal de Performance* 📊"):
-                self.policy.registrar_envio_semanal("monthly", now)
-            try: sender.driver.quit()
-            except: pass
-
-    def _notify(self, paths: list[Path], engine: Any, send_whatsapp: bool = True):
+        if get_execution_mode() == "BATCH":
+            return
+            
         wa_cfg = get_whatsapp_config()
         if not wa_cfg.get("enviar_whatsapp", False): return
         if not send_whatsapp:
@@ -624,38 +631,84 @@ class RankingService:
         # --- Lógica de Grupo (Diário) ---
         if wa_cfg.get("enviar_ranking_diario", True) and paths:
             shift = self.policy.deve_enviar_ranking_diario(now)
-            if shift:
+            especial_key = self.policy.hoje_tem_ranking_especial(now)
+            
+            # REGRA: Se for Tarde de um dia Especial, NÃO enviar Diário (Especial tem prioridade na Tarde)
+            if shift == "T" and especial_key:
+                self.logger.info(f"⏳ DIÁRIO | Pulando Diário: Hoje é dia de {especial_key.upper()} e a tarde é reservada para o Ranking Especial.")
+                pass
+            elif shift:
                 groups = wa_cfg.get("nome_grupos", [wa_cfg.get("nome_grupo", "Informações Comercial NL")])
                 self.logger.info(f"🔔 DISPARO | Iniciando envio Ranking Diário (Turno {shift})...")
                 if sender.send_ranking(groups, [str(p) for p in paths]):
                     self.policy.registrar_envio_diario(now, shift)
+            else:
+                self.logger.info(f"⏳ DIÁRIO | Fora das janelas de envio (10h-14h ou 16h-20h) ou já enviado hoje.")
         
         # --- Lógica Individual (Conquistas) ---
         if wa_cfg.get("enviar_individual", False) and engine:
-             resumo = engine.db.get_resumo_dia(now.date())
-             contatos = self._carregar_contatos()
-             
-             if resumo and contatos:
-                 for info in resumo:
-                     vendedor = info['nome']
-                     conquistas = info.get('trofeus', [])
-                     pontos = info.get('pontos_mes', 0)
-                     
-                     if self.policy.deve_enviar_mensagem_individual(vendedor, now, conquistas):
-                         nome_norm = self._normalizar_nome(vendedor)
-                         fone_data = contatos.get(nome_norm)
-                         
-                         if fone_data:
-                             fone = fone_data['telefone']
-                             msg = self.policy.gerar_mensagem_conquista(vendedor, conquistas, pontos)
-                             self.logger.info(f"📱 INDIVIDUAL | Notificando {vendedor} sobre novas conquistas...")
-                             if sender.send_individual_message(fone, msg):
-                                 # Registrar envio para evitar spam na próxima execução do mesmo dia
-                                 self.policy.registrar_envio_individual(vendedor, now, conquistas)
-                                 time.sleep(15) # Rate limit
+            resumo = engine.db.get_resumo_dia(now.date())
+            self.logger.info(f"📊 INDIVIDUAL | Verificando conquistas do dia: {len(resumo) if resumo else 0} vendedores com atividade.")
+            contatos = self._carregar_contatos()
+            
+            if resumo and contatos:
+                for info in resumo:
+                    vendedor = info['nome']
+                    conquistas = info.get('trofeus', [])
+                    pontos = info.get('pontos_mes', 0)
+                    
+                    # Log de debug para cada vendedor com troféu
+                    if conquistas:
+                        self.logger.debug(f"🔍 INDIVIDUAL | Vendedor: {vendedor} | Troféus: {conquistas}")
+                    
+                    if self.policy.deve_enviar_mensagem_individual(vendedor, now, conquistas):
+                        nome_norm = self._normalizar_nome(vendedor)
+                        fone_data = contatos.get(nome_norm)
+                        
+                        if fone_data:
+                            fone = fone_data['telefone']
+                            msg = self.policy.gerar_mensagem_conquista(vendedor, conquistas, pontos)
+                            self.logger.info(f"📱 INDIVIDUAL | Notificando {vendedor} sobre novas conquistas...")
+                            if sender.send_individual_message(fone, msg):
+                                self.policy.registrar_envio_individual(vendedor, now, conquistas)
+                                time.sleep(1) # Reduzido para 1s (pywhatkit já tem seus próprios delays)
+                    else:
+                        # Log silencioso ou debug para não poluir
+                        self.logger.debug(f"INDIVIDUAL | {vendedor} já recebeu as notificações de hoje ({conquistas}).")
 
-                 try: sender.driver.quit() 
-                 except: pass
+        try: sender.driver.quit() 
+        except: pass
+
+    def _export_snapshots(self, engine: Any):
+        """Exporta tabelas do banco para CSV para sincronização com o dashboard."""
+        try:
+            from src.config import get_paths
+            data_dir = Path(get_paths()["data_dir"])
+            
+            # Tabelas para exportar
+            tables = ["vendedores", "resultado_meta", "trofeus", "resultado_semanal", "metas_semanais"]
+            
+            self.logger.info(f"📊 SNAPSHOT | Exportando {len(tables)} tabelas para CSV...")
+            
+            import sqlite3
+            db_path = engine.db.db_path
+            
+            with sqlite3.connect(db_path) as conn:
+                for table in tables:
+                    try:
+                        df = pd.read_sql(f"SELECT * FROM {table}", conn)
+                        dest = data_dir / f"{table}.csv"
+                        df.to_csv(dest, index=False, encoding="utf-8")
+                        # self.logger.debug(f"SNAPSHOT | {table} -> {dest.name}")
+                    except Exception as e:
+                        if "no such table" in str(e).lower():
+                            continue
+                        self.logger.warning(f"SNAPSHOT | Erro ao exportar tabela {table}: {e}")
+            
+            self.logger.info("📊 SNAPSHOT | Exportação concluída com sucesso.")
+            
+        except Exception as e:
+            self.logger.error(f"SNAPSHOT | Erro crítico na exportação: {e}")
 
 # Helper for Facade
 def get_ranking_service():

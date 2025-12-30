@@ -13,7 +13,7 @@ from src.governance.execution_logger import ExecutionLogger
 
 # Imports essenciais
 from src.web_automation import executar_web_automation
-from src.config import get_paths, get_base_dir
+from src.config import get_paths, get_base_dir, get_execution_mode
 from src.daily_seller_ranking import gerar_ranking_vendedores
 
 # Configura logger singleton para uso GLOBAL
@@ -164,16 +164,21 @@ def main() -> None:
         print(f"Erro no backup (prosseguindo): {e}")
     # =========================
     
+    # 2. Define Modo (PROD/DEV)
     is_frozen = getattr(sys, "frozen", False)
-    env = "PROD" if is_frozen else "DEV"
+    args = _parse_args()
+    
+    # Se estiver rodando para valer (enviando whatsapp), tratamos como PROD para os logs
+    env = "PROD" if (is_frozen or not args.no_whatsapp) else "DEV"
     
     exec_log = ExecutionLogger(db_path=db_path, environment=env, trigger_type="MANUAL")
     
     logger = get_logger(modo=env)
     
-    args = _parse_args()
+    exec_mode = get_execution_mode()
     logger.info(f"PIPELINE | INICIANDO EXECUCAO: {logger.name}")
-    exec_log.log("PIPELINE", "STARTED", message=f"Modo: {env}")
+    logger.info(f"PIPELINE | MODO: {exec_mode} | Envio WhatsApp: {'HABILITADO' if not args.no_whatsapp else 'DESABILITADO'}")
+    exec_log.log("PIPELINE", "STARTED", message=f"Modo: {env} | Runtime: {exec_mode}")
 
     try:
         paths_cfg = get_paths()
@@ -192,19 +197,25 @@ def main() -> None:
         # === GIT SYNC (Bonus: Atualiza Streamlit Cloud) ===
         try:
             import subprocess
-            logger.info("GIT SYNC | Sincronizando dados com o repositório...")
-            # Adiciona DBs e Imagens
-            subprocess.run(["git", "add", "data/*.db", "data/*.png"], capture_output=True)
-            # Tenta commitar se houver mudanças
-            commit_res = subprocess.run(["git", "commit", "-m", f"Auto-sync: {datetime.now():%d/%m/%Y %H:%M}"], capture_output=True)
-            if commit_res.returncode == 0:
-                logger.info("GIT SYNC | Mudanças detectadas, realizando push...")
-                subprocess.run(["git", "push"], capture_output=True)
-                logger.info("GIT SYNC | Sucesso!")
-            else:
-                logger.info("GIT SYNC | Sem mudanças para sincronizar.")
+            logger.info(f"GIT SYNC | Sincronizando dados no modo {exec_mode}...")
+            
+            # 1. Add all changes (per request: git add .)
+            subprocess.run(["git", "add", "."], check=True, capture_output=True)
+            
+            # 2. Commit with descriptive message
+            # check=False is used because git commit returns non-zero if there's nothing to commit
+            commit_msg = f"Auto-sync DB ({exec_mode.lower()}) | {datetime.now():%Y-%m-%d %H:%M}"
+            subprocess.run(["git", "commit", "-m", commit_msg], check=False, capture_output=True)
+            
+            # 3. Push changes
+            logger.info("GIT SYNC | Realizando push para o repositório...")
+            subprocess.run(["git", "push"], check=True, capture_output=True)
+            logger.info("GIT SYNC | Sucesso!")
+            
+        except subprocess.CalledProcessError as e:
+             logger.warning(f"GIT SYNC | Erro em comando Git: {e.stderr.decode() if e.stderr else e}")
         except Exception as e:
-            logger.warning(f"GIT SYNC | Falha ao sincronizar: {e}")
+            logger.warning(f"GIT SYNC | Falha inesperada ao sincronizar: {e}")
         # ==================================================
         
         logger.info("PIPELINE | Execucao finalizada com sucesso")

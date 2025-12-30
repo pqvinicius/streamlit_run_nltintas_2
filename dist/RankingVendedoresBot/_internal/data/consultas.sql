@@ -1,1 +1,3 @@
-USE DATABASE gamificacao_vendedores.db
+UPDATE vendedores
+SET loja = 13
+WHERE id = 76

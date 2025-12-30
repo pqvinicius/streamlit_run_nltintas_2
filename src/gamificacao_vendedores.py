@@ -208,6 +208,19 @@ class GamificacaoDB:
             )
         """)
         
+        # Tabela Notificações Enviadas (Idempotência WhatsApp)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS notificacoes_enviadas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                vendedor_nome TEXT NOT NULL,
+                tipo TEXT NOT NULL,          -- 'RANKING_DIARIO', 'RANKING_SEMANAL', 'CONQUISTA_INDIVIDUAL', etc.
+                referencia TEXT NOT NULL,    -- '2025-01-29_M', '2025-W05', 'BRONZE+PRATA'
+                data_envio DATE NOT NULL,
+                hora_envio TEXT NOT NULL,
+                UNIQUE(vendedor_nome, tipo, referencia, data_envio)
+            )
+        """)
+        
         conn.commit()
         conn.close()
 

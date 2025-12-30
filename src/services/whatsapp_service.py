@@ -21,6 +21,7 @@ try:
     from selenium.webdriver.common.action_chains import ActionChains
     from PIL import Image
     import win32clipboard
+    import pywhatkit
 except ImportError:
     webdriver = None
     win32clipboard = None
@@ -50,22 +51,84 @@ class WhatsAppService:
         if self.driver:
             return True
 
-        try:
+        wa_cfg = get_whatsapp_config()
+        usar_perfil_real = wa_cfg.get("usar_perfil_real", True)
+
+        def create_driver(use_real_profile: bool) -> Optional[webdriver.Chrome]:
+            # --- Forçar fechamento do Chrome para liberar LOCK ---
+            try:
+                self.logger.info("🧹 Limpando instâncias residuais do Chrome...")
+                # Usando shell=True para garantir execução do comando legado
+                subprocess.call("taskkill /F /IM chrome.exe /T", shell=True)
+                time.sleep(2)
+            except: pass
+
             chrome_options = Options()
-            session_path = os.path.abspath(self.session_dir)
-            chrome_options.add_argument(f"user-data-dir={session_path}")
+            
+            if use_real_profile:
+                # CAMINHO REAL (Windows Default)
+                user_data_dir = os.path.join(os.environ['LOCALAPPDATA'], 'Google', 'Chrome', 'User Data')
+                chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
+                chrome_options.add_argument("--profile-directory=Default")
+                self.logger.info("🌐 Inicializando WhatsApp (PERFIL REAL - DEFAULT)...")
+            else:
+                # CAMINHO LOCAL PERSISTENTE (whatsapp_session)
+                # Garante que o QR code persistirá aqui se o perfil real falhar
+                base_dir = Path(__file__).parent.parent.parent
+                session_path = (base_dir / self.session_dir).absolute()
+                session_path.mkdir(parents=True, exist_ok=True)
+                
+                chrome_options.add_argument(f"--user-data-dir={session_path}")
+                self.logger.info(f"🌐 Inicializando WhatsApp (SESSÃO LOCAL PERSISTENTE: {self.session_dir})...")
+
+            # Anti-Bot Flags Essenciais
+            chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+            chrome_options.add_argument("--start-maximized")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
+            # NÃO usar Headless para persistência de login
             
-            if self.headless:
-                chrome_options.add_argument("--headless=new")
+            # User-Agent Real
+            chrome_options.add_argument(
+                "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            )
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            chrome_options.add_experimental_option('useAutomationExtension', False)
 
-            self.logger.info("🌐 Inicializando WhatsApp Service (Selenium)...")
-            self.driver = webdriver.Chrome(options=chrome_options)
-            self.driver.maximize_window()
+            driver = webdriver.Chrome(options=chrome_options)
+            
+            # Navegação IMEDIATA para o WhatsApp (Resolve o problema da janela parada)
+            driver.get("https://web.whatsapp.com")
+            
+            # Bypass adicional via JS
+            driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+            
+            return driver
+
+        try:
+            # 1. Tenta Perfil Real se configurado (Prioridade 1)
+            if usar_perfil_real:
+                try:
+                    self.driver = create_driver(use_real_profile=True)
+                    return True
+                except Exception as e:
+                    if "user data directory is already in use" in str(e).lower() or "session not created" in str(e).lower():
+                        self.logger.warning("⚠️ Perfil Real travado. Tentando Fallback para Sessão Local...")
+                    else:
+                        raise e
+            
+            # 2. Fallback para Sessão Local Isolada (QR persiste aqui se escaneado uma vez)
+            self.driver = create_driver(use_real_profile=False)
             return True
+
         except Exception as e:
-            self.logger.error(f"❌ Falha ao iniciar driver: {e}", exc_info=True)
+            self.logger.error(f"❌ Falha crítica ao iniciar driver: {e}")
+            if self.driver:
+                try: self.driver.quit()
+                except: pass
+                self.driver = None
             return False
 
     def _wait_for_login(self, timeout: int = 60) -> bool:
@@ -292,54 +355,36 @@ class WhatsAppService:
         return overall_success
 
     def send_individual_message(self, phone: str, message: str) -> bool:
-        """Envia mensagem de texto para um número específico (link direto)."""
-        if not self._init_driver(): return False
-        if not self._wait_for_login(): return False
-        
+        """Envia mensagem de texto via pywhatkit (usa o browser padrão)."""
         try:
-            # Limpa telefone (apenas dígitos)
+            # Limpa telefone
             phone_clean = "".join(filter(str.isdigit, str(phone)))
-            
-            # Normalização Brasil: Se tem 10 ou 11 dígitos, adiciona o 55
             if len(phone_clean) in [10, 11] and not phone_clean.startswith("55"):
-                phone_clean = "55" + phone_clean
+                phone_clean = "+55" + phone_clean
+            elif not phone_clean.startswith("+"):
+                phone_clean = "+" + phone_clean
                 
-            link = f"https://web.whatsapp.com/send?phone={phone_clean}"
+            self.logger.info(f"💬 [PYWHATKIT] Enviando para {phone_clean}...")
             
-            self.logger.info(f"💬 Enviando para {phone_clean}...")
-            self.driver.get(link)
+            # pywhatkit.sendwhatmsg_instantly(phone, message, wait_time, tab_close, close_time)
+            wa_cfg = get_whatsapp_config()
+            wait_time = wa_cfg.get("wait_time", 15)
             
-            # Aguarda carregar chat (data-tab="10" é o input de texto)
-            WebDriverWait(self.driver, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'div[contenteditable="true"][data-tab="10"]'))
+            # Nota: pywhatkit abre o brownser padrão. 
+            # Se for rodar muitas msgs, o wait_time deve ser decente para não encavalar.
+            pywhatkit.sendwhatmsg_instantly(
+                phone_no=phone_clean,
+                message=message,
+                wait_time=wait_time,
+                tab_close=True,
+                close_time=3
             )
             
-            # Digita e envia
-            box = self.driver.find_element(By.CSS_SELECTOR, 'div[contenteditable="true"][data-tab="10"]')
-            # WhatsApp Web as vezes precisa de um clique
-            box.click()
-            
-            # Suporte a quebra de linha? Sim, message pode ter \n, send_keys lida com isso ou shift+enter
-            # Melhor colar ou enviar por partes se for muito longo. send_keys serve para texto simples.
-            # Convertendo \n em Shift+Enter é complexo.
-            # Simples send_keys com \n geralmente envia (enter).
-            # Para segurança, vamos colar via JS ou Clipboard se for complexo.
-            # Mas message simples vai direto.
-            
-            # Tratamento de quebras de linha para send_keys
-            for line in message.split('\n'):
-                box.send_keys(line)
-                ActionChains(self.driver).key_down(Keys.SHIFT).send_keys(Keys.ENTER).key_up(Keys.SHIFT).perform()
-            
-            time.sleep(1)
-            box.send_keys(Keys.ENTER)
-            
-            time.sleep(3) # Aguarda envio
-            self.logger.info(f"✅ Enviado para {phone_clean}")
+            self.logger.info(f"✅ [PYWHATKIT] Comando enviado para {phone_clean}")
             return True
             
         except Exception as e:
-            self.logger.error(f"❌ Erro ao enviar para {phone}: {e}")
+            self.logger.error(f"❌ Erro ao enviar individual via pywhatkit: {e}")
             return False
 
 

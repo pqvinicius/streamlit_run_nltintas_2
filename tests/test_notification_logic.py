@@ -47,11 +47,26 @@ def test_simulation():
     print(f"Evoluiu para Prata: {should3}") # True
     if should3: policy.registrar_envio_individual(vendedor, quarta, t2)
     
-    print("\n--- Mensagem Gerada ---")
-    print(policy.gerar_mensagem_conquista(vendedor, t2, 1500))
-
-    # Limpeza
-    # if test_history.exists(): test_history.unlink()
+    print("\n--- Teste 4: Prioridade Especial (Tarde) ---")
+    quarta_manha = datetime(2025, 1, 8, 11, 0)
+    quarta_tarde = datetime(2025, 1, 8, 17, 0)
+    
+    # Manhã de Quarta: Deve enviar DIÁRIO
+    shift_m = policy.deve_enviar_ranking_diario(quarta_manha)
+    especial_m = policy.hoje_tem_ranking_especial(quarta_manha)
+    print(f"Quarta 11h: Turno={shift_m}, Especial={especial_m}")
+    # Simula lógica do RankingService: se shift e não (shift=='T' and especial), envia diário
+    envia_diario_m = shift_m and not (shift_m == "T" and especial_m)
+    print(f"  Envia Diário? {envia_diario_m}") # Esperado: True
+    
+    # Tarde de Quarta: Deve enviar MENSAL e PULAR DIÁRIO
+    shift_t = policy.deve_enviar_ranking_diario(quarta_tarde)
+    especial_t = policy.hoje_tem_ranking_especial(quarta_tarde)
+    print(f"Quarta 17h: Turno={shift_t}, Especial={especial_t}")
+    envia_diario_t = shift_t and not (shift_t == "T" and especial_t)
+    envia_especial_t = (shift_t == "T" and especial_t)
+    print(f"  Envia Diário? {envia_diario_t}")    # Esperado: False
+    print(f"  Envia Especial? {envia_especial_t}") # Esperado: True
 
 if __name__ == "__main__":
     test_simulation()

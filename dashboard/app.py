@@ -26,8 +26,25 @@ medal_service = MedalService()
 period_service = PeriodService()
 
 # --- HEADER ---
-st.title("🏆 NL CHAMPIONS LEAGUE")
-st.markdown("### 🔥 Competição em andamento")
+# Busca logo (jpg, png ou jpeg)
+logo_path = None
+for ext in [".jpg", ".png", ".jpeg"]:
+    p = Path(__file__).parent.parent / "data" / f"logo_empresa{ext}"
+    if p.exists():
+        logo_path = p
+        break
+
+if logo_path:
+    col_logo, col_text = st.columns([1, 6])
+    with col_logo:
+        st.image(str(logo_path), width=120)
+    with col_text:
+        st.title("🏆 NL CHAMPIONS LEAGUE")
+        st.markdown("### 🔥 Competição em andamento")
+else:
+    st.title("🏆 NL CHAMPIONS LEAGUE")
+    st.markdown("### 🔥 Competição em andamento")
+
 st.divider()
 
 # --- TABS ---
@@ -110,3 +127,6 @@ with tab_atleta:
             components.render_weekly_chart(df_semanas)
     else:
         st.warning("Nenhum atleta encontrado na base de dados.")
+
+st.divider()
+st.markdown("<div style='text-align: center; color: grey;'>Desenvolvido por Vinicius Xavier</div>", unsafe_allow_html=True)

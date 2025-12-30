@@ -1,0 +1,103 @@
+id,nome,loja,tipo,ativo,codigo
+1,Marcos Monteiro Neves,9,VENDEDOR,1,
+2,Bruno Henrique Lima Silva,7,VENDEDOR,1,
+3,Gabriel Rodrigues Moreira,17,VENDEDOR,1,
+4,Gustavo Batista Da S Santos,26,VENDEDOR,1,
+5,Matheus Oliveira De Medeiros,28,VENDEDOR,1,
+6,Jose Celio Emidio,9,VENDEDOR,1,
+7,Allan Kneipp Nazareth,8,VENDEDOR,1,
+8,Diego Siqueira Silva,9,VENDEDOR,1,
+9,Patrick Fernando De Souza Nune,35,VENDEDOR,1,
+10,Emerson Aparecido De Oliveira,33,VENDEDOR,1,
+11,Regina Maria Dos Santos Silva,14,VENDEDOR,1,
+12,Daiana Da Costa Carvalho,8,VENDEDOR,1,
+13,Anderson Luiz Dos Santos,3,VENDEDOR,1,
+14,Jorge Antonio Da Costa Filho,,VENDEDOR,1,
+15,Anderson Luiz Da Silva,10,VENDEDOR,1,
+16,Marco Antonio Freitas Di Marco,,VENDEDOR,1,
+17,Marco Antonio Borba Ribeiro,36,VENDEDOR,1,
+18,Alessandro De Oliveira Machado,15,VENDEDOR,1,
+19,Andre Cardozo De Almeida,25,VENDEDOR,1,
+20,Paulo Henrique Justino Silva,33,VENDEDOR,1,
+21,Leticia Diniz Paiva,4,VENDEDOR,1,
+22,Luiz Henrique Santana De Arauj,33,VENDEDOR,1,
+23,Thaynara Silverio Ferreira,17,VENDEDOR,1,
+24,Alisson Martins Jales Da Silva,1,VENDEDOR,1,
+25,Fabio Cardoso Da Silva,26,VENDEDOR,1,
+26,Klaiver Rittielis Gomes,14,VENDEDOR,1,
+27,Paulo Vitor Penaforte Oliveira,1,VENDEDOR,1,
+28,William Oliveira De Souza,10,VENDEDOR,1,
+29,Marcos Fernando Marcelo,9,VENDEDOR,1,
+30,Mário Ferreira Da Silva Neto,13,VENDEDOR,1,
+31,Heraclito Luiz Leme Brisola So,3,VENDEDOR,1,
+32,Grazielle Ap. Teutschbein,11,VENDEDOR,1,
+33,Lucas Henrique Fernandes Tiodo,1,VENDEDOR,1,
+34,Daniele Bueno Da Silva,34,VENDEDOR,1,
+35,Hebert Tenorio Dias De Jesus,9,VENDEDOR,1,
+36,Diogo Camelo Do Carmo,7,VENDEDOR,1,
+37,Euzely Maria Morais Bonsanto,4,VENDEDOR,1,
+38,Ramaiane De Almeida Pinheiro,25,VENDEDOR,1,
+39,Matheus Henrique Modesto,1,VENDEDOR,1,
+40,Welbert Bertoldo Goncalves Da,9,VENDEDOR,1,
+41,Vitor Henrique Almeida Campos,34,VENDEDOR,1,
+42,Reginaldo Valverde Ramos,32,VENDEDOR,1,
+43,Anderson De Oliveira Freitas,15,VENDEDOR,1,
+44,Caio Augusto Dos Santos Lopes,4,VENDEDOR,1,
+45,Felix Augusto De Paiva,28,VENDEDOR,1,
+46,Genis Alberto Do Carmo Felix,15,VENDEDOR,1,
+47,Jhonatan Souza Silva,,VENDEDOR,1,
+48,Edivania Carla De Souza Gomes,,VENDEDOR,1,
+49,Renan Severino Viana,16,VENDEDOR,1,
+50,Edmilson Neves Da Silva,9,VENDEDOR,1,
+51,Wesley Watson Tadeu Dias,31,VENDEDOR,1,
+52,Silvio Teixeira Bastos,7,VENDEDOR,1,
+53,Diego Borges Medeiros,32,VENDEDOR,1,
+54,Jacqueline Rosa Neves,3,VENDEDOR,1,
+55,Claudinei Medeiros Machado,17,VENDEDOR,1,
+56,Allef Junio De Fatima Lima,35,VENDEDOR,1,
+57,Diogo Teixeira De A Nogueira,3,VENDEDOR,1,
+58,Reinaldo Luis Rodrigues Gomes,7,VENDEDOR,1,
+59,Jeferson Silva De Oliveira,3,VENDEDOR,1,
+60,Marcelo Angelo B De Carvalho,31,VENDEDOR,1,
+61,Douglas Borges De Souza,26,VENDEDOR,1,
+62,Marcos Vinicius S Bernardino,1,VENDEDOR,1,
+63,Naiara De Freitas Araujo,35,VENDEDOR,1,
+64,Felipe Augusto Da Silva,4,VENDEDOR,1,
+65,Marcio C Santos Junior,16,VENDEDOR,1,
+66,Rodrigo Santos Lucio,10,VENDEDOR,1,
+67,Rodrigo Paz Ferreira Faria,36,VENDEDOR,1,
+68,Rodrigo Alves Costa,9,VENDEDOR,1,
+69,Rafael De Souza Silva,14,VENDEDOR,1,
+70,Anderson José Tortieri,3,VENDEDOR,1,
+71,Luis Alberto De A Ferreira,15,VENDEDOR,1,
+72,Ramon Lucas Moreira,1,VENDEDOR,1,
+73,Bruno Aparecido De Sousa Paula,11,VENDEDOR,1,
+74,Dayvid Do Valle Rodrigues,32,VENDEDOR,1,
+75,Rodrigo Willen Brilhante Narci,8,VENDEDOR,1,
+76,Edson Alves De Azevedo,,VENDEDOR,1,G23
+77,Filipe Maciel Gomes Oliveira,,VENDEDOR,1,Z25
+78,Moacir Rodrigues Alves,9,VENDEDOR,1,
+79,Jonatas Do Carmo Penna E Silva,15,VENDEDOR,1,
+80,Geovani Santos,9,VENDEDOR,1,
+81,Amanda Elerati Rafino,17,VENDEDOR,1,
+892,Natalia Fernandes Soares,1,GERENTE,1,C01
+893,Claudio Jose De Resende,3,GERENTE,1,V51
+894,Joyce Moreira Vaz,4,GERENTE,1,C40
+895,Claudinei De Castro Magalhaes,7,GERENTE,1,VB0
+896,Deocleciano Alves De Almeida,8,GERENTE,1,VK0
+897,Marcus Vinicius Ramalho,9,GERENTE,1,G40
+898,Rosimara Das Merces Silva,10,GERENTE,1,V18
+899,Hebert Mota Cezario,13,GERENTE,1,VN3
+900,Amanda Pinto Peixoto,14,GERENTE,1,V68
+901,Leandro Goncalves Gomes,15,GERENTE,1,E01
+902,Luis Fernando Martins Oliveira,16,GERENTE,1,VS6
+903,Dayane Aparecida Lucino Silva,17,GERENTE,1,VC5
+904,Felipe Jose Rodrigues,25,GERENTE,1,VF8
+905,Keli Aparecida Da Silva,28,GERENTE,1,VL4
+906,Bianca Araujo Dos Santos,30,GERENTE,1,VN9
+907,Wendel Dos Reis Ribeiro,32,GERENTE,1,V52
+908,Laudiceia Andrade De Souza Santos,33,GERENTE,1,G53
+909,Cristiano Oliveira Da Silva,34,GERENTE,1,G54
+910,Lorrayne Fernanda Ferreira,35,GERENTE,1,VF6
+911,Jorge Marcelino Filho,36,GERENTE,1,G64
+912,Roberto Marconi Da Silva Junio,31,GERENTE,1,VV6

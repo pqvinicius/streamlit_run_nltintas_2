@@ -4,7 +4,8 @@ from configparser import ConfigParser
 from functools import lru_cache
 from pathlib import Path
 import sys
-from typing import Dict
+import os
+from typing import Dict, Any
 from datetime import date
 
 from src.logger import get_logger
@@ -49,6 +50,22 @@ def _resolve_config_path() -> Path:
 
 
 CONFIG_PATH = _resolve_config_path()
+
+
+def get_execution_mode() -> str:
+    """
+    Detecta o modo de execução:
+    1. Verifica variável de ambiente EXECUTION_MODE
+    2. Fallback para horário local (>= 20h -> BATCH)
+    3. Padrão: INTERACTIVE
+    """
+    override = os.getenv("EXECUTION_MODE")
+    if override:
+        return override.upper()
+
+    from datetime import datetime
+    hour = datetime.now().hour
+    return "BATCH" if hour >= 20 else "INTERACTIVE"
 
 
 @lru_cache(maxsize=1)
@@ -265,6 +282,8 @@ def get_whatsapp_config() -> Dict[str, Any]:
         "tab_close": get_bool("tab_close", True),
         "enviar_ranking_diario": get_bool("enviar_ranking_diario", True),
         "enviar_ranking_vendedores": get_bool("enviar_ranking_vendedores", True),
+        "enviar_individual": get_bool("enviar_individual", True),
+        "usar_perfil_real": get_bool("usar_perfil_real", True),
     }
 
 

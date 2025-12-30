@@ -42,7 +42,10 @@ def get_db_path() -> Optional[Path]:
     data_dir = get_data_dir()
     db_path = data_dir / "gamificacao_vendedores.db"
     
-    return db_path if db_path.exists() else None
+    # Debug print para logs do Streamlit Cloud
+    # print(f"Procurando banco em: {db_path.absolute()}")
+    
+    return db_path
 
 
 def get_config_path() -> Optional[Path]:
