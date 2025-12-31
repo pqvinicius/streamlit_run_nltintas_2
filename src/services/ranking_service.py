@@ -516,7 +516,9 @@ class RankingService:
                 if res:
                     bateu = res[0][3] >= 100
                     status_list.append(bateu)
-                    if bateu: metas_batidas += 1.0
+                    if bateu:
+                        peso_dia = feriados_mgr.calcular_dias_uteis_periodo(d, d, "TODAS")
+                        metas_batidas += peso_dia
                 else: status_list.append(False)
             
             # Verifica Sabado apenas se ja passou (ou eh hoje)
@@ -526,7 +528,7 @@ class RankingService:
             
             item['status_semana'] = status_list
             item['metas_batidas'] = metas_batidas
-            item['contador_metas'] = str(metas_batidas) # Simple string for template use if needed, but we will use raw value too
+            item['contador_metas'] = f"{metas_batidas:.1f}"
             
         # ORDENAÇÃO CORRETA: 1. Metas Batidas (DESC), 2. Alcance (DESC)
         ranking_data.sort(key=lambda x: (x.get('metas_batidas', 0), x.get('alcance', 0)), reverse=True)
