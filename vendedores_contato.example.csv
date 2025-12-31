@@ -1,0 +1,7 @@
+# Exemplo de cadastro de vendedores
+# Renomeie para vendedores_contato.csv e preencha com dados reais
+# Separador: Ponto-e-vírgula (;)
+Nome;Telefone;Loja;Tipo
+Fulano Silva;5511999999999;Loja 1;VENDEDOR
+Beltrano Souza;5511888888888;Loja 2;GERENTE
+Ciclano Oliveira;5511777777777;Loja 1;VENDEDOR
