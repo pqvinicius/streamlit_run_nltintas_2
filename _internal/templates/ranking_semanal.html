@@ -244,7 +244,7 @@
             {% for hit in item.status_semana %}
               <div class="square {% if hit == True %}hit{% elif hit == False %}miss{% else %}future{% endif %}"></div>
             {% endfor %}
-            <div class="counter"><span>{{ item.contador_metas.split(' / ')[0] }}</span>/5.5</div>
+            <div class="counter"><span>{{ item.contador_metas }}</span>/{{ dias_uteis_semana }}</div>
           </div>
 
           <div class="bar-container">

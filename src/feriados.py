@@ -12,9 +12,20 @@ class FeriadosManager:
         self.feriados_df = self._carregar_feriados()
         
     def _carregar_feriados(self) -> pd.DataFrame:
-        path = get_base_dir() / "data" / "feriados.csv"
-        if not path.exists():
-            logger.warning(f"Arquivo de feriados não encontrado: {path}")
+        candidates = [
+            get_base_dir() / "data" / "feriados.csv",
+            Path.cwd() / "data" / "feriados.csv",
+            Path(sys.executable).parent / "data" / "feriados.csv" if getattr(sys, "frozen", False) else None,
+        ]
+        
+        path = None
+        for candidate in candidates:
+            if candidate and candidate.exists():
+                path = candidate
+                break
+        
+        if not path:
+            logger.warning(f"Arquivo de feriados não encontrado em nenhum local: {[str(c) for c in candidates if c]}")
             return pd.DataFrame(columns=["loja", "data", "tipo"])
             
         try:
@@ -23,7 +34,7 @@ class FeriadosManager:
             df["data"] = pd.to_datetime(df["data"], errors="coerce").dt.date
             return df
         except Exception as e:
-            logger.error(f"Erro ao carregar feriados: {e}")
+            logger.error(f"Erro ao carregar feriados de {path}: {e}")
             return pd.DataFrame(columns=["loja", "data", "tipo"])
 
     def eh_feriado(self, data: date, loja: str) -> bool:

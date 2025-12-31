@@ -460,10 +460,11 @@ class RankingService:
             if tipo == "semanal":
                 ranking_data = engine.db.get_ranking_semanal(today)
                 title, template, fname_base = "🏆 RANKING SEMANAL", "ranking_semanal.html", "ranking_semanal"
-                ranking_data = self._enriquecer_status_semanal(ranking_data, engine, today)
+                ranking_data, dias_uteis_semana = self._enriquecer_status_semanal(ranking_data, engine, today)
             else:
                 ranking_data = engine.db.get_ranking_mensal(today)
                 title, template, fname_base = "📅 RANKING MENSAL", "ranking_mensal.html", "ranking_mensal"
+                dias_uteis_semana = 5.0 # Fallback/Not used for monthly
 
             if not ranking_data: return []
 
@@ -481,7 +482,8 @@ class RankingService:
                     "titulo": title, "pagina": p + 1, "total_paginas": pages,
                     "ranking": chunk_com_rank,
                     "logo": str(logo.absolute()) if logo else None,
-                    "subtitle": f"Sincronizado em {datetime.now():%d/%m/%Y} às {datetime.now():%H:%Mh}"
+                    "subtitle": f"Sincronizado em {datetime.now():%d/%m/%Y} às {datetime.now():%H:%Mh}",
+                    "dias_uteis_semana": dias_uteis_semana if tipo == "semanal" else None
                 }
                 renderer = TemplateRenderer(self.cfg.templates_dir)
                 html = renderer.render(template, ctx)
@@ -493,7 +495,7 @@ class RankingService:
             self.logger.error(f"PERIODICO | Erro '{tipo}': {e}")
             return []
 
-    def _enriquecer_status_semanal(self, ranking_data: list[dict], engine: Any, today: date) -> list[dict]:
+    def _enriquecer_status_semanal(self, ranking_data: list[dict], engine: Any, today: date) -> tuple[list[dict], float]:
         dt_segunda = today - timedelta(days=today.weekday())
         dias_semana = [dt_segunda + timedelta(days=i) for i in range(5)]
         
@@ -517,13 +519,19 @@ class RankingService:
                     if bateu: metas_batidas += 1.0
                 else: status_list.append(False)
             
+            # Verifica Sabado apenas se ja passou (ou eh hoje)
             if dt_sabado <= today:
                 res_sab = engine.db.get_resultados_periodo(nome, dt_sabado, dt_sabado)
                 if res_sab and res_sab[0][3] >= 100: metas_batidas += 0.5
             
             item['status_semana'] = status_list
-            item['contador_metas'] = f"{metas_batidas} / {dias_uteis_semana}"
-        return ranking_data
+            item['metas_batidas'] = metas_batidas
+            item['contador_metas'] = str(metas_batidas) # Simple string for template use if needed, but we will use raw value too
+            
+        # ORDENAÇÃO CORRETA: 1. Metas Batidas (DESC), 2. Alcance (DESC)
+        ranking_data.sort(key=lambda x: (x.get('metas_batidas', 0), x.get('alcance', 0)), reverse=True)
+        
+        return ranking_data, dias_uteis_semana
 
     # --- Notifications ---
     def _notify_all(self, paths_diario, paths_pontos, paths_semanal, paths_mensal, engine, send_whatsapp: bool):
