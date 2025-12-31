@@ -497,6 +497,13 @@ class RankingService:
         dt_segunda = today - timedelta(days=today.weekday())
         dias_semana = [dt_segunda + timedelta(days=i) for i in range(5)]
         
+        from src.feriados import FeriadosManager
+        feriados_mgr = FeriadosManager()
+        dt_sabado = dt_segunda + timedelta(days=5)
+        
+        # Calcula dias úteis da semana (Seg-Sab) para exibição correta (ex: 4.0 ou 5.5)
+        dias_uteis_semana = feriados_mgr.calcular_dias_uteis_periodo(dt_segunda, dt_sabado, "TODAS")
+        
         for item in ranking_data:
             nome = item['nome']
             status_list = []
@@ -510,13 +517,12 @@ class RankingService:
                     if bateu: metas_batidas += 1.0
                 else: status_list.append(False)
             
-            dt_sabado = dt_segunda + timedelta(days=5)
             if dt_sabado <= today:
                 res_sab = engine.db.get_resultados_periodo(nome, dt_sabado, dt_sabado)
                 if res_sab and res_sab[0][3] >= 100: metas_batidas += 0.5
             
             item['status_semana'] = status_list
-            item['contador_metas'] = f"{metas_batidas} / 5.5"
+            item['contador_metas'] = f"{metas_batidas} / {dias_uteis_semana}"
         return ranking_data
 
     # --- Notifications ---
