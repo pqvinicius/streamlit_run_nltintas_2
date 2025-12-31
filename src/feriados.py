@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
 import logging
+import sys
 from src.config import get_base_dir
 
 logger = logging.getLogger(__name__)

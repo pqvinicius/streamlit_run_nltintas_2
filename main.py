@@ -141,6 +141,8 @@ def _run_ranking_diario(
                 exec_log.log("RANKING", "SKIPPED", message="Nenhum output gerado")
         except Exception as exc:
              logger.error("RANKING | Falha crítica ao gerar ranking.", exc_info=True)
+             raise
+
              exec_log.log("RANKING", "FAIL", error_stack=traceback.format_exc())
     else:
         logger.error("PROCESSAMENTO | Arquivo alvo inexistente. Abortando.")
