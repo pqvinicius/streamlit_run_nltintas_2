@@ -1,15 +1,22 @@
-[7212:20260:0102/161556.273:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
-[7212:20260:0102/161556.273:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
-[7212:20260:0102/161556.392:ERROR:components\edge_auth\edge_auth_errors.cc:540] EDGE_IDENTITY: Get Default OS Account failed: Error: Primary Error: kImplicitSignInFailure, Secondary Error: kAccountProviderFetchError, Platform error: 0, Error string: [empty]
+[17368:22652:0102/162251.044:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
+[17368:22652:0102/162251.044:WARNING:chrome\browser\extensions\activity_log\activity_log_policy.cc:71] Scheduling init
+[17368:22652:0102/162251.154:ERROR:components\edge_auth\edge_auth_errors.cc:540] EDGE_IDENTITY: Get Default OS Account failed: Error: Primary Error: kImplicitSignInFailure, Secondary Error: kAccountProviderFetchError, Platform error: 0, Error string: [empty]
 
-[7212:20260:0102/161557.392:INFO:CONSOLE:77] "ErrorUtils caught an error:
+[17368:22652:0102/162251.890:INFO:CONSOLE:113] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yl/r/z0fmul_dGsq.js (113)
+[17368:22652:0102/162252.146:INFO:CONSOLE:77] "ErrorUtils caught an error:
 
 multiple-uim-roots
 
 Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yP/r/UnXae5I7-4r.js (77)
-[7212:20260:0102/161557.500:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
-[7212:20260:0102/161557.765:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
-[7212:20260:0102/161558.342:INFO:CONSOLE:113] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yl/r/z0fmul_dGsq.js (113)
-[7212:20260:0102/161558.366:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
-[5304:9212:0102/161559.439:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.
-[5304:9212:0102/161559.440:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.
+[17368:22652:0102/162252.215:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+[17368:22652:0102/162252.227:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+[17368:22652:0102/162252.595:ERROR:chrome\browser\task_manager\providers\fallback_task_provider.cc:126] Every renderer should have at least one task provided by a primary task provider. If a "Renderer" fallback task is shown, it is a bug. If you have repro steps, please file a new bug and tag it as a dependency of crbug.com/739782.
+[17368:22652:0102/162259.019:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-02 19:22:51.224595 UTC, pending_favicon_request_start_time_=2026-01-02 19:22:53.944093 UTC
+[17368:22652:0102/162259.019:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-02 19:22:51.720570 UTC, pending_favicon_request_start_time_=2026-01-02 19:22:53.944093 UTC
+[17368:22652:0102/162259.019:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-02 19:22:51.875017 UTC, pending_favicon_request_start_time_=2026-01-02 19:22:53.944093 UTC
+[17368:22652:0102/162259.019:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-02 19:22:52.292650 UTC, pending_favicon_request_start_time_=2026-01-02 19:22:53.944093 UTC
+[17368:22652:0102/162259.019:WARNING:chrome\browser\ui\edge_window_tab_manager\api\wtm_image_web_contents_helper.cc:873] Favicon request has been preempted. Skipping.  old request_start_time=2026-01-02 19:22:53.604718 UTC, pending_favicon_request_start_time_=2026-01-02 19:22:53.944093 UTC
+[12264:22040:0102/162259.092:INFO:components\services\edge_entity_extraction\extractor_impl.cc:990] ExtractorImpl::SetIsPendingEEConfig : 1
+[17368:22652:0102/162259.391:WARNING:chrome\browser\edge_underside\underside_helper.cc:1280] If test does not need FrontLoad, this may be expected. SetFrontLoadDecision: 3
+[22612:6524:0102/162354.250:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.
+[22612:6524:0102/162354.250:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:180] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:236 to client_task_runner_.

@@ -1,4 +1,11 @@
-2026/01/02-16:15:59.458 1454 Creating DB C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db since it was missing.
-2026/01/02-16:15:59.460 1454 Reusing MANIFEST C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
-2026/01/02-16:15:59.462 25c4 Level-0 table #5: started
-2026/01/02-16:15:59.464 25c4 Level-0 table #5: 681265 bytes OK
+2026/01/02-16:22:59.140 1dac Reusing MANIFEST C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/01/02-16:22:59.141 1dac Recovering log #3
+2026/01/02-16:22:59.143 1dac Level-0 table #3: started
+2026/01/02-16:22:59.157 1dac Level-0 table #3: 681265 bytes OK
+2026/01/02-16:22:59.158 1dac Recovering log #4
+2026/01/02-16:22:59.163 1dac Reusing old log C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/000004.log 
+2026/01/02-16:22:59.168 1dac Delete type=0 #3
+2026/01/02-16:22:59.168 1dac Delete type=2 #5
+2026/01/02-16:22:59.286 56e0 Level-0 table #6: started
+2026/01/02-16:22:59.288 56e0 Level-0 table #6: 681368 bytes OK
+2026/01/02-16:22:59.289 56e0 Delete type=0 #4
