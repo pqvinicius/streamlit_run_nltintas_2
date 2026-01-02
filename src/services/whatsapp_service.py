@@ -205,9 +205,6 @@ class WhatsAppService:
             self.logger.error(f"❌ Falha ao copiar imagem {image_path}: {e}")
             return False
 
-    def _send_clipboard_image(self) -> bool:
-        """Cola e envia a imagem do clipboard."""
-        try:
             # Foco na caixa de mensagem
             box = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'div[contenteditable="true"][data-tab="10"]'))
@@ -218,8 +215,8 @@ class WhatsAppService:
             # CTRL+V
             ActionChains(self.driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
             
-            # Wait for preview
-            time.sleep(3)
+            # Wait for preview (Aumentado para 5s para garantir carregamento)
+            time.sleep(5)
             
             # Click Send
             send_btn = None
@@ -227,23 +224,28 @@ class WhatsAppService:
                 'span[data-icon="send"]',
                 'button[aria-label="Enviar"]',
                 'button[aria-label="Send"]',
-                'span[data-testid="send"]'
+                'span[data-testid="send"]',
+                'div[role="button"][aria-label="Enviar"]'
             ]
             
             for sel in selectors:
                 try:
+                    # Espera explicita pelo botão ser Clicável
                     send_btn = WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable((By.CSS_SELECTOR, sel)))
                     break
                 except:
                     continue
             
             if send_btn:
+                self.logger.info("   ✅ Botão enviar ENCONTRADO. Clicando...")
                 send_btn.click()
+                return True
             else:
-                self.logger.warning("   💡 Botão enviar não achado, tentando ENTER.")
-                ActionChains(self.driver).send_keys(Keys.ENTER).perform()
-                
-            return True
+                self.logger.error("   ❌ Botão enviar NÃO ENCONTRADO. Abortando envio para evitar duplicação.")
+                # REMOVIDO FALLBACK DE ENTER PARA EVITAR DUPLICIDADE/ERROS
+                # ActionChains(self.driver).send_keys(Keys.ENTER).perform()
+                return False
+
         except Exception as e:
             self.logger.error(f"❌ Erro ao enviar imagem colada: {e}")
             return False

@@ -30,7 +30,10 @@ class MedalService:
         df = queries.load_medal_table(start_date, end_date)
         
         if df.empty:
+            print("[DEBUG] get_medal_table: Tabela retornou vazia.")
             return df
+
+        print(f"[DEBUG] get_medal_table: {len(df)} registros encontrados.")
 
         # 2. Busca dados de Alcance Mensal (via GamificacaoDB para consistência)
         # Precisamos do % de alcance mensal atual para desempatar
@@ -172,4 +175,36 @@ class MedalService:
             return []
         
         return df['Vendedor'].unique().tolist()
+
+    @st.cache_data(ttl=60, show_spinner=False)
+    def get_available_weeks_options(_self) -> List[dict]:
+        """
+        Retorna lista de opções de semanas para o selectbox.
+        Formato: [{'label': '29/12 a 04/01', 'start': '2024-12-29', 'end': '2025-01-04'}]
+        """
+        df = queries.get_available_weeks()
+        
+        if df.empty:
+            return []
+            
+        options = []
+        for _, row in df.iterrows():
+            start_fmt = pd.to_datetime(row['data_inicio']).strftime('%d/%m')
+            end_fmt = pd.to_datetime(row['data_fim']).strftime('%d/%m')
+            label = f"{start_fmt} a {end_fmt}"
+            
+            options.append({
+                'label': label,
+                'start_date': str(row['data_inicio']),
+                'end_date': str(row['data_fim'])
+            })
+            
+        return options
+
+    @st.cache_data(ttl=60, show_spinner=True)
+    def get_weekly_summary(_self, start_date: str, end_date: str) -> pd.DataFrame:
+        """
+        Retorna ranking semanal consolidado para o dashboard.
+        """
+        return queries.get_weekly_ranking_data(start_date, end_date)
 

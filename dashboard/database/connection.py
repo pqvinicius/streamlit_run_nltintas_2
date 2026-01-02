@@ -54,7 +54,7 @@ class DatabaseConnection:
         """
         conn = None
         try:
-            if not self.exists or self._db_path.stat().st_size < 10240:
+            if not self.exists:
                 # MODO HÍBRIDO (In-Memory Fallback)
                 conn = sqlite3.connect(":memory:")
                 self._load_csv_snapshots(conn)

@@ -229,3 +229,115 @@ def load_conquistas_raw(vendedor_nome: str) -> pd.DataFrame:
             df = pd.read_sql(query, conn, params=[vendedor_nome])
         return df
     except Exception: return pd.DataFrame()
+
+
+def get_available_weeks() -> pd.DataFrame:
+    """
+    Retorna lista de semanas disponíveis com base no histórico de vendas/troféus.
+    Retorna colunas: semana_uuid, data_inicio, data_fim, label.
+    """
+    db = DatabaseConnection()
+    if not db.exists: return pd.DataFrame()
+    
+    # Busca semanas da tabela de metas semanais (source of truth para semanas)
+    query = """
+        SELECT DISTINCT 
+            semana_uuid,
+            MIN(data_inicio) as data_inicio,
+            MAX(data_fim) as data_fim
+        FROM metas_semanais
+        GROUP BY semana_uuid
+        ORDER BY data_inicio DESC
+    """
+    try:
+        with db.get_connection() as conn:
+            df = pd.read_sql(query, conn)
+            
+        if df.empty:
+            # Fallback: Tenta criar semanas baseadas na tabela de troféus se metas_semanais estiver vazia
+            query_fallback = """
+                SELECT 
+                    strftime('%Y-%W', data_conquista) as semana_uuid,
+                    MIN(data_conquista) as data_min,
+                    MAX(data_conquista) as data_max
+                FROM trofeus
+                GROUP BY semana_uuid
+                ORDER BY data_min DESC
+            """
+            with db.get_connection() as conn:
+                df = pd.read_sql(query_fallback, conn)
+                # Ajustar colunas para bater com o formato esperado
+                if not df.empty:
+                    # Ajuste fino: datas reais de início/fim da semana (Seg-Dom)
+                    df['data_inicio'] = pd.to_datetime(df['data_min']).dt.to_period('W-MON').dt.start_time.dt.date
+                    df['data_fim'] = pd.to_datetime(df['data_min']).dt.to_period('W-MON').dt.end_time.dt.date
+                    df = df[['semana_uuid', 'data_inicio', 'data_fim']]
+        
+        return df
+    except Exception: return pd.DataFrame()
+
+
+def get_weekly_ranking_data(start_date: str, end_date: str) -> pd.DataFrame:
+    """
+    Retorna dados consolidados da semana para o painel analítico.
+    Dados: Vendedor, Pontos, Venda, Meta, Alcance, Medalhas (O/P/B).
+    """
+    db = DatabaseConnection()
+    if not db.exists: return pd.DataFrame()
+    
+    query = """
+        SELECT 
+            v.nome AS Vendedor,
+            v.loja AS Loja,
+            
+            -- Pontos e Medalhas
+            COALESCE(SUM(t.pontos), 0) AS Pontos,
+            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'OURO' THEN 1 ELSE 0 END), 0) AS Ouro,
+            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'PRATA' THEN 1 ELSE 0 END), 0) AS Prata,
+            COALESCE(SUM(CASE WHEN t.tipo_trofeu = 'BRONZE' THEN 1 ELSE 0 END), 0) AS Bronze,
+            
+            -- Vendas (Soma do período diário)
+            COALESCE(stat.venda_total, 0) as Venda,
+            
+            -- Meta (Se tiver registro semanal, usa. Senão, soma diárias ou null)
+            COALESCE(stat.meta_total, 0) as Meta
+            
+        FROM vendedores v
+        
+        LEFT JOIN trofeus t 
+            ON v.nome = t.vendedor_nome 
+            AND t.data_conquista BETWEEN ? AND ?
+            
+        LEFT JOIN (
+            SELECT 
+                vendedor_nome,
+                SUM(venda) as venda_total,
+                SUM(meta) as meta_total -- Soma meta diária = Meta do período acumulado
+            FROM resultado_meta
+            WHERE data BETWEEN ? AND ?
+            GROUP BY vendedor_nome
+        ) stat ON v.nome = stat.vendedor_nome
+            
+        WHERE v.ativo = 1 AND v.tipo != 'GERENTE'
+        GROUP BY v.nome, v.loja
+        ORDER BY Pontos DESC
+    """
+    
+    try:
+        with db.get_connection() as conn:
+            # Usamos os mesmos parâmetros para data de troféus e data de resultado_meta
+            df = pd.read_sql(query, conn, params=[start_date, end_date, start_date, end_date])
+            
+        # Pós-processamento: Calcular Alcance % e Status
+        if not df.empty:
+            df['Alcance %'] = df.apply(lambda row: (row['Venda'] / row['Meta'] * 100) if row['Meta'] > 0 else 0.0, axis=1)
+            
+            def get_status(pct):
+                if pct >= 100: return "Meta Batida 🚀"
+                if pct >= 80: return "Atenção ⚠️"
+                return "Abaixo 🔻"
+            
+            df['Status'] = df['Alcance %'].apply(get_status)
+            
+        return df
+    except Exception: return pd.DataFrame()

@@ -1549,3 +1549,16 @@ playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at 
 2026-01-02 16:38:51 | INFO    | 📤 [3/7] Enviando ranking_semanal_p3.png para Informações Comercial NL
 2026-01-02 16:39:16 | WARNING |    💡 Botão enviar não achado, tentando ENTER.
 2026-01-02 16:39:22 | INFO    | 📤 [4/7] Enviando ranking_semanal_p4.png para Informações Comercial NL
+2026-01-02 16:39:46 | WARNING |    💡 Botão enviar não achado, tentando ENTER.
+2026-01-02 16:39:51 | INFO    | 📤 [5/7] Enviando ranking_semanal_p5.png para Informações Comercial NL
+2026-01-02 16:40:16 | WARNING |    💡 Botão enviar não achado, tentando ENTER.
+2026-01-02 16:40:21 | INFO    | 📤 [6/7] Enviando ranking_semanal_p6.png para Informações Comercial NL
+2026-01-02 16:40:45 | WARNING |    💡 Botão enviar não achado, tentando ENTER.
+2026-01-02 16:40:50 | INFO    | 📤 [7/7] Enviando ranking_semanal_p7.png para Informações Comercial NL
+2026-01-02 16:41:15 | WARNING |    💡 Botão enviar não achado, tentando ENTER.
+2026-01-02 16:41:20 | INFO    | ✅ Envio concluído para Informações Comercial NL. 7/7 imagens.
+2026-01-02 16:41:44 | INFO    | RANKING | Sucesso! Gerado em: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p1.png
+2026-01-02 16:41:44 | INFO    | GIT SYNC | Sincronizando dados no modo INTERACTIVE...
+2026-01-02 16:41:53 | INFO    | GIT SYNC | Realizando push para o repositório...
+2026-01-02 16:42:22 | INFO    | GIT SYNC | Sucesso!
+2026-01-02 16:42:22 | INFO    | PIPELINE | Execucao finalizada com sucesso

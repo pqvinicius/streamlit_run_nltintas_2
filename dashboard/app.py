@@ -37,6 +37,10 @@ df_end_date = st.sidebar.date_input("Data Final", value=date.fromisoformat(defau
 start_date_str = df_start_date.isoformat()
 end_date_str = df_end_date.isoformat()
 
+if st.sidebar.button("🔄 Atualizar Dados"):
+    st.cache_data.clear()
+    st.rerun()
+
 # --- HEADER ---
 # Busca logo (jpg, png ou jpeg)
 logo_path = None
@@ -60,8 +64,9 @@ else:
 st.divider()
 
 # --- TABS ---
-tab_quadro, tab_loja, tab_atleta, tab_comp = st.tabs([
+tab_quadro, tab_semanal, tab_loja, tab_atleta, tab_comp = st.tabs([
     "🥇 Quadro Geral", 
+    "🏆 Ranking Semanal",
     "🏬 Perfil da Loja", 
     "👤 Perfil do Atleta", 
     "📊 Comparação de Lojas"
@@ -104,6 +109,91 @@ with tab_quadro:
         st.subheader("Eficiência das Unidades (Pts/Vend)")
         df_ranking_lojas = store_service.get_normalized_ranking(start_date_str, end_date_str)
         components.render_store_leaderboard(df_ranking_lojas)
+
+# === TAB 2: RANKING SEMANAL (ANÁLISE) ===
+with tab_semanal:
+    st.markdown("#### 🕵️ Análise Detalhada da Semana")
+    
+    # 1. Filtro de Semana
+    options_dict = medal_service.get_available_weeks_options()
+    
+    if options_dict:
+        # Pega a semana mais recente por padrão
+        selected_option = st.selectbox(
+            "📅 Selecione a Semana para Análise:", 
+            options_dict, 
+            format_func=lambda x: x['label']
+        )
+        
+        if selected_option:
+            wk_start = selected_option['start_date']
+            wk_end = selected_option['end_date']
+            
+            # Carrega dados
+            df_semanal = medal_service.get_weekly_summary(wk_start, wk_end)
+            
+            if not df_semanal.empty:
+                # 2. KPIs da Semana
+                best_seller = df_semanal.iloc[0] # Assumindo ordenado por pontos
+                total_medals = df_semanal['Ouro'].sum() + df_semanal['Prata'].sum() + df_semanal['Bronze'].sum()
+                avg_score = df_semanal['Pontos'].mean()
+                
+                k1, k2, k3, k4 = st.columns(4)
+                k1.metric("🥇 Maior Pontuação", int(best_seller['Pontos']))
+                k2.metric("👤 Melhor Vendedor", best_seller['Vendedor'])
+                k3.metric("🏅 Medalhas Distribuídas", int(total_medals))
+                k4.metric("📊 Média de Pontos", f"{avg_score:.1f}")
+                
+                st.divider()
+                
+                # 3. Tabela Interativa
+                st.subheader("📋 Classificação Completa da Semana")
+                
+                # Config columns
+                st.dataframe(
+                    df_semanal,
+                    column_config={
+                        "Alcance %": st.column_config.ProgressColumn(
+                            "Alcance Meta",
+                            format="%.1f%%",
+                            min_value=0,
+                            max_value=120,
+                        ),
+                        "Status": st.column_config.TextColumn("Status"),
+                        "Pontos": st.column_config.NumberColumn(" Pontos", format="%d"),
+                    },
+                    use_container_width=True,
+                    hide_index=True
+                )
+                
+                c_chart, c_text = st.columns([2, 1])
+                
+                with c_chart:
+                    # 4. Gráfico: Quem fez mais pontos?
+                    st.subheader("📊 Performance por Pontos")
+                    st.bar_chart(
+                        df_semanal.set_index("Vendedor")[["Pontos"]],
+                        color="#FFD700", # Gold-ish
+                        height=400
+                    )
+                    
+                with c_text:
+                    # 5. Destaques Automáticos
+                    st.subheader("🔍 Insights Automáticos")
+                    st.markdown(f"""
+                    - **{best_seller['Vendedor']}** liderou com **{int(best_seller['Pontos'])}** pontos.
+                    - **{len(df_semanal[df_semanal['Alcance %'] >= 100])}** vendedores bateram a meta (100%+).
+                    - **{len(df_semanal[df_semanal['Pontos'] > avg_score])}** vendedores ficaram acima da média ({avg_score:.0f}).
+                    """)
+                    
+                    if not df_semanal[df_semanal['Ouro'] > 0].empty:
+                        ouro_names = ", ".join(df_semanal[df_semanal['Ouro'] > 0]['Vendedor'].tolist())
+                        st.markdown(f"- 🥇 **Ouro da semana**: {ouro_names}")
+
+            else:
+                st.warning("Sem dados para esta semana.")
+    else:
+        st.info("Nenhum histórico semanal encontrado.")
 
 # === TAB 2: PERFIL DA LOJA ===
 with tab_loja:
