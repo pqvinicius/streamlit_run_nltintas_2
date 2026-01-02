@@ -823,14 +823,17 @@ class GamificacaoDB:
         2. % Alcance Meta Mensal (Decrescente) - Desempate
         3. Nome (Crescente) - Desempate final
         """
-        inicio = date(2024, 12, 29)
-        fim = data_ref
-        
-        conn = self._get_connection()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         
         # 1. Busca Pontos Totais (Query Original)
+        # Fix: Start date dynamic based on cycle/year instead of hardcoded 2024-12-29
+        # Considering the "Olympics" cycle usually starts at the beginning of the year or specific event.
+        # For now, we set it to Jan 1st of the current year or allow it to be passed.
+        # However, to match the original intent of "Periodo Olimpico", we might want a config.
+        # Fallback: Use Jan 1st of data_ref year.
+        inicio = date(data_ref.year, 1, 1)
+        fim = data_ref
         c.execute("""
             SELECT 
                 t.vendedor_nome as nome, 
