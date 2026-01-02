@@ -170,6 +170,14 @@ def main() -> None:
     is_frozen = getattr(sys, "frozen", False)
     args = _parse_args()
     
+    # === SATURDAY LOGIC (Feature Request) ===
+    # Se for Sábado (weekday == 5), força BATCH e desabilita WhatsApp
+    if datetime.now().weekday() == 5:
+        print("📅 Sábado detectado: Ativando modo de segurança (BATCH + No-WhatsApp)")
+        os.environ["EXECUTION_MODE"] = "BATCH"
+        args.no_whatsapp = True
+    # ========================================
+
     # Se estiver rodando para valer (enviando whatsapp), tratamos como PROD para os logs
     env = "PROD" if (is_frozen or not args.no_whatsapp) else "DEV"
     
