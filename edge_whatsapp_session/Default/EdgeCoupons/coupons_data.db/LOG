@@ -1,11 +1,14 @@
-2026/01/02-16:22:59.140 1dac Reusing MANIFEST C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
-2026/01/02-16:22:59.141 1dac Recovering log #3
-2026/01/02-16:22:59.143 1dac Level-0 table #3: started
-2026/01/02-16:22:59.157 1dac Level-0 table #3: 681265 bytes OK
-2026/01/02-16:22:59.158 1dac Recovering log #4
-2026/01/02-16:22:59.163 1dac Reusing old log C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/000004.log 
-2026/01/02-16:22:59.168 1dac Delete type=0 #3
-2026/01/02-16:22:59.168 1dac Delete type=2 #5
-2026/01/02-16:22:59.286 56e0 Level-0 table #6: started
-2026/01/02-16:22:59.288 56e0 Level-0 table #6: 681368 bytes OK
-2026/01/02-16:22:59.289 56e0 Delete type=0 #4
+2026/01/02-16:34:04.708 1b6c Reusing MANIFEST C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/01/02-16:34:04.709 1b6c Recovering log #8
+2026/01/02-16:34:04.710 1b6c Reusing old log C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\edge_whatsapp_session\Default\EdgeCoupons/coupons_data.db/000008.log 
+2026/01/02-16:34:04.743 3a04 Level-0 table #12: started
+2026/01/02-16:34:04.745 3a04 Level-0 table #12: 681368 bytes OK
+2026/01/02-16:34:04.745 3a04 Delete type=0 #8
+2026/01/02-16:34:04.746 3a04 Compacting 4@0 + 0@1 files
+2026/01/02-16:34:04.748 3a04 Generated table #13@0: 4 keys, 681391 bytes
+2026/01/02-16:34:04.748 3a04 Compacted 4@0 + 0@1 files => 681391 bytes
+2026/01/02-16:34:04.749 3a04 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/01/02-16:34:04.749 3a04 Delete type=2 #3
+2026/01/02-16:34:04.749 3a04 Delete type=2 #6
+2026/01/02-16:34:04.749 3a04 Delete type=2 #9
+2026/01/02-16:34:04.749 3a04 Delete type=2 #12
