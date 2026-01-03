@@ -106,7 +106,7 @@ def render_weekly_chart(df_semanas: pd.DataFrame):
             "Bonus_1": st.column_config.NumberColumn("🎖️ Bonus 1", format="%d"),
             "Bonus_2": st.column_config.NumberColumn("🏅 Bonus 2", format="%d"),
         },
-        use_container_width=True,
+        width="stretch",
         hide_index=True
     )
     
@@ -133,7 +133,7 @@ def render_store_leaderboard(df_stores: pd.DataFrame):
             "Pontos por Vendedor": st.column_config.NumberColumn("⚡ Eficiência (Pts/Vend)", format="%.1f"),
             "Total Ouro": st.column_config.NumberColumn("🥇", format="%d"),
         },
-        use_container_width=True,
+        width="stretch",
         hide_index=True
     )
 
@@ -145,7 +145,7 @@ def render_store_comparison_chart(df_comp: pd.DataFrame):
         return
 
     # Pivot table to have dates as index and stores as columns
-    df_pivot = df_comp.pivot(index='data', columns='loja', values='pontos_acumulados').fillna(method='ffill').fillna(0)
+    df_pivot = df_comp.pivot(index='data', columns='loja', values='pontos_acumulados').ffill().fillna(0)
     
     st.line_chart(df_pivot, height=400)
 

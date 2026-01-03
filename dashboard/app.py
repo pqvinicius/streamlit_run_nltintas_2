@@ -96,7 +96,7 @@ with tab_quadro:
                 "Prata": st.column_config.NumberColumn("🥈 Prata", format="%d"),
                 "Bronze": st.column_config.NumberColumn("🥉 Bronze", format="%d"),
             },
-            use_container_width=True,
+            width="stretch",
             hide_index=True
         )
     else:
@@ -164,7 +164,7 @@ with tab_semanal:
                         "Venda": st.column_config.NumberColumn("Venda", hidden=True),
                         "Meta": st.column_config.NumberColumn("Meta", hidden=True),
                     },
-                    use_container_width=True,
+                    width="stretch",
                     hide_index=True
                 )
                 
@@ -237,7 +237,7 @@ with tab_loja:
                 # Store Sellers
                 st.subheader("👥 Performance do Time")
                 df_sellers = store_service.get_store_sellers(sel_loja, start_date_str, end_date_str)
-                st.dataframe(df_sellers, use_container_width=True, hide_index=True)
+                st.dataframe(df_sellers, width="stretch", hide_index=True)
     else:
         st.warning("Nenhuma loja encontrada na base de dados.")
 
