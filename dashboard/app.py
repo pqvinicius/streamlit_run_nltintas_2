@@ -79,6 +79,15 @@ with tab_quadro:
     # 1. Ranking de Vendedores (Volume + Medalhas) - PRIORIDADE TOTAL
     df_quadro = medal_service.get_medal_table(start_date_str, end_date_str)
     
+    # [NEW] Apply Centralized Badges
+    try:
+        from src.services.badge_service import BadgeService
+        badge_service_dashboard = BadgeService()
+        if not df_quadro.empty:
+            df_quadro = badge_service_dashboard.aplicar_badges(df_quadro)
+    except Exception as e:
+        print(f"Error applying badges in dashboard: {e}")
+
     if not df_quadro.empty:
         # Destaque para os Medalhistas
         components.render_top3_cards(df_quadro)
@@ -87,9 +96,14 @@ with tab_quadro:
         
         # Tabela Estilo Olimpíadas
         st.subheader("🥇 Quadro de Medalhas Individual")
+        
+        # Reorder columns to show Badge first if exists
+        cols = ["badge_icon", "Vendedor", "Pontos", "Ouro", "Prata", "Bronze"] if "badge_icon" in df_quadro.columns else ["Vendedor", "Pontos", "Ouro", "Prata", "Bronze"]
+        
         st.dataframe(
-            df_quadro,
+            df_quadro[cols],
             column_config={
+                "badge_icon": st.column_config.TextColumn("Rank", width="small"),
                 "Vendedor": st.column_config.TextColumn("Atleta", width="medium"),
                 "Pontos": st.column_config.NumberColumn("⭐ Total Pontos", format="%d"),
                 "Ouro": st.column_config.NumberColumn("🥇 Ouro", format="%d"),

@@ -372,6 +372,8 @@ class RankingService:
         
         self.logger.info(f"PROCESSAMENTO | Vendedores: {total}. Páginas: {pages}")
         
+        logo = self._resolver_logo_path(destino_dir)
+
         # 3. Gamification & Points Generation (Priority Order)
         today = datetime.now().date()
         engine = self._execute_gamification_pipeline(df_completo, today)
@@ -395,7 +397,7 @@ class RankingService:
 
         # 4. Daily Ranking Generation (Moved after Points)
         name_base = image_name.replace(".png", "")
-        logo = self._resolver_logo_path(destino_dir)
+        # logo definition moved up
         
         for p in range(pages):
             start = p * page_size
@@ -448,6 +450,17 @@ class RankingService:
                 self.logger.warning("PONTOS | Ranking de pontos vazio! Gerando imagem de placeholder.")
                 ranking_data = []
 
+            # Enrich with Badges
+            try:
+                from src.services.badge_service import BadgeService
+                badge_service = BadgeService()
+                df_temp = pd.DataFrame(ranking_data)
+                if not df_temp.empty:
+                    df_temp = badge_service.aplicar_badges(df_temp)
+                    ranking_data = df_temp.to_dict('records')
+            except Exception as e:
+                self.logger.error(f"PONTOS | Falha ao aplicar badges: {e}")
+
             page_size = 12
             total = len(ranking_data)
             # Se total for 0 (vazio), força 1 página para gerar o template vazio
@@ -466,6 +479,11 @@ class RankingService:
                 }
                 renderer = TemplateRenderer(self.cfg.templates_dir)
                 html = renderer.render("ranking_pontos.html", ctx)
+                
+                fname = f"ranking_pontos.png" if pages <= 1 or p == 0 else f"ranking_pontos_p{p+1}.png"
+                # Fix: if multiple pages, p=0 is just ranking_pontos_p1. But user asked for ranking_pontos.png for "the" image. 
+                # If multipage, usually p1 is main? 
+                # Reverting to consistent logic: if 1 page -> ranking_pontos.png. If >1 -> ranking_pontos_p1.png
                 
                 fname = f"ranking_pontos_p{p+1}.png" if pages > 1 else "ranking_pontos.png"
                 dest = destino_dir / fname
@@ -489,19 +507,45 @@ class RankingService:
 
             if not ranking_data: return []
 
+            # Enrich with Badges (Periodical)
+            try:
+                from src.services.badge_service import BadgeService
+                badge_service = BadgeService()
+                df_temp = pd.DataFrame(ranking_data)
+                
+                # Ensure rank column exists for logic if not implicit
+                # _gerar_ranking_periodico usually re-ranks per page, so we need global rank first?
+                # The chunks below do 'rank': start_rank + i.
+                # So we should apply badges based on that calculated rank.
+                # Complex: Applying badges requires knowing the global rank.
+                # Strategy: Add global rank to dict BEFORE chunking.
+                
+                for i, item in enumerate(ranking_data):
+                     item['rank'] = i + 1
+                
+                df_temp = pd.DataFrame(ranking_data)
+                df_temp = badge_service.aplicar_badges(df_temp)
+                ranking_data = df_temp.to_dict('records')
+                
+            except Exception as e:
+                self.logger.error(f"PERIODICO | Falha ao aplicar badges: {e}")
+
             page_size = 12
             total = len(ranking_data)
             pages = (total + page_size - 1) // page_size
             paths = []
 
             for p in range(pages):
-                start_rank = p * page_size + 1
+                # start_rank logic is redundant now if we used global rank in 'rank' key, 
+                # but let's keep it for safety or display if template uses it
+                # actually template uses item.rank if available
+                
                 chunk = ranking_data[p*page_size : (p+1)*page_size]
-                chunk_com_rank = [{**item, 'rank': start_rank + i} for i, item in enumerate(chunk)]
+                # chunk already has 'rank' and 'badge_icon' from global processing
                 
                 ctx = {
                     "titulo": title, "pagina": p + 1, "total_paginas": pages,
-                    "ranking": chunk_com_rank,
+                    "ranking": chunk,
                     "logo": str(logo.absolute()) if logo else None,
                     "subtitle": f"Sincronizado em {datetime.now():%d/%m/%Y} às {datetime.now():%H:%Mh}",
                     "dias_uteis_semana": dias_uteis_semana if tipo == "semanal" else None

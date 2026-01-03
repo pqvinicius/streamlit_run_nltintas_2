@@ -253,9 +253,48 @@ class GamificacaoDB:
                 cidade TEXT
             )
         """)
+
+        # 4. Tabela Configuração de Badges (Posicional)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS config_ranking_badges (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                icone TEXT NOT NULL,
+                min_posicao INTEGER NOT NULL,
+                max_posicao INTEGER NOT NULL,
+                ativo BOOLEAN DEFAULT 1
+            )
+        """)
         
         conn.commit()
         conn.close()
+        
+        self._init_badges_config()
+
+    def _init_badges_config(self):
+        """Seed inicial da configuração de badges se estiver vazia."""
+        conn = self._get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM config_ranking_badges")
+            if cursor.fetchone()[0] == 0:
+                logger.info("GAMIFICACAO | Seeding tabela config_ranking_badges...")
+                badges = [
+                    ("Ouro", "🥇", 1, 1),
+                    ("Prata", "🥈", 2, 2),
+                    ("Bronze", "🥉", 3, 3),
+                    ("Top 10", "⭐", 4, 10)
+                ]
+                cursor.executemany("""
+                    INSERT INTO config_ranking_badges (nome, icone, min_posicao, max_posicao)
+                    VALUES (?, ?, ?, ?)
+                """, badges)
+                conn.commit()
+        except Exception as e:
+            logger.error(f"Erro ao inicializar badges config: {e}")
+        finally:
+            conn.close()
+
 
     def check_trofeu_existente(self, nome: str, tipo: str, data_inicio: date, data_fim: date) -> bool:
         """Verifica se um troféu já foi concedido em um intervalo de datas."""

@@ -13187,6 +13187,10 @@
    'RankingVendedores2.0\\src\\logger.py',
    'PYMODULE'),
   ('src.services', '-', 'PYMODULE'),
+  ('src.services.badge_service',
+   'C:\\Users\\Usuario\\Documents\\Scripts\\EM DESENVOLVIMENTO '
+   'RankingVendedores2.0\\src\\services\\badge_service.py',
+   'PYMODULE'),
   ('src.services.message_service',
    'C:\\Users\\Usuario\\Documents\\Scripts\\EM DESENVOLVIMENTO '
    'RankingVendedores2.0\\src\\services\\message_service.py',

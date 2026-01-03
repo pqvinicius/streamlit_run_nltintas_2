@@ -1,6 +1,0 @@
-2025-11-27 14:58:56 | INFO     | src.desktop_automation | setup_logger:118 | ================================================================================
-2025-11-27 14:58:56 | INFO     | src.desktop_automation | setup_logger:119 | Sistema de Logging Iniciado - Arquivo: CRIARTEMPLATE_20251127_145856.log
-2025-11-27 14:58:56 | INFO     | src.desktop_automation | setup_logger:120 | ================================================================================
-2025-11-27 14:58:56 | INFO     | src.email_sender | setup_logger:118 | ================================================================================
-2025-11-27 14:58:56 | INFO     | src.email_sender | setup_logger:119 | Sistema de Logging Iniciado - Arquivo: CRIARTEMPLATE_20251127_145856.log
-2025-11-27 14:58:56 | INFO     | src.email_sender | setup_logger:120 | ================================================================================
