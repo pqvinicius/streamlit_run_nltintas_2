@@ -44,28 +44,6 @@ id,vendedor_nome,data_conquista,tipo_trofeu,pontos,motivo
 628,Silvio Teixeira Bastos,2025-12-31,PRATA,3,Meta Semanal Batida: 100.0%
 631,Lucas Henrique Fernandes Tiodo,2025-12-31,BRONZE,1,Meta Diária Batida: 204.9%
 633,Jhonatan Souza Silva,2025-12-31,PRATA,3,Meta Semanal Batida: 103.8%
-638,Marcio C Santos Junior,2026-01-02,BRONZE,1,Meta Diária Batida: 480.9%
-639,Rodrigo Willen Brilhante Narci,2026-01-02,BRONZE,1,Meta Diária Batida: 212.7%
-640,Matheus Henrique Modesto,2026-01-02,BRONZE,1,Meta Diária Batida: 213.2%
-641,Diego Borges Medeiros,2026-01-02,BRONZE,1,Meta Diária Batida: 199.0%
-642,Bruno Henrique Lima Silva,2026-01-02,PRATA,3,Meta Semanal Batida: 109.6%
-644,Rodrigo Paz Ferreira Faria,2026-01-02,BRONZE,1,Meta Diária Batida: 207.6%
-658,Rodrigo Alves Costa,2026-01-02,BRONZE,1,Meta Diária Batida: 112.8%
-659,Genis Alberto Do Carmo Felix,2026-01-02,PRATA,3,Meta Semanal Batida: 104.9%
-660,Marcio C Santos Junior,2026-01-02,PRATA,3,Meta Semanal Batida: 147.5%
-673,Grazielle Ap. Teutschbein,2026-01-02,BRONZE,1,Meta Diária Batida: 103.3%
-688,Alisson Martins Jales Da Silva,2026-01-02,BRONZE,1,Meta Diária Batida: 101.0%
-695,Marco Antonio Borba Ribeiro,2026-01-02,BRONZE,1,Meta Diária Batida: 112.0%
-698,Anderson José Tortieri,2026-01-03,BRONZE,1,Meta Diária Batida: 469.5%
-699,Diego Siqueira Silva,2026-01-03,BRONZE,1,Meta Diária Batida: 107.2%
-700,Rodrigo Alves Costa,2026-01-03,BRONZE,1,Meta Diária Batida: 105.0%
-701,Marcos Monteiro Neves,2026-01-03,PRATA,3,Meta Semanal Batida: 103.1%
-702,Felix Augusto De Paiva,2026-01-03,PRATA,3,Meta Semanal Batida: 112.5%
-703,Diego Borges Medeiros,2026-01-03,PRATA,3,Meta Semanal Batida: 111.6%
-704,Rodrigo Alves Costa,2026-01-03,PRATA,3,Meta Semanal Batida: 117.5%
-705,Rodrigo Willen Brilhante Narci,2026-01-03,PRATA,3,Meta Semanal Batida: 100.9%
-707,Marcos Fernando Marcelo,2026-01-03,BRONZE,1,Meta Diária Batida: 120.4%
-708,Edmilson Neves Da Silva,2026-01-03,BRONZE,1,Meta Diária Batida: 113.2%
 716,Jeferson Silva De Oliveira,2025-12-26,BRONZE,1,Meta Diária Batida: 848.8%
 717,Matheus Henrique Modesto,2025-12-26,BRONZE,1,Meta Diária Batida: 650.5%
 718,Welbert Bertoldo Goncalves Da,2025-12-26,BRONZE,1,Meta Diária Batida: 354.6%
@@ -75,10 +53,25 @@ id,vendedor_nome,data_conquista,tipo_trofeu,pontos,motivo
 722,Silvio Teixeira Bastos,2025-12-26,BRONZE,1,Meta Diária Batida: 111.8%
 723,Matheus Henrique Modesto,2025-12-26,PRATA,3,Meta Semanal Batida: 118.3%
 724,Jeferson Silva De Oliveira,2025-12-26,PRATA,3,Meta Semanal Batida: 154.3%
-735,Lucas Henrique Fernandes Tiodo,2026-01-03,BRONZE,1,Meta Diária Batida: 204.9%
-736,Gabriel Rodrigues Moreira,2026-01-03,BRONZE,1,Meta Diária Batida: 122.9%
-737,Matheus Oliveira De Medeiros,2026-01-03,PRATA,3,Meta Semanal Batida: 100.2%
-738,Daiana Da Costa Carvalho,2026-01-03,PRATA,3,Meta Semanal Batida: 104.8%
-739,Marco Antonio Freitas Di Marco,2026-01-03,PRATA,3,Meta Semanal Batida: 100.1%
-740,Alisson Martins Jales Da Silva,2026-01-03,PRATA,3,Meta Semanal Batida: 101.2%
-741,Lucas Henrique Fernandes Tiodo,2026-01-03,PRATA,3,Meta Semanal Batida: 136.4%
+767,Marcio C Santos Junior,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 480.9%
+768,Rodrigo Willen Brilhante Narci,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 212.7%
+769,Matheus Henrique Modesto,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 213.2%
+770,Diego Borges Medeiros,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 199.0%
+771,Alisson Martins Jales Da Silva,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 101.0%
+772,Marco Antonio Borba Ribeiro,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 112.0%
+773,Grazielle Ap. Teutschbein,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 103.3%
+774,Rodrigo Alves Costa,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 112.8%
+775,Rodrigo Paz Ferreira Faria,2026-01-02,BRONZE,1,Meta Diária Batida (Recalc): 207.6%
+776,Bruno Henrique Lima Silva,2026-01-02,PRATA,3,Meta Semanal Batida: 112.2%
+777,Genis Alberto Do Carmo Felix,2026-01-02,PRATA,3,Meta Semanal Batida: 104.9%
+778,Marcio C Santos Junior,2026-01-02,PRATA,3,Meta Semanal Batida: 147.5%
+779,Anderson José Tortieri,2026-01-03,BRONZE,1,Meta Diária Batida: 469.5%
+780,Diego Siqueira Silva,2026-01-03,BRONZE,1,Meta Diária Batida: 107.2%
+781,Rodrigo Alves Costa,2026-01-03,BRONZE,1,Meta Diária Batida: 105.0%
+782,Marcos Fernando Marcelo,2026-01-03,BRONZE,1,Meta Diária Batida: 120.4%
+783,Edmilson Neves Da Silva,2026-01-03,BRONZE,1,Meta Diária Batida: 113.2%
+784,Marcos Monteiro Neves,2026-01-03,PRATA,3,Meta Semanal Batida: 107.6%
+785,Felix Augusto De Paiva,2026-01-03,PRATA,3,Meta Semanal Batida: 112.5%
+786,Diego Borges Medeiros,2026-01-03,PRATA,3,Meta Semanal Batida: 111.6%
+787,Rodrigo Alves Costa,2026-01-03,PRATA,3,Meta Semanal Batida: 117.5%
+788,Rodrigo Willen Brilhante Narci,2026-01-03,PRATA,3,Meta Semanal Batida: 100.9%

@@ -869,15 +869,9 @@ class GamificacaoDB:
         
         # 1. Busca Pontos Totais (Query Original)
         # 1. Busca Pontos Totais (Query Original)
-        # Fix: Start date dynamic based on cycle/year instead of hardcoded 2024-12-29
-        # Considering the "Olympics" cycle usually starts at the beginning of the year.
-        # Ensure we capture from Jan 1st of the current year.
-        inicio = date(data_ref.year, 1, 1)
+        # Critério: "JUNÇÃO DE TUDO" - Acumulado Global até a data de referência due to User Feedback.
+        # Alterado para pegar desde o início dos tempos até data_ref.
         fim = data_ref
-        
-        # If we are in the first days of the year (e.g. Jan 1-5), and we want to show context,
-        # we might want to include previous year? No, usually it resets.
-        # But to be safe against timezone/cutoff issues, we ensure 'fim' covers the full day.
         
         c.execute("""
             SELECT 
@@ -892,11 +886,11 @@ class GamificacaoDB:
                 v.ativo as ativo
             FROM trofeus t
             LEFT JOIN vendedores v ON t.vendedor_nome = v.nome
-            WHERE t.data_conquista BETWEEN ? AND ?
+            WHERE t.data_conquista <= ?
               AND (v.ativo IS NULL OR v.ativo = 1) 
               AND (v.tipo IS NULL OR v.tipo != 'GERENTE')
             GROUP BY t.vendedor_nome, v.loja, v.tipo, v.ativo
-        """, (inicio, fim))
+        """, (fim,))
         rows = c.fetchall()
         
         # 2. Prepara cálculo de % Meta Mensal (para desempate)
