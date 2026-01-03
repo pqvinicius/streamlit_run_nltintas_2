@@ -372,7 +372,28 @@ class RankingService:
         
         self.logger.info(f"PROCESSAMENTO | Vendedores: {total}. Páginas: {pages}")
         
-        paths_gerados = []
+        # 3. Gamification & Points Generation (Priority Order)
+        today = datetime.now().date()
+        engine = self._execute_gamification_pipeline(df_completo, today)
+        self.logger.info(f"🎮 GAMIFICACAO | Engine: {'OK' if engine else 'FALHA'}")
+        
+        paths_pontos = []
+        paths_semanal = []
+        paths_mensal = []
+        paths_gerados = [] # Daily
+
+        if engine:
+             # 3.1. Points (First as requested)
+             paths_pontos = self._gerar_ranking_pontos(engine, destino_dir, logo)
+             
+             # 3.2. Weekly/Monthly Preparation (Just prep, render later if strict order needed? 
+             # User said: Points before Daily, Weekly, Monthly. 
+             # So Points is done. Now Daily. Then Weekly/Monthly.)
+             
+             # But first let's generate Daily (paths_gerados) using the Excel data
+             pass
+
+        # 4. Daily Ranking Generation (Moved after Points)
         name_base = image_name.replace(".png", "")
         logo = self._resolver_logo_path(destino_dir)
         
@@ -390,16 +411,8 @@ class RankingService:
             html = renderer.render(self.cfg.template_name, ctx)
             paths_gerados.append(html_to_png(html, dest, viewport=(1080, 1080)))
 
-        today = datetime.now().date()
-        engine = self._execute_gamification_pipeline(df_completo, today)
-        self.logger.info(f"🎮 GAMIFICACAO | Engine: {'OK' if engine else 'FALHA'}")
-        
-        paths_pontos = []
-        paths_semanal = []
-        paths_mensal = []
-
+        # 5. Periodic Rankings (Weekly/Monthly) - After Daily
         if engine:
-             paths_pontos = self._gerar_ranking_pontos(engine, destino_dir, logo)
              paths_semanal = self._gerar_ranking_periodico(engine, destino_dir, logo, "semanal")
              
              engine.processar_semanal(today)
@@ -413,7 +426,6 @@ class RankingService:
              engine.processar_semanal(today)
              
              # Processamento Mensal (Diário - Concessão Contínua)
-             # Agora verifica todo dia se alguém bateu a meta do mês
              engine.processar_mensal(today)
 
         # 4. Notifications

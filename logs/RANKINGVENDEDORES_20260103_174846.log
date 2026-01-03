@@ -2,3 +2,1284 @@
 2026-01-03 17:48:46 | INFO    | PIPELINE | Sistema de Logging Iniciado: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\logs\RANKINGVENDEDORES_20260103_174846.log
 2026-01-03 17:48:46 | INFO    | PIPELINE | Modo: DEV
 2026-01-03 17:48:46 | INFO    | ===========================================================================
+2026-01-03 17:48:47 | INFO    | BACKUP | Backup diário realizado em: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\backups\2026-01-03 (2 arquivos)
+2026-01-03 17:48:47 | INFO    | BACKUP | Backups locais criados junto dos arquivos originais
+2026-01-03 17:48:47 | INFO    | PIPELINE | INICIANDO EXECUCAO: src.web_automation
+2026-01-03 17:48:47 | INFO    | PIPELINE | MODO: BATCH | Envio WhatsApp: DESABILITADO
+2026-01-03 17:48:47 | INFO    | INGESTAO | Iniciando download de planilhas...
+2026-01-03 17:48:47 | INFO    | INGESTAO | Tentativa 1/3
+2026-01-03 17:48:47 | INFO    | 🌐 [WEB] Ativando Headless Moderno. Motivo: Modo Noturno (BATCH)
+2026-01-03 17:48:49 | INFO    | Iniciando automação web...
+2026-01-03 17:48:49 | INFO    | Acessando o site: https://bi-cloud-partner3.citelsoftware.com.br:41451
+2026-01-03 17:48:58 | INFO    | Fluxo de login finalizado.
+2026-01-03 17:48:58 | INFO    | Removendo sessões remotas pendentes...
+2026-01-03 17:49:00 | INFO    | Aguardando 40 segundos para estabilização do BI...
+2026-01-03 17:49:40 | INFO    | Iniciando exportação do painel de Meta por Vendedor...
+2026-01-03 17:49:43 | INFO    | Tentativa de Exportação BI 1/3
+2026-01-03 17:49:48 | INFO    | Solicitado download Meta Vendedor. Aguardando...
+2026-01-03 17:50:18 | INFO    | Arquivo movido: Meta por vendedor - S _ Departamento TELE VENDAS (Mês Alternado) - 3 Jan 2026 (2).xlsx -> MetaVendedor_0301.xlsx
+2026-01-03 17:50:18 | INFO    | Validando conteúdo do arquivo (BI Check)...
+2026-01-03 17:50:18 | INFO    | Arquivo validado com sucesso!
+2026-01-03 17:50:18 | INFO    | Fluxo de Meta Vendedor concluído. Finalizando automação.
+2026-01-03 17:50:18 | INFO    | Fechando o navegador.
+2026-01-03 17:50:20 | INFO    | Automação web concluída. Arquivos baixados: ['meta_vendedor']
+2026-01-03 17:50:20 | INFO    | INGESTAO | Validando sanidade do arquivo...
+2026-01-03 17:50:20 | INFO    | INGESTAO | Arquivo válido e saneado. Prosseguindo.
+2026-01-03 17:50:20 | INFO    | PROCESSAMENTO | Iniciando processamento: MetaVendedor_0301.xlsx
+2026-01-03 17:50:20 | INFO    | INGESTAO | Tentativa 1/3 de leitura do Meta Vendedor
+2026-01-03 17:50:20 | INFO    | INGESTAO | Validando integridade do Excel (pré-header)
+2026-01-03 17:50:20 | INFO    | INGESTAO | Excel passou na validação de integridade
+2026-01-03 17:50:20 | INFO    | INGESTAO | Arquivo válido detectado.
+2026-01-03 17:50:20 | INFO    | INGESTAO | Iniciando analise de header: MetaVendedor_0301.xlsx
+2026-01-03 17:50:20 | INFO    | INGESTAO | Header Linha 0: Valid=1 Cols=['META POR VENDEDOR - S / DEPARTAMENTO TELE VENDAS (MES ALTERNADO)', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+2026-01-03 17:50:20 | INFO    | INGESTAO | Header Linha 1: Valid=1 Cols=['META DE VENDA POR VENDEDOR SEM DEPARTAMENTO TELEVENDAS', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+2026-01-03 17:50:20 | INFO    | INGESTAO | Header Linha 2: Valid=0 Cols=['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+2026-01-03 17:50:20 | INFO    | INGESTAO | Header Linha 3: Valid=24 Cols=['COD.', 'NOME', 'META', 'FATURADO MES', '% ALCANCE', 'FAT. PROJETADO', '% PROJETADO', 'FALTA META MES', 'META DIARIA', 'FAT. HOJE', 'VALOR ABERTO', '% FAT. + ABERTO', 'PRAZO MEDIO', 'VENDAS', 'TICKET MEDIO', 'QTD ITENS POR NOTA', 'CARTEIRA', 'ATEND.', '% ATEND.', 'META MARG.', '% MARGEM', 'TOTAL DESCONTO', 'META DESCONTO', '% DESCONTO']
+2026-01-03 17:50:20 | INFO    | INGESTAO | Cabeçalho detectado na linha 3
+2026-01-03 17:50:20 | INFO    | FILTER | 14 Gerentes removidos do ranking.
+2026-01-03 17:50:20 | INFO    | PROCESSAMENTO | Vendedores: 81. Páginas: 7
+2026-01-03 17:50:21 | INFO    | Playwright disponível
+2026-01-03 17:50:21 | INFO    | Selenium disponível
+2026-01-03 17:50:21 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:21 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:21 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:21 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:21 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:21 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:21 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:21 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:21 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:21 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpqmahhf4_.html
+2026-01-03 17:50:21 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:22 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:23 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:23 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpqmahhf4_.html
+2026-01-03 17:50:23 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:23 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:24 | INFO    | Tirando screenshot...
+2026-01-03 17:50:24 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p1.png
+2026-01-03 17:50:24 | INFO    | Fechando browser...
+2026-01-03 17:50:26 | INFO    | Browser fechado
+2026-01-03 17:50:26 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:26 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p1.png (via Selenium)
+2026-01-03 17:50:26 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:26 | INFO    | Playwright disponível
+2026-01-03 17:50:26 | INFO    | Selenium disponível
+2026-01-03 17:50:26 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:26 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:26 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:26 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:26 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:26 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:26 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:26 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:26 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:26 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp049sn42j.html
+2026-01-03 17:50:26 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:27 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:28 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:28 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp049sn42j.html
+2026-01-03 17:50:28 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:28 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:29 | INFO    | Tirando screenshot...
+2026-01-03 17:50:29 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p2.png
+2026-01-03 17:50:29 | INFO    | Fechando browser...
+2026-01-03 17:50:31 | INFO    | Browser fechado
+2026-01-03 17:50:31 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:31 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p2.png (via Selenium)
+2026-01-03 17:50:31 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:31 | INFO    | Playwright disponível
+2026-01-03 17:50:31 | INFO    | Selenium disponível
+2026-01-03 17:50:31 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:31 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:32 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:32 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:32 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:32 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:32 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:32 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:32 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:32 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpmdxmg1zn.html
+2026-01-03 17:50:32 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:33 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:34 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:34 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpmdxmg1zn.html
+2026-01-03 17:50:34 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:34 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:34 | INFO    | Tirando screenshot...
+2026-01-03 17:50:35 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p3.png
+2026-01-03 17:50:35 | INFO    | Fechando browser...
+2026-01-03 17:50:37 | INFO    | Browser fechado
+2026-01-03 17:50:37 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:37 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p3.png (via Selenium)
+2026-01-03 17:50:37 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:37 | INFO    | Playwright disponível
+2026-01-03 17:50:37 | INFO    | Selenium disponível
+2026-01-03 17:50:37 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:37 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:37 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:37 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:37 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:37 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:37 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:37 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:37 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:37 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpckctk0cb.html
+2026-01-03 17:50:37 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:38 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:39 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:39 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpckctk0cb.html
+2026-01-03 17:50:39 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:39 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:40 | INFO    | Tirando screenshot...
+2026-01-03 17:50:40 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p4.png
+2026-01-03 17:50:40 | INFO    | Fechando browser...
+2026-01-03 17:50:42 | INFO    | Browser fechado
+2026-01-03 17:50:42 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:42 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p4.png (via Selenium)
+2026-01-03 17:50:42 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:42 | INFO    | Playwright disponível
+2026-01-03 17:50:42 | INFO    | Selenium disponível
+2026-01-03 17:50:42 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:42 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:43 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:43 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:43 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:43 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:43 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:43 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:43 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:43 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp93yvr8we.html
+2026-01-03 17:50:43 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:44 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:45 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:45 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp93yvr8we.html
+2026-01-03 17:50:45 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:45 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:45 | INFO    | Tirando screenshot...
+2026-01-03 17:50:46 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p5.png
+2026-01-03 17:50:46 | INFO    | Fechando browser...
+2026-01-03 17:50:48 | INFO    | Browser fechado
+2026-01-03 17:50:48 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:48 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p5.png (via Selenium)
+2026-01-03 17:50:48 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:48 | INFO    | Playwright disponível
+2026-01-03 17:50:48 | INFO    | Selenium disponível
+2026-01-03 17:50:48 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:48 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:48 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:48 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:48 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:48 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:48 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:48 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:48 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:48 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp8elm6kjl.html
+2026-01-03 17:50:48 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:49 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:50 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:50 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp8elm6kjl.html
+2026-01-03 17:50:50 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:50 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:51 | INFO    | Tirando screenshot...
+2026-01-03 17:50:51 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p6.png
+2026-01-03 17:50:51 | INFO    | Fechando browser...
+2026-01-03 17:50:53 | INFO    | Browser fechado
+2026-01-03 17:50:53 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:53 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p6.png (via Selenium)
+2026-01-03 17:50:53 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:53 | INFO    | Playwright disponível
+2026-01-03 17:50:53 | INFO    | Selenium disponível
+2026-01-03 17:50:53 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:53 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:53 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:53 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:53 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:53 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:53 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:53 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:53 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:53 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpuruzd_6i.html
+2026-01-03 17:50:53 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:50:54 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:50:55 | INFO    | Browser Chrome iniciado
+2026-01-03 17:50:55 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpuruzd_6i.html
+2026-01-03 17:50:56 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:50:56 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:50:56 | INFO    | Tirando screenshot...
+2026-01-03 17:50:56 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p7.png
+2026-01-03 17:50:56 | INFO    | Fechando browser...
+2026-01-03 17:50:59 | INFO    | Browser fechado
+2026-01-03 17:50:59 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:50:59 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p7.png (via Selenium)
+2026-01-03 17:50:59 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:50:59 | INFO    | 🎮 GAMIFICACAO | Engine: OK
+2026-01-03 17:50:59 | ERROR   | PONTOS | Erro: name 'conn' is not defined
+2026-01-03 17:50:59 | INFO    | Playwright disponível
+2026-01-03 17:50:59 | INFO    | Selenium disponível
+2026-01-03 17:50:59 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:50:59 | INFO    | Inicializando Playwright...
+2026-01-03 17:50:59 | INFO    | Lançando browser Chromium...
+2026-01-03 17:50:59 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:59 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:50:59 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:50:59 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:50:59 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:50:59 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:50:59 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpv9u4c1ft.html
+2026-01-03 17:50:59 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:00 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:01 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:01 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpv9u4c1ft.html
+2026-01-03 17:51:01 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:01 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:02 | INFO    | Tirando screenshot...
+2026-01-03 17:51:02 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p1.png
+2026-01-03 17:51:02 | INFO    | Fechando browser...
+2026-01-03 17:51:04 | INFO    | Browser fechado
+2026-01-03 17:51:04 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:04 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p1.png (via Selenium)
+2026-01-03 17:51:04 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:04 | INFO    | Playwright disponível
+2026-01-03 17:51:04 | INFO    | Selenium disponível
+2026-01-03 17:51:04 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:04 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:05 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:05 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:05 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:05 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:05 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:05 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:05 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:05 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpf3yu51o3.html
+2026-01-03 17:51:05 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:06 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:07 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:07 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpf3yu51o3.html
+2026-01-03 17:51:07 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:07 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:07 | INFO    | Tirando screenshot...
+2026-01-03 17:51:08 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p2.png
+2026-01-03 17:51:08 | INFO    | Fechando browser...
+2026-01-03 17:51:10 | INFO    | Browser fechado
+2026-01-03 17:51:10 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:10 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p2.png (via Selenium)
+2026-01-03 17:51:10 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:10 | INFO    | Playwright disponível
+2026-01-03 17:51:10 | INFO    | Selenium disponível
+2026-01-03 17:51:10 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:10 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:10 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:10 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:10 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:10 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:10 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:10 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:10 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:10 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpgm89rt87.html
+2026-01-03 17:51:10 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:11 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:12 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:12 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpgm89rt87.html
+2026-01-03 17:51:12 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:12 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:13 | INFO    | Tirando screenshot...
+2026-01-03 17:51:13 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p3.png
+2026-01-03 17:51:13 | INFO    | Fechando browser...
+2026-01-03 17:51:15 | INFO    | Browser fechado
+2026-01-03 17:51:15 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:15 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p3.png (via Selenium)
+2026-01-03 17:51:15 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:15 | INFO    | Playwright disponível
+2026-01-03 17:51:15 | INFO    | Selenium disponível
+2026-01-03 17:51:15 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:15 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:16 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:16 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:16 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:16 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:16 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:16 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:16 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:16 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp5ozx7v05.html
+2026-01-03 17:51:16 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:17 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:18 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:18 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp5ozx7v05.html
+2026-01-03 17:51:18 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:18 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:18 | INFO    | Tirando screenshot...
+2026-01-03 17:51:19 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p4.png
+2026-01-03 17:51:19 | INFO    | Fechando browser...
+2026-01-03 17:51:21 | INFO    | Browser fechado
+2026-01-03 17:51:21 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:21 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p4.png (via Selenium)
+2026-01-03 17:51:21 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:21 | INFO    | Playwright disponível
+2026-01-03 17:51:21 | INFO    | Selenium disponível
+2026-01-03 17:51:21 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:21 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:21 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:21 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:21 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:21 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:21 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:21 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:21 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:21 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpjf9pm93t.html
+2026-01-03 17:51:21 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:22 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:23 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:23 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpjf9pm93t.html
+2026-01-03 17:51:23 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:23 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:24 | INFO    | Tirando screenshot...
+2026-01-03 17:51:24 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p5.png
+2026-01-03 17:51:24 | INFO    | Fechando browser...
+2026-01-03 17:51:26 | INFO    | Browser fechado
+2026-01-03 17:51:26 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:26 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p5.png (via Selenium)
+2026-01-03 17:51:26 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:26 | INFO    | Playwright disponível
+2026-01-03 17:51:26 | INFO    | Selenium disponível
+2026-01-03 17:51:26 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:26 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:26 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:26 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:26 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:26 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:26 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:26 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:26 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:26 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmporsvhj9b.html
+2026-01-03 17:51:26 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:28 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:29 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:29 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmporsvhj9b.html
+2026-01-03 17:51:29 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:29 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:29 | INFO    | Tirando screenshot...
+2026-01-03 17:51:29 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p6.png
+2026-01-03 17:51:29 | INFO    | Fechando browser...
+2026-01-03 17:51:31 | INFO    | Browser fechado
+2026-01-03 17:51:31 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:31 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p6.png (via Selenium)
+2026-01-03 17:51:31 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:32 | INFO    | Playwright disponível
+2026-01-03 17:51:32 | INFO    | Selenium disponível
+2026-01-03 17:51:32 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:32 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:32 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:32 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:32 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:32 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:32 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:32 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:32 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:32 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpv_qe7hfv.html
+2026-01-03 17:51:32 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:33 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:34 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:34 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpv_qe7hfv.html
+2026-01-03 17:51:34 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:34 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:34 | INFO    | Tirando screenshot...
+2026-01-03 17:51:35 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p7.png
+2026-01-03 17:51:35 | INFO    | Fechando browser...
+2026-01-03 17:51:37 | INFO    | Browser fechado
+2026-01-03 17:51:37 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:37 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_semanal_p7.png (via Selenium)
+2026-01-03 17:51:37 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:37 | INFO    | Playwright disponível
+2026-01-03 17:51:37 | INFO    | Selenium disponível
+2026-01-03 17:51:37 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:37 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:37 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:37 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:37 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:37 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:37 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:37 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:37 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:37 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpbepjfpgu.html
+2026-01-03 17:51:37 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:39 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:40 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:40 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpbepjfpgu.html
+2026-01-03 17:51:40 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:40 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:40 | INFO    | Tirando screenshot...
+2026-01-03 17:51:41 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p1.png
+2026-01-03 17:51:41 | INFO    | Fechando browser...
+2026-01-03 17:51:43 | INFO    | Browser fechado
+2026-01-03 17:51:43 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:43 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p1.png (via Selenium)
+2026-01-03 17:51:43 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:43 | INFO    | Playwright disponível
+2026-01-03 17:51:43 | INFO    | Selenium disponível
+2026-01-03 17:51:43 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:43 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:43 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:43 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:43 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:43 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:43 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:43 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:43 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:43 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp4ebmkh83.html
+2026-01-03 17:51:43 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:44 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:45 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:45 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp4ebmkh83.html
+2026-01-03 17:51:45 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:45 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:46 | INFO    | Tirando screenshot...
+2026-01-03 17:51:47 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p2.png
+2026-01-03 17:51:47 | INFO    | Fechando browser...
+2026-01-03 17:51:49 | INFO    | Browser fechado
+2026-01-03 17:51:49 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:49 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p2.png (via Selenium)
+2026-01-03 17:51:49 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:49 | INFO    | Playwright disponível
+2026-01-03 17:51:49 | INFO    | Selenium disponível
+2026-01-03 17:51:49 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:49 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:49 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:49 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:49 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:49 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:49 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:49 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:49 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:49 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpad4rnafk.html
+2026-01-03 17:51:49 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:50 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:51 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:51 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpad4rnafk.html
+2026-01-03 17:51:51 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:51 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:52 | INFO    | Tirando screenshot...
+2026-01-03 17:51:52 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p3.png
+2026-01-03 17:51:52 | INFO    | Fechando browser...
+2026-01-03 17:51:54 | INFO    | Browser fechado
+2026-01-03 17:51:54 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:51:54 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p3.png (via Selenium)
+2026-01-03 17:51:54 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:51:54 | INFO    | Playwright disponível
+2026-01-03 17:51:54 | INFO    | Selenium disponível
+2026-01-03 17:51:54 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:51:54 | INFO    | Inicializando Playwright...
+2026-01-03 17:51:55 | INFO    | Lançando browser Chromium...
+2026-01-03 17:51:55 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:55 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:51:55 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:51:55 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:51:55 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:51:55 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:51:55 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp5zfwgoxa.html
+2026-01-03 17:51:55 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:51:56 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:51:57 | INFO    | Browser Chrome iniciado
+2026-01-03 17:51:57 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp5zfwgoxa.html
+2026-01-03 17:51:57 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:51:57 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:51:57 | INFO    | Tirando screenshot...
+2026-01-03 17:51:58 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p4.png
+2026-01-03 17:51:58 | INFO    | Fechando browser...
+2026-01-03 17:52:00 | INFO    | Browser fechado
+2026-01-03 17:52:00 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:52:00 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p4.png (via Selenium)
+2026-01-03 17:52:00 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:52:00 | INFO    | Playwright disponível
+2026-01-03 17:52:00 | INFO    | Selenium disponível
+2026-01-03 17:52:00 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:52:00 | INFO    | Inicializando Playwright...
+2026-01-03 17:52:00 | INFO    | Lançando browser Chromium...
+2026-01-03 17:52:00 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:00 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:00 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:52:00 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:52:00 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:52:00 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:52:00 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmp64mqn6fp.html
+2026-01-03 17:52:00 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:52:02 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:52:02 | INFO    | Browser Chrome iniciado
+2026-01-03 17:52:02 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmp64mqn6fp.html
+2026-01-03 17:52:03 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:52:03 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:52:03 | INFO    | Tirando screenshot...
+2026-01-03 17:52:04 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p5.png
+2026-01-03 17:52:04 | INFO    | Fechando browser...
+2026-01-03 17:52:06 | INFO    | Browser fechado
+2026-01-03 17:52:06 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:52:06 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p5.png (via Selenium)
+2026-01-03 17:52:06 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:52:06 | INFO    | Playwright disponível
+2026-01-03 17:52:06 | INFO    | Selenium disponível
+2026-01-03 17:52:06 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:52:06 | INFO    | Inicializando Playwright...
+2026-01-03 17:52:06 | INFO    | Lançando browser Chromium...
+2026-01-03 17:52:06 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:06 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:06 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:52:06 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:52:06 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:52:06 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:52:06 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpndss9o_g.html
+2026-01-03 17:52:06 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:52:07 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:52:08 | INFO    | Browser Chrome iniciado
+2026-01-03 17:52:08 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpndss9o_g.html
+2026-01-03 17:52:08 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:52:08 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:52:09 | INFO    | Tirando screenshot...
+2026-01-03 17:52:09 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p6.png
+2026-01-03 17:52:09 | INFO    | Fechando browser...
+2026-01-03 17:52:12 | INFO    | Browser fechado
+2026-01-03 17:52:12 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:52:12 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p6.png (via Selenium)
+2026-01-03 17:52:12 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:52:12 | INFO    | Playwright disponível
+2026-01-03 17:52:12 | INFO    | Selenium disponível
+2026-01-03 17:52:12 | INFO    | Playwright disponível, tentando usar...
+2026-01-03 17:52:12 | INFO    | Inicializando Playwright...
+2026-01-03 17:52:12 | INFO    | Lançando browser Chromium...
+2026-01-03 17:52:12 | ERROR   | Erro durante renderização Playwright: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Traceback (most recent call last):
+  File "src\html_renderer.py", line 191, in _html_to_png_playwright
+    browser = playwright.chromium.launch(**launch_options)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "playwright\sync_api\_generated.py", line 14568, in launch
+  File "playwright\_impl\_sync_base.py", line 115, in _sync
+  File "playwright\_impl\_browser_type.py", line 98, in launch
+  File "playwright\_impl\_connection.py", line 69, in send
+  File "playwright\_impl\_connection.py", line 559, in wrap_api_call
+playwright._impl._errors.Error: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:12 | WARNING | ⚠️ Playwright falhou: BrowserType.launch: Executable doesn't exist at C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\_internal\playwright\driver\package\.local-browsers\chromium_headless_shell-1200\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-01-03 17:52:12 | WARNING | Tentando Selenium como fallback...
+2026-01-03 17:52:12 | INFO    | Usando Selenium para renderização...
+2026-01-03 17:52:12 | INFO    | Configurando opções do Chrome para Selenium...
+2026-01-03 17:52:12 | INFO    | Criando arquivo HTML temporário...
+2026-01-03 17:52:12 | INFO    | Arquivo temporário criado: C:\Users\Usuario\AppData\Local\Temp\tmpnyeyp2ud.html
+2026-01-03 17:52:12 | INFO    | Instalando/verificando ChromeDriver via webdriver-manager...
+2026-01-03 17:52:13 | INFO    | ChromeDriver pronto, iniciando browser...
+2026-01-03 17:52:14 | INFO    | Browser Chrome iniciado
+2026-01-03 17:52:14 | INFO    | Carregando HTML: file:///C:\Users\Usuario\AppData\Local\Temp\tmpnyeyp2ud.html
+2026-01-03 17:52:14 | INFO    | HTML carregado, aguardando elemento 'body'...
+2026-01-03 17:52:14 | INFO    | Elemento 'body' encontrado, aguardando 600ms para renderização...
+2026-01-03 17:52:15 | INFO    | Tirando screenshot...
+2026-01-03 17:52:15 | INFO    | Screenshot salvo: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p7.png
+2026-01-03 17:52:15 | INFO    | Fechando browser...
+2026-01-03 17:52:17 | INFO    | Browser fechado
+2026-01-03 17:52:17 | INFO    | Removendo arquivo temporário...
+2026-01-03 17:52:17 | INFO    | Screenshot HTML salva em C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_mensal_p7.png (via Selenium)
+2026-01-03 17:52:17 | INFO    | ✅ Conversão concluída via Selenium
+2026-01-03 17:52:18 | INFO    | RANKING | Sucesso! Gerado em: C:\Users\Usuario\Documents\Scripts\EM DESENVOLVIMENTO RankingVendedores2.0\data\ranking_vendedor_p1.png
+2026-01-03 17:52:18 | INFO    | GIT SYNC | Sincronizando dados no modo BATCH...
+2026-01-03 17:52:25 | INFO    | GIT SYNC | Realizando push para o repositório...
+2026-01-03 17:52:35 | WARNING | PIPELINE | Interrompido pelo usuário.

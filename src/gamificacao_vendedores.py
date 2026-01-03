@@ -823,6 +823,8 @@ class GamificacaoDB:
         2. % Alcance Meta Mensal (Decrescente) - Desempate
         3. Nome (Crescente) - Desempate final
         """
+        import sqlite3
+        conn = self._get_connection()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         
