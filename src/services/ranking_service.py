@@ -429,11 +429,18 @@ class RankingService:
         try:
             today = date.today()
             ranking_data = engine.db.get_ranking_pontos(today)
-            if not ranking_data: return []
+            
+            self.logger.info(f"PONTOS | Gerando imagens... Qtd Vendedores no Ranking: {len(ranking_data)}")
+            
+            if not ranking_data: 
+                self.logger.warning("PONTOS | Ranking de pontos vazio! Gerando imagem de placeholder.")
+                ranking_data = []
 
             page_size = 12
             total = len(ranking_data)
+            # Se total for 0 (vazio), força 1 página para gerar o template vazio
             pages = (total + page_size - 1) // page_size
+            if pages == 0: pages = 1
             paths = []
 
             for p in range(pages):
@@ -447,7 +454,9 @@ class RankingService:
                 }
                 renderer = TemplateRenderer(self.cfg.templates_dir)
                 html = renderer.render("ranking_pontos.html", ctx)
-                dest = destino_dir / f"ranking_pontos_p{p+1}.png"
+                
+                fname = f"ranking_pontos_p{p+1}.png" if pages > 1 else "ranking_pontos.png"
+                dest = destino_dir / fname
                 paths.append(html_to_png(html, dest, viewport=(1080, 1920)))
             return paths
         except Exception as e:
@@ -497,7 +506,8 @@ class RankingService:
 
     def _enriquecer_status_semanal(self, ranking_data: list[dict], engine: Any, today: date) -> tuple[list[dict], float]:
         dt_segunda = today - timedelta(days=today.weekday())
-        dias_semana = [dt_segunda + timedelta(days=i) for i in range(5)]
+        # Agora range(6) para pegar de Segunda(0) a Sábado(5)
+        dias_semana = [dt_segunda + timedelta(days=i) for i in range(6)]
         
         from src.feriados import FeriadosManager
         feriados_mgr = FeriadosManager()
@@ -511,20 +521,29 @@ class RankingService:
             status_list = []
             metas_batidas = 0.0
             for d in dias_semana:
-                if d > today: status_list.append(None); continue
+                is_sabado_check = (d.weekday() == 5)
+                
+                if d > today: 
+                    status_list.append(None)
+                    continue
+                
                 res = engine.db.get_resultados_periodo(nome, d, d)
                 if res:
                     bateu = res[0][3] >= 100
                     status_list.append(bateu)
+                    
                     if bateu:
-                        peso_dia = feriados_mgr.calcular_dias_uteis_periodo(d, d, "TODAS")
-                        metas_batidas += peso_dia
-                else: status_list.append(False)
+                        if is_sabado_check:
+                            # Sábado vale 0.5 ponto na contagem
+                            metas_batidas += 0.5
+                        else:
+                            # Dias normais valem o peso calculado (normalmente 1.0)
+                            peso_dia = feriados_mgr.calcular_dias_uteis_periodo(d, d, "TODAS")
+                            metas_batidas += peso_dia
+                else: 
+                    status_list.append(False)
             
-            # Verifica Sabado apenas se ja passou (ou eh hoje)
-            if dt_sabado <= today:
-                res_sab = engine.db.get_resultados_periodo(nome, dt_sabado, dt_sabado)
-                if res_sab and res_sab[0][3] >= 100: metas_batidas += 0.5
+            # (Removido verificação manual de Sábado pois agora está dentro do loop)
             
             item['status_semana'] = status_list
             item['metas_batidas'] = metas_batidas

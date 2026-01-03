@@ -161,8 +161,8 @@ with tab_semanal:
                         ),
                         "Status": st.column_config.TextColumn("Status"),
                         "Pontos": st.column_config.NumberColumn(" Pontos", format="%d"),
-                        "Venda": st.column_config.NumberColumn("Venda", hidden=True),
-                        "Meta": st.column_config.NumberColumn("Meta", hidden=True),
+                        "Venda": None,
+                        "Meta": None,
                     },
                     width="stretch",
                     hide_index=True
