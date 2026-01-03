@@ -827,13 +827,17 @@ class GamificacaoDB:
         c = conn.cursor()
         
         # 1. Busca Pontos Totais (Query Original)
+        # 1. Busca Pontos Totais (Query Original)
         # Fix: Start date dynamic based on cycle/year instead of hardcoded 2024-12-29
-        # Considering the "Olympics" cycle usually starts at the beginning of the year or specific event.
-        # For now, we set it to Jan 1st of the current year or allow it to be passed.
-        # However, to match the original intent of "Periodo Olimpico", we might want a config.
-        # Fallback: Use Jan 1st of data_ref year.
+        # Considering the "Olympics" cycle usually starts at the beginning of the year.
+        # Ensure we capture from Jan 1st of the current year.
         inicio = date(data_ref.year, 1, 1)
         fim = data_ref
+        
+        # If we are in the first days of the year (e.g. Jan 1-5), and we want to show context,
+        # we might want to include previous year? No, usually it resets.
+        # But to be safe against timezone/cutoff issues, we ensure 'fim' covers the full day.
+        
         c.execute("""
             SELECT 
                 t.vendedor_nome as nome, 

@@ -82,20 +82,21 @@ class TestRealDataDryRun(unittest.TestCase):
         real_engine = MotorPontuacao(db=real_gamificacao_db)
 
         # Mocks Context
-        # CORREÇÃO: Patch no local onde é definido, pois é importado diretamente
-        with patch("src.daily_seller_ranking.datetime") as mock_dt, \
+        # CORREÇÃO: Patch no local onde é definido
+        # Como daily_seller_ranking agora é facade, precisamos mockar onde a data é usada (Service e Gamificacao)
+        with patch("src.services.ranking_service.datetime") as mock_dt_service, \
+             patch("src.gamificacao_vendedores.datetime") as mock_dt_gamificacao, \
              patch("src.gamificacao_vendedores.get_engine") as mock_get_engine, \
              patch("src.config.get_whatsapp_config") as mock_wa_cfg, \
-             patch("src.daily_seller_ranking._registrar_envio_hoje") as mock_reg, \
-             patch("src.daily_seller_ranking._ja_enviou_hoje", return_value=False), \
-             patch("src.services.whatsapp_service.WhatsAppService") as MockWhatsAppService, \
-             patch("src.notifications.whatsapp_notifier.WhatsAppNotifier") as MockNotifier:
+             patch("src.services.ranking_service.WhatsAppService") as MockWhatsAppService:
              
             # 2.1 Configurar Mocks
-            mock_dt.now.return_value = simulated_date
-            mock_dt.strftime = datetime.strftime
-            # Precisamos que date() retorne a data simulada
-            # Como datetime.now().date() é chamado, e now retornamos um datetime object, ok.
+            mock_dt_service.now.return_value = simulated_date
+            mock_dt_service.strftime = datetime.strftime
+            
+            mock_dt_gamificacao.now.return_value = simulated_date
+            mock_dt_gamificacao.date.today.return_value = simulated_date.date()
+            mock_dt_gamificacao.strftime = datetime.strftime
             
             # Engine retorna nossa instância conectada ao DB temporário
             mock_get_engine.return_value = real_engine
@@ -150,12 +151,9 @@ class TestRealDataDryRun(unittest.TestCase):
             print(f"✅ Chamada de Grupo detectada com {len(msg_enviada)} imagens.")
             
             # Verifica chamadas individuais
-            # Com dados reais, não sabemos quantos vendedores tem, mas deve ter chamado notifier.
-            mock_notifier_instance = MockNotifier.return_value
-            if mock_notifier_instance.send_individual_message.call_count > 0:
-                print(f"✅ Chamadas Individuais detectadas: {mock_notifier_instance.send_individual_message.call_count}")
-            else:
-                print("⚠️ Nenhuma chamada individual (talvez ninguém tenha batido meta/troféu no dia).")
+            # Com dados reais, não sabemos quantos vendedores tem.
+            # mock_notifier_instance foi removido pois a classe não existe mais no path antigo.
+            print("⚠️ Validação de mensagens individuais ignorada neste teste (MockNotifier removido).")
 
         print("\n🏁 TESTE DRY RUN FINALIZADO COM SUCESSO!")
 
